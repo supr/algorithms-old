@@ -489,6 +489,150 @@ public:
 	Node *get_root() {
 		return root;
 	}
+
+	void mirror_tree_topdown(Node *root) {
+		// we swap children as long root is not NULL
+		if (root) {
+			std::swap(root->left, root->right);
+		}
+
+		if (!root) {
+			return;
+		}
+
+		mirror_tree_topdown(root->left);
+		mirror_tree_topdown(root->right);
+	}
+
+	void mirror_tree_bottomup(Node *root) {
+		if (!root) {
+			return;
+		}
+
+		mirror_tree_bottomup(root->left);
+		mirror_tree_bottomup(root->right);
+
+		// we swap children as long root is not NULL
+		if (root) {
+			std::swap(root->left, root->right);
+		}
+	}
+
+	void get_depth_min_max(Node *root, int &min_depth, int &max_depth) {
+		static int depth = 0;
+
+		if (!root) {
+			return;
+		}
+
+		if (!root->left || !root->right) {
+			if (depth > max_depth) {
+				max_depth = depth;
+			}
+			if (depth < min_depth) {
+				min_depth = depth;
+			}
+		}
+
+		depth++;
+
+		get_depth_min_max(root->left, min_depth, max_depth);
+		get_depth_min_max(root->right, min_depth, max_depth);
+
+		depth--;
+	}
+
+	bool is_tree_ballanced(Node *root) {
+		int min_depth = numeric_limits<int>::max();
+		int max_depth = numeric_limits<int>::min();
+
+		get_depth_min_max(root, min_depth, max_depth);
+
+		return abs(min_depth - max_depth) <= 1;
+	}
+
+	vector<vector<int>> get_paths_with_sum(Node *root, int sum) {
+		vector<vector<int>> paths_with_sum;
+		vector<Node*> current_path;
+		stack<Node*> s;
+		int current_total_sum = 0;
+
+		s.push(root);
+
+		while (!s.empty()) {
+			Node *current_node = s.top();
+			s.pop();
+
+			current_total_sum += current_node->value;
+			current_path.push_back(current_node);
+
+			// if the sum of the current value equals the sum we are looking for
+			// we store the current path
+			if (current_total_sum == sum && !current_node->left && !current_node->right) {
+				vector<int> curr_path;
+
+				for (auto it = current_path.begin(); it != current_path.end(); it++) {
+					Node *tmp = *it;
+					curr_path.push_back(tmp->value);
+				}
+
+				paths_with_sum.push_back(curr_path);
+			}
+
+			bool has_child = false;
+			if (current_node->right) {
+				s.push(current_node->right);
+				has_child = true;
+			}
+			if (current_node->left) {
+				s.push(current_node->left);
+				has_child = true;
+			}
+
+			if (!has_child) {
+				Node *curr = current_path.back();
+				Node *prev = NULL;
+
+				while (curr && !current_path.empty()) {
+					if (prev == curr->left && curr->right) {
+						break;
+					}
+
+					current_total_sum -= current_path.back()->value;
+
+					prev = curr;
+
+					current_path.pop_back();
+					curr = current_path.back();
+				}
+			}
+		}
+
+		return paths_with_sum;
+	}
+
+	void get_paths_with_sum_recursive(Node *root, int sum, vector<vector<int>> &paths) {
+		static int total_sum = 0;
+		static vector<int> current_path;
+
+		if (!root) {
+			return;
+		}
+
+		total_sum += root->value;
+		current_path.push_back(root->value);
+
+		if (total_sum == sum && !root->left && !root->right) {
+			paths.push_back(current_path);
+		}
+
+		get_paths_with_sum_recursive(root->left, sum, paths);
+		get_paths_with_sum_recursive(root->right, sum, paths);
+
+		total_sum -= root->value;
+
+		current_path.pop_back();
+	}
 };
 
 int main() {
