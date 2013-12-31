@@ -678,6 +678,30 @@ public:
 		return is_binary_tree;
 	}
 
+	void find_k_max_node_internal(Node *root, int &counter, int &k, Node **n) {
+		if (!root) {
+			return;
+		}
+
+		find_k_max_node_internal(root->right, counter, k, n);
+
+		counter++;
+
+		if (counter == k) {
+			*n = root;
+		}
+
+		find_k_max_node_internal(root->left, counter, k, n);
+	}
+
+	Node *find_k_max_node(Node *root, int k) {
+		int counter = 0;
+		Node *n = NULL;
+
+		find_k_max_node_internal(root, counter, k, &n);
+
+		return n;
+	}
 };
 
 int main() {
@@ -694,6 +718,8 @@ int main() {
 	t4.print_head(t4, cout);
 
 	//cout << t4.is_binary_tree(t4.get_root()) << endl;
+
+	cout << t4.find_k_max_node(t4.get_root(), 2)->value << endl;
 
 	return 0;
 }
