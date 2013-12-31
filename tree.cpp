@@ -551,6 +551,26 @@ public:
 		return abs(min_depth - max_depth) <= 1;
 	}
 
+	int get_max_depth(Node *root) {
+		if (!root) {
+			return 0;
+		}
+
+		return std::min(get_max_depth(root->left), get_max_depth(root->left));
+
+	}
+	int get_min_depth(Node *root) {
+		if (!root) {
+			return 0;
+		}
+
+		return std::min(get_min_depth(root->left), get_min_depth(root->left));
+	}
+
+	bool is_tree_ballanced2(Node *root) {
+		return abs(get_max_depth(root) - get_min_depth(root)) <= 1;
+	}
+
 	vector<vector<int>> get_paths_with_sum(Node *root, int sum) {
 		vector<vector<int>> paths_with_sum;
 		vector<Node*> current_path;
