@@ -27,6 +27,15 @@
 #include <limits>
 using namespace std;
 
+/*
+Question: How would you check if a binary tree is balanced?
+
+The algorithm is implemented in two different ways:
+- bool is_tree_balanced1(Node *root)
+- bool is_tree_balanced2(Node *root)
+*/
+
+// Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
 template<class T>
 class Tree{
 public:
@@ -45,8 +54,6 @@ public:
 	bool is_empty()const{
 		return !root;
 	}
-
-	// ------------------------------------------------------------------ //
 
 private:
 	static bool is_left_child(const Node*node){
@@ -158,8 +165,6 @@ private:
 		return true;
 	}
 
-	// ------------------------------------------------------------------ //
-
 public:
 	~Tree(){
 		Node*now = root;
@@ -224,8 +229,6 @@ public:
 		return *this;
 	}
 
-	// ------------------------------------------------------------------ //
-
 private:
 	template<class NodeT>
 	static NodeT*search(NodeT*root, const T&value){
@@ -245,8 +248,6 @@ public:
 	bool contains(const T&t)const{
 		return search(root, t);
 	}
-
-	// ------------------------------------------------------------------ //
 
 public:
 	bool insert(const T&value){
@@ -283,8 +284,6 @@ public:
 		assert(is_wellformed(root));
 		return true;
 	}
-
-	// ------------------------------------------------------------------ //
 
 private:
 	void swap_near_nodes(Node*child, Node*parent){
@@ -351,8 +350,6 @@ private:
 			swap_far_nodes(a, b);
 	}
 
-	// ------------------------------------------------------------------ //
-
 private:
 	template<class NodeT>
 	static NodeT*get_min(NodeT*node){
@@ -379,8 +376,6 @@ public:
 	const T&max()const{
 		return get_max(root)->value;
 	}
-
-	// ------------------------------------------------------------------ //
 
 private:
 	template<class NodeT>
@@ -436,8 +431,6 @@ public:
 			return 0;
 	}
 
-	// ------------------------------------------------------------------ //
-
 private:
 	void remove(Node*node){
 		// Ein Blatt
@@ -490,33 +483,7 @@ public:
 		return root;
 	}
 
-	void mirror_tree_topdown(Node *root) {
-		// we swap children as long root is not NULL
-		if (root) {
-			std::swap(root->left, root->right);
-		}
-
-		if (!root) {
-			return;
-		}
-
-		mirror_tree_topdown(root->left);
-		mirror_tree_topdown(root->right);
-	}
-
-	void mirror_tree_bottomup(Node *root) {
-		if (!root) {
-			return;
-		}
-
-		mirror_tree_bottomup(root->left);
-		mirror_tree_bottomup(root->right);
-
-		// we swap children as long root is not NULL
-		if (root) {
-			std::swap(root->left, root->right);
-		}
-	}
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 
 	void get_depth_min_max(Node *root, int &min_depth, int &max_depth) {
 		static int depth = 0;
@@ -542,7 +509,7 @@ public:
 		depth--;
 	}
 
-	bool is_tree_ballanced(Node *root) {
+	bool is_tree_balanced1(Node *root) {
 		int min_depth = numeric_limits<int>::max();
 		int max_depth = numeric_limits<int>::min();
 
@@ -559,6 +526,7 @@ public:
 		return std::min(get_max_depth(root->left), get_max_depth(root->left));
 
 	}
+
 	int get_min_depth(Node *root) {
 		if (!root) {
 			return 0;
@@ -567,140 +535,8 @@ public:
 		return std::min(get_min_depth(root->left), get_min_depth(root->left));
 	}
 
-	bool is_tree_ballanced2(Node *root) {
+	bool is_tree_balanced2(Node *root) {
 		return abs(get_max_depth(root) - get_min_depth(root)) <= 1;
-	}
-
-	vector<vector<int>> get_paths_with_sum(Node *root, int sum) {
-		vector<vector<int>> paths_with_sum;
-		vector<Node*> current_path;
-		stack<Node*> s;
-		int current_total_sum = 0;
-
-		s.push(root);
-
-		while (!s.empty()) {
-			Node *current_node = s.top();
-			s.pop();
-
-			current_total_sum += current_node->value;
-			current_path.push_back(current_node);
-
-			// if the sum of the current value equals the sum we are looking for
-			// we store the current path
-			if (current_total_sum == sum && !current_node->left && !current_node->right) {
-				vector<int> curr_path;
-
-				for (auto it = current_path.begin(); it != current_path.end(); it++) {
-					Node *tmp = *it;
-					curr_path.push_back(tmp->value);
-				}
-
-				paths_with_sum.push_back(curr_path);
-			}
-
-			bool has_child = false;
-			if (current_node->right) {
-				s.push(current_node->right);
-				has_child = true;
-			}
-			if (current_node->left) {
-				s.push(current_node->left);
-				has_child = true;
-			}
-
-			if (!has_child) {
-				Node *curr = current_path.back();
-				Node *prev = NULL;
-
-				while (curr && !current_path.empty()) {
-					if (prev == curr->left && curr->right) {
-						break;
-					}
-
-					current_total_sum -= current_path.back()->value;
-
-					prev = curr;
-
-					current_path.pop_back();
-					curr = current_path.back();
-				}
-			}
-		}
-
-		return paths_with_sum;
-	}
-
-	void get_paths_with_sum_recursive(Node *root, int sum, vector<vector<int>> &paths) {
-		static int total_sum = 0;
-		static vector<int> current_path;
-
-		if (!root) {
-			return;
-		}
-
-		total_sum += root->value;
-		current_path.push_back(root->value);
-
-		if (total_sum == sum && !root->left && !root->right) {
-			paths.push_back(current_path);
-		}
-
-		get_paths_with_sum_recursive(root->left, sum, paths);
-		get_paths_with_sum_recursive(root->right, sum, paths);
-
-		total_sum -= root->value;
-
-		current_path.pop_back();
-	}
-
-	void is_binary_tree_internal(Node *root, int &old_value, bool is_binary_tree) {
-		if (!root) {
-			return;
-		}
-
-		is_binary_tree_internal(root->left, old_value, is_binary_tree);
-
-		if (root->value > old_value) {
-			is_binary_tree = false;
-		}
-
-		old_value = root->value;
-
-		is_binary_tree_internal(root->right, old_value, is_binary_tree);
-	}
-
-	bool is_binary_tree(Node *root) {
-		int old_value = numeric_limits<int>::min();
-		bool is_binary_tree = true;
-		is_binary_tree_internal(root, old_value, is_binary_tree);
-
-		return is_binary_tree;
-	}
-
-	void find_k_max_node_internal(Node *root, int &counter, int &k, Node **n) {
-		if (!root) {
-			return;
-		}
-
-		find_k_max_node_internal(root->right, counter, k, n);
-
-		counter++;
-
-		if (counter == k) {
-			*n = root;
-		}
-
-		find_k_max_node_internal(root->left, counter, k, n);
-	}
-
-	Node *find_k_max_node(Node *root, int k) {
-		int counter = 0;
-		Node *n = NULL;
-
-		find_k_max_node_internal(root, counter, k, &n);
-
-		return n;
 	}
 };
 
@@ -710,16 +546,19 @@ int main() {
 	t4.insert(5);
 	t4.insert(12);
 	t4.insert(4);
-	t4.insert(3);
-	t4.insert(2);
 	t4.insert(7);
-	t4.insert(14);
 
 	t4.print_head(t4, cout);
 
-	//cout << t4.is_binary_tree(t4.get_root()) << endl;
+	bool is_tree_well_balanced1 = t4.is_tree_balanced1(t4.get_root());
+	bool is_tree_well_balanced2 = t4.is_tree_balanced2(t4.get_root());
 
-	cout << t4.find_k_max_node(t4.get_root(), 2)->value << endl;
+	if (is_tree_well_balanced1 && is_tree_well_balanced2) {
+		cout << "The Binary tree is well balanced" << endl;
+	}
+	else {
+		cout << "The Binary tree is not well balanced" << endl;
+	}
 
 	return 0;
 }
