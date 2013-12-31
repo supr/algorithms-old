@@ -20,6 +20,7 @@ Output: 1
 Input: {2, 1}
 Output: 1
 */
+
 int get_min_in_rotation(vector<int> &vec, int l, int r) {
 	// base case
 	if (vec[l] < vec[r]) return vec[l];
@@ -55,4 +56,8 @@ int main() {
 	vector<int> vec = { 2, 2, 2, 2, 2, 2, 2, 2, 0, 1, 1, 2 };
 
 	cout << get_min_in_rotation(vec, 0, vec.size() - 1) << endl;
+
+	vector<int> vec2 = { 4, 5, 6, 9, 12, 2, 3 };
+
+	cout << get_min_in_rotation(vec2, 0, vec2.size() - 1) << endl;
 }
