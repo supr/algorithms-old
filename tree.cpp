@@ -653,6 +653,31 @@ public:
 
 		current_path.pop_back();
 	}
+
+	void is_binary_tree_internal(Node *root, int &old_value, bool is_binary_tree) {
+		if (!root) {
+			return;
+		}
+
+		is_binary_tree_internal(root->left, old_value, is_binary_tree);
+
+		if (root->value > old_value) {
+			is_binary_tree = false;
+		}
+
+		old_value = root->value;
+
+		is_binary_tree_internal(root->right, old_value, is_binary_tree);
+	}
+
+	bool is_binary_tree(Node *root) {
+		int old_value = numeric_limits<int>::min();
+		bool is_binary_tree = true;
+		is_binary_tree_internal(root, old_value, is_binary_tree);
+
+		return is_binary_tree;
+	}
+
 };
 
 int main() {
@@ -665,8 +690,10 @@ int main() {
 	t4.insert(2);
 	t4.insert(7);
 	t4.insert(14);
-	
+
 	t4.print_head(t4, cout);
+
+	//cout << t4.is_binary_tree(t4.get_root()) << endl;
 
 	return 0;
 }
