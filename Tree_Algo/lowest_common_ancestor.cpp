@@ -28,11 +28,10 @@
 using namespace std;
 
 /*
-Question: Find the k-th maximum node in a binary search tree
-Given a Binary Search tree with nodes with unique integers, and given an integer K, find the kth maximum element from the BST.
+Question: Given values of two nodes in a Binary Search Tree, write a c program to find the Lowest Common Ancestor (LCA). You may assume that both the values exist in the tree.
 
 The algorithm is implemented in:
-- Node *find_k_max_node(Node *root, int k);
+- Node *lowest_common_ancestor(Node *root, Node *n1, Node *n2)
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -483,31 +482,25 @@ public:
 		return root;
 	}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 
-	void find_k_max_node_internal(Node *root, int &counter, int &k, Node **n) {
+	Node *lowest_common_ancestor(Node *root, Node *n1, Node *n2) {
 		if (!root) {
-			return;
+			return NULL;
 		}
 
-		find_k_max_node_internal(root->right, counter, k, n);
-
-		counter++;
-
-		if (counter == k) {
-			*n = root;
+		if (root == n1 || root == n2) {
+			return root;
 		}
 
-		find_k_max_node_internal(root->left, counter, k, n);
-	}
+		Node *l = lowest_common_ancestor(root->left, n1, n2);
+		Node *r = lowest_common_ancestor(root->right, n1, n2);
 
-	Node *find_k_max_node(Node *root, int k) {
-		int counter = 0;
-		Node *n = NULL;
+		if (l && r) {
+			return root;
+		}
 
-		find_k_max_node_internal(root, counter, k, &n);
-
-		return n;
+		return l ? l : r;
 	}
 };
 
@@ -524,9 +517,10 @@ int main() {
 
 	t4.print_head(t4, cout);
 
-	Node *n = t4.find_k_max_node(t4.get_root(), 2);
-	if (n) {
-		cout << n->value << endl;
+	Tree<int>::Node *ancestor = t4.lowest_common_ancestor(t4.get_root(), t4.get_root()->left->left, t4.get_root()->left->right);
+
+	if (ancestor) {
+		cout << ancestor->value << endl;
 	}
 
 	return 0;

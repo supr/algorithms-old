@@ -28,11 +28,10 @@
 using namespace std;
 
 /*
-Question: Find the k-th maximum node in a binary search tree
-Given a Binary Search tree with nodes with unique integers, and given an integer K, find the kth maximum element from the BST.
+Question: Given two binary tree T1 and T2,  write a function to test whether T2 is a subtree of T1.
 
 The algorithm is implemented in:
-- Node *find_k_max_node(Node *root, int k);
+- bool is_sub_tree(Tree<int> &t2)
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -483,32 +482,12 @@ public:
 		return root;
 	}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ //
 
-	void find_k_max_node_internal(Node *root, int &counter, int &k, Node **n) {
-		if (!root) {
-			return;
-		}
-
-		find_k_max_node_internal(root->right, counter, k, n);
-
-		counter++;
-
-		if (counter == k) {
-			*n = root;
-		}
-
-		find_k_max_node_internal(root->left, counter, k, n);
+	bool is_sub_tree(Tree<int> &t2) {
+		
 	}
 
-	Node *find_k_max_node(Node *root, int k) {
-		int counter = 0;
-		Node *n = NULL;
-
-		find_k_max_node_internal(root, counter, k, &n);
-
-		return n;
-	}
 };
 
 int main() {
@@ -524,10 +503,6 @@ int main() {
 
 	t4.print_head(t4, cout);
 
-	Node *n = t4.find_k_max_node(t4.get_root(), 2);
-	if (n) {
-		cout << n->value << endl;
-	}
 
 	return 0;
 }
