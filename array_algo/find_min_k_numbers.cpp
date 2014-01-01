@@ -4,7 +4,7 @@
 using namespace std;
 
 /*
-Question: Question: Please find the smallest k numbers (in value) out of n numbers. For example, if given an array with eight numbers
+Question: Please find the smallest k numbers (in value) out of n numbers. For example, if given an array with eight numbers
 {4, 5, 1, 6, 2, 7, 3, 8, please return the least four numbers 1,2,3, and 4.
 */
 
