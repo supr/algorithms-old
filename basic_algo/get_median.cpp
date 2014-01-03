@@ -7,9 +7,14 @@ using namespace std;
 /*
 Question: Find median of an unsorted array.
 
+Solution: is based on Qickselect
+
 Time Complexity:
 Expected: O(n)
 Worst Case: O(n^2)
+
+Possible Improvement:
+- median of medians -> Worst Case: O(n)
 */
 
 int rand_partition(vector<int> &a, int left, int right) {
