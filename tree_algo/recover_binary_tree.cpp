@@ -1,4 +1,4 @@
-ï»¿#include <bitset>
+#include <bitset>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -28,11 +28,14 @@
 using namespace std;
 
 /*
-Question: How would you check if a binary tree is balanced?
+Question: Two elements of a binary search tree (BST) are swapped by mistake.
+Recover the tree without changing its structure.
+Note:
+A solution using O(n) space is pretty straight forward. Could you devise a constant
+space solution?
 
-The algorithm is implemented in two different ways:
-- bool is_tree_balanced1(Node *root)
-- bool is_tree_balanced2(Node *root)
+The algorithm is implemented in:
+- void recover_binary_tree(Node *root)
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -99,7 +102,7 @@ private:
 		if (node->right)
 			right_height = get_height(node->right);
 
-		// Der hoechste Unterbaum bestimmt die Gesamthoehe
+		// Der höchste Unterbaum bestimmt die Gesamthöhe
 		return std::max(left_height, right_height) + 1;
 	}
 
@@ -131,7 +134,7 @@ private:
 			dump_spaces(out, get_width(node->right));
 		}
 		else{
-			// In beiden Unterbaeumen sind die Wurzeln um eins niedriger und darum veraendert
+			// In beiden Unterbäumen sind die Wurzeln um eins niedriger und darum verändert
 			// sich die Zeilennummerierung.
 			dump_line(out, node->left, line - 1);
 			dump_spaces(out, format_label(node).length());
@@ -287,22 +290,22 @@ public:
 
 private:
 	void swap_near_nodes(Node*child, Node*parent){
-		// Als erstes passen wir den unbeteiligten Grosselternknoten an.
+		// Als erstes passen wir den unbeteiligten Großelternknoten an.
 		*get_parent_ptr(parent) = child;
 
-		// Anschliessend werden die Kind- und Elternzeiger ausgetauscht.
+		// Anschließend werden die Kind- und Elternzeiger ausgetauscht.
 		std::swap(parent->left, child->left);
 		std::swap(parent->right, child->right);
 		std::swap(parent->parent, child->parent);
 
-		// Da eines der Kinder getauscht wird, benoetigt es eine
+		// Da eines der Kinder getauscht wird, benötigt es eine
 		// Sonderbehandlung.
 		if (child->left == child)
 			child->left = parent;
 		else
 			child->right = parent;
 
-		// Nun sind alle Kindzeiger richtig und die Elternzeiger koennen
+		// Nun sind alle Kindzeiger richtig und die Elternzeiger können
 		// dem angepasst werden.
 		if (child->left)
 			child->left->parent = child;
@@ -453,7 +456,7 @@ private:
 		else{
 			Node*other = get_prev_node(node);
 			swap_nodes(node, other);
-			// Loeschen des Knotens durch Benutzen von einer
+			// Löschen des Knotens durch Benutzen von einer
 			// der beiden anderen Methoden
 			remove(node);
 		}
@@ -483,82 +486,57 @@ public:
 		return root;
 	}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-	void get_depth_min_max(Node *root, int &min_depth, int &max_depth) {
-		static int depth = 0;
-
+	void recover_binary_tree_internal(Node *root, Node **prev, Node **first_node_not_inorder) {
 		if (!root) {
 			return;
 		}
 
-		if (!root->left || !root->right) {
-			if (depth > max_depth) {
-				max_depth = depth;
+		recover_binary_tree_internal(root->left, prev, first_node_not_inorder);
+
+		if (*prev) {
+			if (!(*first_node_not_inorder) && root->value < (*prev)->value) {
+				*first_node_not_inorder = *prev;
 			}
-			if (depth < min_depth) {
-				min_depth = depth;
+			else if (root->value < (*prev)->value) {
+				std::swap((*first_node_not_inorder)->value, root->value);
 			}
 		}
 
-		depth++;
+		*prev = root;
 
-		get_depth_min_max(root->left, min_depth, max_depth);
-		get_depth_min_max(root->right, min_depth, max_depth);
-
-		depth--;
+		recover_binary_tree_internal(root->right, prev, first_node_not_inorder);
 	}
 
-	bool is_tree_balanced1(Node *root) {
-		int min_depth = numeric_limits<int>::max();
-		int max_depth = numeric_limits<int>::min();
-
-		get_depth_min_max(root, min_depth, max_depth);
-
-		return abs(min_depth - max_depth) <= 1;
-	}
-
-	int get_max_depth(Node *root) {
-		if (!root) {
-			return 0;
-		}
-
-		return std::min(get_max_depth(root->left), get_max_depth(root->left));
-
-	}
-
-	int get_min_depth(Node *root) {
-		if (!root) {
-			return 0;
-		}
-
-		return std::min(get_min_depth(root->left), get_min_depth(root->left));
-	}
-
-	bool is_tree_balanced2(Node *root) {
-		return abs(get_max_depth(root) - get_min_depth(root)) <= 1;
+	void recover_binary_tree(Node *root) {
+		Node *prev = NULL;
+		Node *first_node_not_inorder = NULL;
+		recover_binary_tree_internal(root, &prev, &first_node_not_inorder);
 	}
 };
 
 int main() {
 	Tree<int> t4;
-	t4.insert(10);
-	t4.insert(5);
-	t4.insert(12);
+	t4.insert(8);
+	t4.insert(3);
+	t4.insert(1);
+	t4.insert(6);
 	t4.insert(4);
 	t4.insert(7);
+	t4.insert(10);
+	t4.insert(14);
+	t4.insert(13);
 
 	t4.print_head(t4, cout);
 
-	bool is_tree_well_balanced1 = t4.is_tree_balanced1(t4.get_root());
-	bool is_tree_well_balanced2 = t4.is_tree_balanced2(t4.get_root());
+	swap(t4.get_root()->value, t4.get_root()->left->right->left->value);
 
-	if (is_tree_well_balanced1 && is_tree_well_balanced2) {
-		cout << "The Binary tree is well balanced" << endl;
-	}
-	else {
-		cout << "The Binary tree is not well balanced" << endl;
-	}
+	t4.print_head(t4, cout);
+
+	t4.recover_binary_tree(t4.get_root());
+
+	t4.print_head(t4, cout);
 
 	return 0;
 }
