@@ -9,7 +9,7 @@ Question: How to get the median from a stream of numbers at any time?
 The median is middle value of numbers. If the count of numbers is even, the
 median is defined as the average value of the two numbers in middle
 
-Time Complexity: O(1)
+Time Complexity: O(log(n))
 Space Complexity: O(n)
 */
 
