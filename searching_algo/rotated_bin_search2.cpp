@@ -27,7 +27,7 @@ int rotated_bin_search(vector<int> &vec, int left, int right, int value) {
 	}
 	else if (vec[right] > vec[mid]) {
 		if (value >= vec[mid]) {
-			return rotated_bin_search(vec, mid, right + 1, value);
+			return rotated_bin_search(vec, mid + 1, right, value);
 		}
 		else {
 			return rotated_bin_search(vec, left, mid - 1, value);
