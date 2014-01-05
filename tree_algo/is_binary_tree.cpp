@@ -28,23 +28,13 @@
 using namespace std;
 
 /*
-Question: Binary Tree Level Order Traversal
-
-Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
-For example:
-Given binary tree:
- 3
-/ \
-9  20
-  / \
- 15  7
-
-return its level order traversal as:
-[
-[3],
-[9,20],
-[15,7]
-]
+Question: How to verify whether a binary tree is a binary search tree?
+-
+-Analysis: Binary search tree is an important data structure. It has a specific character: Each node is greater than or equal to nodes in its left sub-tree,
+-and less than or equal to nodes in its right sub-tree.
+-
+-The algorithm is implemented in:
+-bool is_binary_tree(Node *root);
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
