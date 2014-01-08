@@ -54,7 +54,7 @@ void dijkstra(vector<vector<weight_t>> &matrix, vertex_t src, vertex_t dst) {
 
 		// loop over all neighbors connected
 		for (int v = 0; v < matrix[u.vertex].size(); v++) {
-			if (matrix[u.vertex][v] > 0 && matrix[u.vertex][v] != inf) {
+			if (matrix[u.vertex][v] != inf) {
 				int old = dist[u.vertex] + matrix[u.vertex][v]; // accumulate shortest dist from source
 
 				if (old < dist[v]) {
@@ -78,6 +78,9 @@ int main() {
 	//v = 1
 	//w = 2
 	//t = 3
+
+	// graph from: https://class.coursera.org/algo-2012-002/lecture/57
+	// at 5:00min
 	vector<vector<weight_t>> distance = { { 0, 1, 4, inf },
 	{ inf, 0, 2, 6 },
 	{ inf, inf, 0, 3 },
