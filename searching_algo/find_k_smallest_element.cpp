@@ -13,17 +13,17 @@ Expected: O(n)
 Worst Case: O(n^2)
 */
 
-int rand_partition(vector<int> &vec, int l, int r) {
-	int pivot_index = l + rand() % (r - l);
+int rand_partition(vector<int> &vec, int low, int high) {
+	int l = low;
+	int r = high;
+	int pivot_index = l + rand() % (r - l); // (low + high) / 2; 
 	int pivot = vec[pivot_index];
 
-	while (l < r) {
-		while (l < vec.size() && vec[l] < pivot) { l++; }
-		while (r >= 0 && vec[r] > pivot) { r--; }
-
-		if (l < r) {
-			swap(vec[l], vec[r]);
-		}
+	while (true) {
+		while (vec[l] < pivot) l++;
+		while (vec[r] > pivot) r--;
+		if (l > r) break;
+		std::swap(vec[l++], vec[r--]);
 	}
 
 	return l;
