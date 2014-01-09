@@ -5,8 +5,6 @@
 #include <queue>
 using namespace std;
 
-#define UNDIRECTED_GRAPH
-
 typedef int vertex_t;
 typedef double weight_t;
 const weight_t max_weight = std::numeric_limits<double>::infinity();
@@ -41,121 +39,99 @@ void print_prev(std::vector<vertex_t> &prev) {
 
 void dijkstra(adjacency_list_t &l, vertex_t src, std::vector<weight_t> &dist, std::vector<vertex_t> &prev) {
 	std::priority_queue<node, vector<node>, comparison> q;
-#ifdef UNDIRECTED_GRAPH
-	std::vector<bool> visited;
-#endif
 
 	// init dist, prev table	
 	for (int i = 0; i < l.size(); i++) {
 		dist.push_back(max_weight);
 		prev.push_back(0);
-
-#ifdef UNDIRECTED_GRAPH
-		visited.push_back(false);
-#endif
 	}
 	dist[src] = 0;
 
 	// insert into pqueue
-	q.push(node(dist[src], src));
+	q.push(node(src, dist[src]));
 
 	while (!q.empty()) {
 		node u = q.top();
 		q.pop();
-
-#ifdef UNDIRECTED_GRAPH
-		visited[u.target] = true;
-#endif
 
 		// loop for all edges connected to u
 		for (auto v = l[u.target].begin(); v != l[u.target].end(); v++) {
 
 			int alt = dist[u.target] + v->weight; // accumulate shortest dist from source
 
-#ifdef UNDIRECTED_GRAPH
-			if (!visited[v->target]) {
-#endif
-				if (alt < dist[v->target]) {
-					dist[v->target] = alt; // keep the shortest dist from src to v
-					prev[v->target] = u.target;
+			if (alt < dist[v->target]) {
+				dist[v->target] = alt; // keep the shortest dist from src to v
+				prev[v->target] = u.target;
 
-					q.push(node(v->target, dist[v->target])); // Add unvisited v into the Q to be processed  
-				}
-#ifdef UNDIRECTED_GRAPH
+				q.push(node(v->target, dist[v->target])); // Add unvisited v into the Q to be processed  
 			}
-#endif
 		}
 	}
 
 	print_dist(dist);
 	print_prev(prev);
+	cout << '\n';
 }
 
 bool bellman_ford(adjacency_list_t &l, vertex_t src, std::vector<weight_t> &dist, std::vector<vertex_t> &prev) {
-#ifdef UNDIRECTED_GRAPH
-	std::vector<bool> visited;
-#endif	
 	// init dist, prev table	
 	for (int i = 0; i < l.size(); i++) {
 		dist.push_back(max_weight);
 		prev.push_back(0);
-#ifdef UNDIRECTED_GRAPH
-		visited.push_back(false);
-#endif
 	}
 	dist[src] = 0;
 
-	for (int i = 1; i < l.size() - 1; i++) {
+	for (int i = 0; i < l.size() - 1; i++) {
 		for (int u = 0; u < l.size(); u++) {
 			// loop for all edges connected to u
 			for (auto v = l[u].begin(); v != l[u].end(); v++) {
-#ifdef UNDIRECTED_GRAPH
-				if (!visited[v->target]) {
-#endif
-					int alt = dist[u] + v->weight;
+				int alt = dist[u] + v->weight;
 
-					if (alt < dist[v->target]) {
-						dist[v->target] = alt;
-						prev[v->target] = u;
-					}
-#ifdef UNDIRECTED_GRAPH
+				if (alt < dist[v->target]) {
+					dist[v->target] = alt;
+					prev[v->target] = u;
 				}
-#endif
 			}
-		}
-
-		for (int j = 0; j < l.size(); j++) {
-#ifdef UNDIRECTED_GRAPH
-			visited[j] = false;
-#endif
 		}
 	}
 
 	for (int u = 0; u < l.size(); u++) {
+
 		// loop for all edges connected to u
 		for (auto v = l[u].begin(); v != l[u].end(); v++) {
-#ifdef UNDIRECTED_GRAPH
-			if (!visited[v->target]) {
-#endif
-				int alt = dist[u] + v->weight;
+			int alt = dist[u] + v->weight;
 
-				if (alt < dist[v->target]) {
-					return false; // graph contains negative cycle
-				}
-#ifdef UNDIRECTED_GRAPH
+			if (alt < dist[v->target]) {
+				cout << "cycle detected" << '\n' << endl;
+				return false; // graph contains negative cycle
 			}
-#endif
 		}
 	}
 
 	print_dist(dist);
 	print_prev(prev);
+	cout << '\n';
 
 	return true;
 }
 
 int main() {
 	// your code goes here
+
+	/*
+	// graph from: https://class.coursera.org/algo-2012-002/lecture/57
+	// at 5:00min
+
+	-----1-----
+	(1)/     |     \(6)
+	/      |      \
+	0       |(2)    --3
+	\      |      /
+	(4)\     |     /(3)
+	-----2-----
+	*/
+
+	cout << "Test graph with positive weights..." << endl;
 
 	adjacency_list_t adjacency_list(4);
 
@@ -173,14 +149,76 @@ int main() {
 	adjacency_list[3].push_back(node(1, 6));
 	adjacency_list[3].push_back(node(2, 3));
 
-	std::vector<weight_t> dist;
-	std::vector<vertex_t> prev;
-
-	dijkstra(adjacency_list, 0, dist, prev);
+	std::vector<weight_t> dist1;
+	std::vector<vertex_t> prev1;
+	dijkstra(adjacency_list, 0, dist1, prev1);
 
 	std::vector<weight_t> dist2;
 	std::vector<vertex_t> prev2;
 	bellman_ford(adjacency_list, 0, dist2, prev2);
+
+	cout << "Test graph with positive weights..." << endl;
+
+	adjacency_list_t adjacency_list2(3);
+
+	adjacency_list2[0].push_back(node(1, 1));
+	adjacency_list2[0].push_back(node(2, 3));
+
+	adjacency_list2[1].push_back(node(0, 1));
+	adjacency_list2[1].push_back(node(2, 1));
+
+	adjacency_list2[2].push_back(node(1, 1));
+	adjacency_list2[2].push_back(node(0, 3));
+
+	dist1.clear();
+	prev1.clear();
+	dijkstra(adjacency_list2, 0, dist1, prev1);
+
+	dist2.clear();
+	prev2.clear();
+	bellman_ford(adjacency_list2, 0, dist2, prev2);
+
+	cout << "Test graph with negative weights..." << endl;
+
+	adjacency_list_t adjacency_list3(3);
+
+	adjacency_list3[0].push_back(node(1, -1));
+	adjacency_list3[0].push_back(node(2, 3));
+
+	adjacency_list3[1].push_back(node(0, -1));
+	adjacency_list3[1].push_back(node(2, -1));
+
+	adjacency_list3[2].push_back(node(1, -1));
+	adjacency_list3[2].push_back(node(0, 3));
+
+	//dist1.clear();
+	//prev1.clear();
+	//dijkstra(adjacency_list3, 0, dist1, prev1);
+
+	dist2.clear();
+	prev2.clear();
+	bellman_ford(adjacency_list3, 0, dist2, prev2);
+
+	cout << "Test graph with negative cycle..." << endl;
+
+	adjacency_list_t adjacency_list4(3);
+
+	adjacency_list4[0].push_back(node(1, 1));
+	adjacency_list4[0].push_back(node(2, 1));
+
+	adjacency_list4[1].push_back(node(0, -3));
+	adjacency_list4[1].push_back(node(2, 1));
+
+	adjacency_list4[2].push_back(node(1, 1));
+	adjacency_list4[2].push_back(node(0, -3));
+
+	//dist1.clear();
+	//prev1.clear();
+	//dijkstra(adjacency_list4, 0, dist1, prev1);
+
+	dist2.clear();
+	prev2.clear();
+	bellman_ford(adjacency_list4, 0, dist2, prev2);
 
 	return 0;
 }
