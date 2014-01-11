@@ -41,12 +41,14 @@ string find_longest_palindrome(const string &s) {
 	string longest_palindrome;
 
 	for (int i = 0; i < s.size(); i++) {
-		// pair elements in the middle of the palindrome
+		// pair element in the middle of the palindrome
+		// e.g. 1221
 		if (i < s.size() - 2 && s[i] == s[i + 1]) {
 			palindrome_search(s, i - 1, i + 2, longest_palindrome);
 		}
 
 		// single element in the middle of the palindrome
+		// e.e.g 22122
 		if (i < s.size() - 1) {
 			palindrome_search(s, i - 1, i + 1, longest_palindrome);
 		}
