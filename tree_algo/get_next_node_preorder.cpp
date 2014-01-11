@@ -28,10 +28,10 @@
 using namespace std;
 
 /*
-Problem: Given a binary tree node, return the next node inorder.
+Problem: Given a binary tree node, return the next node preorder.
 
 The algorithm is implemented in:
-- Node *get_next_node_inorder(Node *current)
+- Node *get_next_node_preorder(Node *current)
 
 Solution:
 - is based on parent pointers
@@ -487,36 +487,28 @@ public:
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-	Node *get_most_left_node(Node *current) {
-		Node *prev = current;
-
-		while (current) {
-			prev = current;
-			current = current->left;
-		}
-
-		return prev;
-	}
-
-	Node *get_next_node_inorder(Node *current) {
+	Node *get_next_node_preorder(Node *current) {
 		Node *next = NULL;
 
-		if (current->right) {
-			next = get_most_left_node(current->right);
+		if (current->left) {
+			next = current->left;
+		}
+		else if (current->right) {
+			next = current->right;
 		}
 		else {
 			Node *previous = current;
 
 			while (current) {
-				if (current->left == previous) {
+				if (current->left == previous && current->right) {
 					break;
 				}
 				previous = current;
 				current = current->parent;
 			}
 
-			if (current) {
-				next = current;
+			if (current && current->right) {
+				next = current->right;
 			}
 		}
 
@@ -538,10 +530,10 @@ int main() {
 	t4.print_head(t4, cout);
 
 
-	Tree<int>::Node *n = t4.get_most_left_node(t4.get_root());
+	Tree<int>::Node *n = t4.get_root();
 	while (n) {
 		cout << n->value << ' ';
-		n = t4.get_next_node_inorder(n);
+		n = t4.get_next_node_preorder(n);
 	}
 
 	return 0;
