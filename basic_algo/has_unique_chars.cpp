@@ -15,11 +15,11 @@ bool hash_unique_chars(char *str) {
 	int len = strlen(str);
 
 	for (int i = 0; i < len; i++) {
-		if (table[str[i] - 'a'] == 1) {
+		if (table[str[i] - 'A'] == 1) {
 			return false;
 		}
 		else {
-			table[str[i] - 'a']++;
+			table[str[i] - 'A']++;
 		}
 	}
 
