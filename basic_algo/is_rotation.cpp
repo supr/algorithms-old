@@ -14,6 +14,10 @@ bool is_rotation1(const string &s1, const string &s2) {
 	identifier = s1[s1.size() - 1];
 	identifier += s1[0];
 
+	if (s1.size() != s2.size()) {
+		return false;
+	}
+
 	int pos = s2.find(identifier);
 
 	if (pos != string::npos) {
@@ -30,6 +34,10 @@ bool is_rotation1(const string &s1, const string &s2) {
 
 bool is_rotation2(const string &s1, const string &s2) {
 	string s1s1 = s1 + s1;
+
+	if (s1.size() != s2.size()) {
+		return false;
+	}
 
 	int pos = s1s1.find(s2);
 
