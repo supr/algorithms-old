@@ -25,16 +25,16 @@ int rotated_bin_search(vector<int> &vec, int left, int right, int value) {
 	if (vec[mid] == value) {
 		return mid;
 	}
-	else if (vec[right] > vec[mid]) {
-		if (value >= vec[mid]) {
+	else if (vec[mid] < vec[right]) {
+		if (value > vec[mid] && value <= vec[right]) {
 			return rotated_bin_search(vec, mid + 1, right, value);
 		}
 		else {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
 	}
-	else if (vec[right] < vec[mid]) {
-		if (value >= vec[left]) {
+	else if (vec[mid] > vec[right]) {
+		if (value >= vec[left] && value < vec[mid]) {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
 		else {
@@ -79,6 +79,17 @@ int main() {
 		cout << "\n";
 		cout << "number 1 found at index: " << rotated_bin_search(vec3, 0, vec3.size() - 1, 1) << endl;
 		rotate(vec3.begin(), vec3.end() - 1, vec3.end());
+	}
+
+	cout << "\n\n";
+
+	vector<int> vec4 = { 15, 16, 19, 20, 25, 1, 3, 4, 5, 7, 10, 14 };
+
+	for (int i = 0; i < vec4.size(); i++) {
+		for_each(vec4.begin(), vec4.end(), [](int value){ cout << value << ' '; });
+		cout << "\n";
+		cout << "number 15 found at index: " << rotated_bin_search(vec4, 0, vec4.size() - 1, 15) << endl;
+		rotate(vec4.begin(), vec4.end() - 1, vec4.end());
 	}
 
 	return 0;
