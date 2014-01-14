@@ -21,16 +21,16 @@ int rotated_bin_search(vector<int> &vec, int left, int right, int value) {
 	if (vec[mid] == value) {
 		return mid;
 	}
-	else if (vec[right] > vec[mid]) {
-		if (value >= vec[mid]) {
-			return rotated_bin_search(vec, mid, right + 1, value);
+	else if (vec[mid] < vec[right]) {
+		if (value > vec[mid] && value <= vec[right]) {
+			return rotated_bin_search(vec, mid + 1, right, value);
 		}
 		else {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
 	}
-	else if (vec[right] < vec[mid]) {
-		if (value >= vec[left]) {
+	else if (vec[mid] > vec[right]) {
+		if (value >= vec[left] && value < vec[mid]) {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
 		else {
