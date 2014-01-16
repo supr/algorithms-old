@@ -25,28 +25,51 @@ int rotated_bin_search(vector<int> &vec, int left, int right, int value) {
 	if (vec[mid] == value) {
 		return mid;
 	}
+
+	// either the left or right half must be normally ordered
+	// figure out which side is normally ordered
+	// use the normally ordered side and figure out which half to search for value
+
+	// if the right half is sorted
 	else if (vec[mid] < vec[right]) {
+		// if key is in the right half
 		if (value > vec[mid] && value <= vec[right]) {
 			return rotated_bin_search(vec, mid + 1, right, value);
 		}
+		// if key is in the left half
 		else {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
 	}
+	// if the left half is sorted
 	else if (vec[mid] > vec[right]) {
+		// if key is in the left half
 		if (value >= vec[left] && value < vec[mid]) {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
+		// if key is in the right half
 		else {
 			return rotated_bin_search(vec, mid + 1, right, value);
 		}
 	}
-	else {
-		if (value < vec[mid] && vec[left] < vec[mid]) {
-			return rotated_bin_search(vec, left, mid - 1, value);
+	// if most right element equals the middle element
+	// handles the following input with duplicates
+	else if (vec[mid] == vec[right]) { // Right half is all repeats
+
+		// handles the following input: 9,1,8,8,8
+		if (vec[mid] != vec[left]) { // If left is diff., search it
+			return rotated_bin_search(vec, left, mid - 1, value); // search left
 		}
-		else {
-			return rotated_bin_search(vec, left + 1, right, value);
+		else { // Else, we have to search both halves
+			// handles the following input: 8,1,8,8,8
+			int result = rotated_bin_search(vec, left, mid - 1, value); // Search left
+
+			if (result == -1) {
+				// handles the following input: 8,8,8,1,8
+				return rotated_bin_search(vec, mid + 1, right, value); // Search right
+			}
+
+			return result;
 		}
 	}
 }
@@ -91,6 +114,28 @@ int main() {
 		cout << "number 15 found at index: " << rotated_bin_search(vec4, 0, vec4.size() - 1, 15) << endl;
 		rotate(vec4.begin(), vec4.end() - 1, vec4.end());
 	}
+
+	vector<int> vec5 = { 9, 1, 3, 3, 3 };
+
+	for (int i = 0; i < vec5.size(); i++) {
+		for_each(vec5.begin(), vec5.end(), [](int value){ cout << value << ' '; });
+		cout << "\n";
+		cout << "number 9 found at index: " << rotated_bin_search(vec5, 0, vec5.size() - 1, 9) << endl;
+		rotate(vec5.begin(), vec5.end() - 1, vec5.end());
+	}
+
+	cout << "\n\n";
+
+	vector<int> vec6 = { 1, 8, 8, 8, 8 };
+
+	for (int i = 0; i < vec6.size(); i++) {
+		for_each(vec6.begin(), vec6.end(), [](int value){ cout << value << ' '; });
+		cout << "\n";
+		cout << "number 1 found at index: " << rotated_bin_search(vec6, 0, vec6.size() - 1, 1) << endl;
+		rotate(vec6.begin(), vec6.end() - 1, vec6.end());
+	}
+
+	cout << "\n\n";
 
 	return 0;
 }
