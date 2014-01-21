@@ -127,8 +127,8 @@ int main() {
 	srand(time(0));
 
 	for (int i = 0; i < number_of_rand_cards; i++) {
-		int suite_rand = rand() % (number_of_suits - 1);
-		int rank_rand = 1 + rand() % (number_of_cards - 1);
+		int suite_rand = rand() % number_of_suits; // generates a suit between 0 and number_of_suits - 1
+		int rank_rand = 1 + rand() % number_of_cards; // generates a suite between 1 and number_of_cards - 1
 
 		p.add_card(static_cast<suit_t>(suite_rand), static_cast<rank_t>(rank_rand));
 	}
