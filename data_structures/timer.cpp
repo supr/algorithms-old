@@ -5,6 +5,7 @@
 #include <thread>
 #include <functional>
 using namespace std;
+using namespace std::placeholders;
 
 /* Question:
 Design the data structure and algorithms to implement a timer with the following operations:
@@ -22,6 +23,8 @@ assumed to be less frequent. Assume 1,000 - 2,000 timers are present at any give
 system_time = 5000
 cpu_clock = 100hz
 */
+
+class Test;
 
 typedef void(*func)(unsigned int);
 
@@ -95,6 +98,13 @@ void test4(unsigned int t) {
 	cout << "test4 called, time: " << t << endl;
 }
 
+class Test {
+public:
+	static void test5(unsigned int t) {
+		cout << "test5 called, time: " << t << endl;
+	}
+};
+
 void timer_irq(Timer &t) {
 	while (true) {
 		t.callback();
@@ -112,6 +122,7 @@ int main() {
 	t.change_event(3000, &test1);
 	t.remove_event(&test3);
 	t.add_event(5500, &test4);
+	t.add_event(2000, &Test::test5);
 
 	std::thread cpu_clock_thread(timer_irq, t);
 	cpu_clock_thread.join();
