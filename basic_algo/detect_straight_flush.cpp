@@ -5,14 +5,15 @@
 using namespace std;
 
 /* Question:
-Given a set of poker cards. Figure out if a straight flush exists (incl. royal flush) in the set the poker cards given.
+Given a set of poker cards, where the number of cards is variable. Figure out if a straight flush exists (incl. royal flush) in the
+set the poker cards given.
 */
 
 //#define RAND_CARDS
 
-const int number_of_suits = 4;
 const int number_of_rand_cards = 30;
-const int number_of_cards = 13;
+const int number_of_suits = 4;
+const int number_of_ranks = 13;
 
 //types of card
 typedef enum suit_t {
@@ -44,7 +45,7 @@ class Poker {
 	vector<rank_t> ranks;
 
 private:
-	void inc_count(const bitset<number_of_cards> &bs, int count[number_of_suits], suit_t suit, int index) {
+	void inc_count(const bitset<number_of_ranks> &bs, int count[number_of_suits], suit_t suit, int index) {
 		if (bs.test(index)) {
 			count[suit]++;
 		}
@@ -53,16 +54,16 @@ private:
 		}
 	}
 
-	bool detect_street(const bitset<number_of_cards> &spade_bs, const bitset<number_of_cards> &club_bs,
-		const bitset<number_of_cards> &diamond_bs, const bitset<number_of_cards> &heart_bs) {
+	bool detect_street(const bitset<number_of_ranks> &spade_bs, const bitset<number_of_ranks> &club_bs,
+			           const bitset<number_of_ranks> &diamond_bs, const bitset<number_of_ranks> &heart_bs) {
 		int count[number_of_suits] = { 0 };
-		int index = 1;
+		int bs_index = 1; // index starts at 1, bc. the rank 'ace' is assigned to value 0
 
-		for (int i = 0; i < number_of_cards; i++) {
-			inc_count(spade_bs, count, spade, index);
-			inc_count(club_bs, count, club, index);
-			inc_count(diamond_bs, count, diamond, index);
-			inc_count(heart_bs, count, heart, index);
+		for (int i = 0; i < number_of_ranks; i++) {
+			inc_count(spade_bs, count, spade, bs_index);
+			inc_count(club_bs, count, club, bs_index);
+			inc_count(diamond_bs, count, diamond, bs_index);
+			inc_count(heart_bs, count, heart, bs_index);
 
 			if (count[spade] == 5 ||
 				count[club] == 5 ||
@@ -72,7 +73,7 @@ private:
 			}
 
 			index++;
-			index = index % number_of_cards;
+			index = index % number_of_ranks;
 		}
 
 		return false;
@@ -87,10 +88,10 @@ public:
 	bool detect_straight_flush() {
 		// used space are 16 bytes -> O(1)
 		// could be reduced to bitsets<13*4> -> are 8 bytes
-		bitset<number_of_cards> spade_bs;
-		bitset<number_of_cards> club_bs;
-		bitset<number_of_cards> diamond_bs;
-		bitset<number_of_cards> heart_bs;
+		bitset<number_of_ranks> spade_bs;
+		bitset<number_of_ranks> club_bs;
+		bitset<number_of_ranks> diamond_bs;
+		bitset<number_of_ranks> heart_bs;
 
 		// O(n)
 		for (int i = 0; i < suits.size(); i++) {
