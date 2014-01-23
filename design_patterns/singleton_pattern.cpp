@@ -25,7 +25,7 @@ protected:
 	//Copy-Konstruktor: Hierdurch werden Kopien dieses Objektes verhindert (da protected) 
 	Singleton(const Singleton& other) {}
 
-	Singleton& operator= (const Singleton&);
+	Singleton& operator= (const Singleton&) {}
 
 public:
 	~Singleton() {
@@ -54,7 +54,7 @@ class Singleton2
 public:
 	static Singleton2& Instance()
 	{
-		//das einzige Objekt dieser Klasse erzeugen und als Referenz zurückgeben 
+		//das einzige Objekt dieser Klasse erzeugen und als Referenz zurï¿½ckgeben 
 		static Singleton2 instance;
 		return instance;
 	}
@@ -63,10 +63,10 @@ public:
 
 
 protected:
-	Singleton2() { }
+	Singleton2() {}
 
 	//Copy-Konstruktor: Hierdurch werden Kopien dieses Objektes verhindert (da protected) 
-	Singleton2(const Singleton2& other) { }
+	Singleton2(const Singleton2& other) {}
 
 };
 
