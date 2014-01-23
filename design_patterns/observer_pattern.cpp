@@ -10,8 +10,10 @@ using namespace std;
 Observer-Pattern
 The Observer-Pattern is a design pattern in which an object (called the subject) maintains a list 
 of its dependents, called observers, and notifies them automatically of any state changes, usually 
-by calling one of their methods. It is mainly used to implement distributed event handling systems. 
-Observer is also a key part in the familiar MVC (Model-View-Controller) architectural pattern.
+by calling one of their methods.  In observer pattern, the object that watch on the state of another 
+object are called Observer and the object that is being watched is called Subject.
+It is mainly used to implement distributed event handling systems. Observer is also a key part in the 
+familiar MVC (Model-View-Controller) architectural pattern.
 To increase the flexibility, the MVC separates the  GUI (the View) from the data (the Model). 
 In MVC you can have different views (= Observers) to the same data (= Model = Subject). If 
 something changes in the model, the models inform the observer (= view) and the GUI components 
@@ -79,7 +81,7 @@ class ConcreteObserver : public ObserverInterface
 private:
 	string name;
 	string observerState;
-	ConcreteSubject* subject; // Dieses Objekt hält die Daten (=notifier) 
+	ConcreteSubject* subject; // Dieses Objekt hï¿½lt die Daten (=notifier) 
 
 public:
 	void update()
@@ -107,17 +109,17 @@ public:
 
 int main()
 {
-	// Das Objekt hält alle Daten (=notfier = subject) 
+	// Das Objekt hï¿½lt alle Daten (=notfier = subject) 
 	ConcreteSubject* subj = new ConcreteSubject();
 
 	ObserverInterface* obs1 = new ConcreteObserver(subj, "A");
 	ObserverInterface* obs2 = new ConcreteObserver(subj, "B");
 
-	// Observer(=views) an Subjekt anhängen (attachen) 
+	// Observer(=views) an Subjekt anhï¿½ngen (attachen) 
 	subj->attach(obs1);
 	subj->attach(obs2);
 
-	// Daten ändern und Observer informieren (notify) 
+	// Daten ï¿½ndern und Observer informieren (notify) 
 	subj->setData("TestData");
 	subj->notify();
 
