@@ -850,15 +850,12 @@ int main() {
    int pre_order_traversal[] = {50,30,15,40,35,45,70,60,80,75,72,77};
    int post_order_traversal[] = {15,35,45,40,30,60,72,77,75,80,70,50};
    int level_order_traversal[] = {50,30,70,15,40,60,80,35,45,75,72,77};
+   
    tree tt;
    tt.create_tree_pre_in_order(pre_order_traversal, in_order_traversal, 0, sizeof(in_order_traversal)/sizeof(int)-1);
    vector<int> vec3;
    tt.first_first_k_elements(tt.get_root(), 5, vec3);
    
-   //cout << tt.get_k_largest_element(5) << endl;
-   //cout << tt.get_min(tt.get_root()) << endl;
-   //std::list<tree::node_info> t;
-   //tt.get_list_nodes_of_height(t, 1);
 
    tree t;
    t.insert(4);
