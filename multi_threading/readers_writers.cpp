@@ -49,8 +49,7 @@ public:
 
 		WR++; // no writers exist
 		// is it safe to read?
-		okToRead.wait(l, [this](){ return WW == 0; });
-		okToRead.wait(l, [this](){ return AW == 0; });
+		okToRead.wait(l, [this](){ return WW == 0 && AW == 0; });
 		WR--; // no longer waiting
 
 		AR++;  // now we are active
@@ -71,8 +70,7 @@ public:
 
 		WW++; // no active user exist
 		// is it safe to write?
-		okToWrite.wait(l, [this](){ return AR == 0; });
-		okToWrite.wait(l, [this](){ return AW == 0; });
+		okToWrite.wait(l, [this](){ return AR == 0 && AW == 0; });
 		WW--; // no longer waiting
 
 		AW++; // no we are active
