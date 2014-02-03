@@ -38,7 +38,6 @@ private:
 	mutex m;
 	condition_variable okToRead;
 	condition_variable okToWrite;
-
 	int database_variable;
 
 public:
