@@ -6,7 +6,7 @@ using namespace std;
 
 /* Question: Implement the Readers/Writers Problem
 
-Consider a shared database
+Consider a shared database:
 - Two classes of users:
 - Readers - never modify database
 - Writers - read and modify database
@@ -18,14 +18,14 @@ Correctness Constraints:
 
 Idea:
 - Reader()
-Wait until no writers
-Access database
-Check out - wake up a waiting writer
+  Wait until no writers
+  Access database
+  Check out - wake up a waiting writer
 
 - Writer()
-Wait until no active readers or writers
-Access database
-Check out - wake up waiting readers or writer
+  Wait until no active readers or writers
+  Access database
+  Check out - wake up waiting readers or writer
 */
 
 class ReaderWriter {
