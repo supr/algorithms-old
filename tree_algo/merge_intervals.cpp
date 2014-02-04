@@ -69,18 +69,18 @@ public:
 		}
 	}
 
-	void insert_pairs(vector<pair<int, int>> &vec) {
+	void insert_intervals(vector<pair<int, int>> &vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			insert(vec[i].first, vec[i].second);
 		}
 	}
 
-	void merge_ranges_internal(node *root, vector<pair<int,int>> &vec, int &curr_low, int &curr_high) {
+	void merge_intervals_internal(node *root, vector<pair<int,int>> &vec, int &curr_low, int &curr_high) {
 		if (!root) {
 			return;
 		}
 
-		merge_ranges_internal(root->left, vec, curr_low, curr_high);
+		merge_intervals_internal(root->left, vec, curr_low, curr_high);
 
 		// no overlapp
 		if (root->low > curr_high) {
@@ -103,17 +103,17 @@ public:
 			curr_high = vec[index].second;
 		}
 
-		merge_ranges_internal(root->right, vec, curr_low, curr_high);
+		merge_intervals_internal(root->right, vec, curr_low, curr_high);
 	}
 
-	vector<pair<int, int>> merge_ranges() {
-		vector<pair<int, int>> pairs;
+	vector<pair<int, int>> merge_intervals() {
+		vector<pair<int, int>> intervals;
 
 		int low = std::numeric_limits<int>::min();
 		int high = std::numeric_limits<int>::min();
-		merge_ranges_internal(root, pairs, low, high);
+		merge_intervals_internal(root, intervals, low, high);
 
-		return pairs;
+		return intervals;
 	}
 };
 
@@ -122,49 +122,49 @@ int main() {
 
 	Range_tree rt1;
 	vector<pair<int, int>> vec1 = { { 1, 2 }, { 3, 4 }, { 3, 6 }, { 8, 10 } };
-	rt1.insert_pairs(vec1);
-	vector<pair<int,int>> pairs1 = rt1.merge_ranges();
-	for_each(pairs1.begin(), pairs1.end(), [](pair<int,int> p) { cout << p.first << ", " << p.second << endl;  });
+	rt1.insert_intervals(vec1);
+	vector<pair<int,int>> intervals1 = rt1.merge_intervals();
+	for_each(intervals1.begin(), intervals1.end(), [](pair<int,int> p) { cout << p.first << ", " << p.second << endl;  });
 
 	cout << '\n';
 
 	Range_tree rt2;
 	vector<pair<int, int>> vec2 = { { 1, 6 }, { 3, 4 }, { 3, 6 }, { 8, 10 } };
-	rt2.insert_pairs(vec2);
-	vector<pair<int, int>> pairs2 = rt2.merge_ranges();
-	for_each(pairs2.begin(), pairs2.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
+	rt2.insert_intervals(vec2);
+	vector<pair<int, int>> intervals2 = rt2.merge_intervals();
+	for_each(intervals2.begin(), intervals2.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
 
 	cout << '\n';
 
 	Range_tree rt3;
 	vector<pair<int, int>> vec3 = { { 1, 10 }, { 3, 4 }, { 3, 6 }, { 8, 10 } };
-	rt3.insert_pairs(vec3);
-	vector<pair<int, int>> pairs3 = rt3.merge_ranges();
-	for_each(pairs3.begin(), pairs3.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
+	rt3.insert_intervals(vec3);
+	vector<pair<int, int>> intervals3 = rt3.merge_intervals();
+	for_each(intervals3.begin(), intervals3.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
 
 	cout << '\n';
 
 	Range_tree rt4;
 	vector<pair<int, int>> vec4 = { { 0, 2 }, { 3, 4 }, { 1, 5 }, { 6, 8 } };
-	rt4.insert_pairs(vec4);
-	vector<pair<int, int>> pairs4 = rt4.merge_ranges();
-	for_each(pairs4.begin(), pairs4.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
+	rt4.insert_intervals(vec4);
+	vector<pair<int, int>> intervals4 = rt4.merge_intervals();
+	for_each(intervals4.begin(), intervals4.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
 
 	cout << '\n';
 
 	Range_tree rt5;
 	vector<pair<int, int>> vec5 = { { 0, 1 }, { 5, 6 } };
-	rt5.insert_pairs(vec5);
-	vector<pair<int, int>> pairs5 = rt5.merge_ranges();
-	for_each(pairs5.begin(), pairs5.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
+	rt5.insert_intervals(vec5);
+	vector<pair<int, int>> intervals5 = rt5.merge_intervals();
+	for_each(intervals5.begin(), intervals5.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
 
 	cout << '\n';
 
 	Range_tree rt6;
 	vector<pair<int, int>> vec6 = { { 1, 10 }, { 15, 20 }, { 12, 13 }, { 10, 12 }, { 19, 20 } };
-	rt6.insert_pairs(vec6);
-	vector<pair<int, int>> pairs6 = rt6.merge_ranges();
-	for_each(pairs6.begin(), pairs6.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
+	rt6.insert_intervals(vec6);
+	vector<pair<int, int>> intervals6 = rt6.merge_intervals();
+	for_each(intervals6.begin(), intervals6.end(), [](pair<int, int> p) { cout << p.first << ", " << p.second << endl;  });
 
 	return 0;
 }
