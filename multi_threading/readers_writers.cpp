@@ -18,14 +18,17 @@ Correctness Constraints:
 
 Idea:
 - Reader()
-  Wait until no writers
-  Access database
-  Check out - wake up a waiting writer
+Wait until no writers
+Access database
+Check out - wake up a waiting writer
 
 - Writer()
-  Wait until no active readers or writers
-  Access database
-  Check out - wake up waiting readers or writer
+Wait until no active readers or writers
+Access database
+Check out - wake up waiting readers or writer
+
+- Implementation:
+The read operations could overlap in the stdout
 */
 
 class ReaderWriter {
@@ -35,7 +38,6 @@ private:
 	int AW; // number of active writers
 	int WW; // number of waiting writers
 	mutex lock;
-	mutex m;
 	condition_variable okToRead;
 	condition_variable okToWrite;
 	int database_variable;
@@ -56,7 +58,7 @@ public:
 
 	void read_unlock() {
 		unique_lock<mutex> l(lock);
-		
+
 		AR--; // no longer active
 
 		if (AR == 0 && WW > 0) { // no other active readers
@@ -74,9 +76,10 @@ public:
 
 		AW++; // no we are active
 	}
+
 	void write_unlock() {
 		unique_lock<mutex> l(lock);
-		
+
 		AW--; // no longer active
 
 		if (WW > 0) { // give priority to writers
@@ -92,10 +95,7 @@ public:
 			write_lock();
 
 			database_variable++;
-			
-			m.lock();
 			cout << "database_thread_write: " << thread_id << " ... wrote: " << database_variable << endl;
-			m.unlock();
 
 			write_unlock();
 
@@ -107,9 +107,7 @@ public:
 		for (int i = 0; i < 10; i++) {
 			read_lock();
 
-			m.lock();
 			cout << "database_thread_read: " << thread_id << " ... read: " << database_variable << endl;
-			m.unlock();
 
 			read_unlock();
 
