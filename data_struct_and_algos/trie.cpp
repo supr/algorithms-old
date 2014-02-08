@@ -64,7 +64,7 @@ private:
 
 	bool is_root(node<T> *n) {
 		for (int i = 0; i < ALPHABET_SIZE; i++) {
-			if (n == root->next[i]) {
+			if (n == root) {
 				return true;
 			}
 		}
@@ -72,18 +72,21 @@ private:
 		return false;
 	}
 
-	void set_node_is_end(node<T> *n, int k) {
+	bool set_node_is_end(node<T> *n, int k) {
 		bool is_used = false;
 
 		for (int i = 0; i < ALPHABET_SIZE; i++) {
 			if (i != k && n->next[i]) {
 				is_used = true;
+				break;
 			}
 		}
 
 		if (!is_used) {
 			n->is_end = true;
 		}
+
+		return is_used;
 	}
 
 	void delete_key(node<T> *n, string key, int index) {
@@ -92,7 +95,7 @@ private:
 				char k = tolower(key[index]) - 'a';
 
 				if (n->next[k]) {
-					set_node_is_end(n, k);
+					bool is_used = set_node_is_end(n, k);
 					delete_key(n->next[k], key, ++index);
 				}
 			}
@@ -106,6 +109,7 @@ private:
 		if (!is_root(n) && can_delete_node(n)) {
 			for (int i = 0; i < ALPHABET_SIZE; i++) {
 				delete n->next[i];
+				n->next[i] = NULL;
 			}
 		}
 	}
@@ -113,6 +117,10 @@ private:
 public:
 	trie() {
 		init();
+	}
+
+	~trie() {
+		delete root;
 	}
 
 	// insert
@@ -163,5 +171,43 @@ public:
 };
 
 int main() {
+	trie<int> t;
+
+	vector<pair<string, int>> vec = { { "by", 4 }, 
+	                                  { "sea", 6 }, 
+									  { "sells", 1 }, 
+									  { "she", 0 }, 
+									  { "shells", 3 }, 
+									  { "shore", 7 }, 
+									  { "the", 5 } };
+
+	for (int i = 0; i < vec.size(); i++) {
+		t.put(vec[i].first, vec[i].second);
+	}
+
+	for (int i = 0; i < vec.size(); i++) {
+		cout << t.get(vec[i].first) << ' ';
+	}
+
+	cout << '\n';
+
+	for (int i = 0; i < vec.size(); i++) {
+		t.del(vec[i].first);
+	}
+
+	for (int i = 0; i < vec.size(); i++) {
+		cout << t.get(vec[i].first) << ' ';
+	}
+
+	cout << '\n';
+
+	for (int i = 0; i < vec.size(); i++) {
+		t.put(vec[i].first, vec[i].second);
+	}
+
+	for (int i = 0; i < vec.size(); i++) {
+		cout << t.get(vec[i].first) << ' ';
+	}
+
 	return 0;
 }
