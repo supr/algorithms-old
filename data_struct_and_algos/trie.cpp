@@ -173,12 +173,12 @@ public:
 int main() {
 	trie<int> t;
 
-	vector<pair<string, int>> vec = { { "by", 4 }, 
-	                                  { "sea", 6 }, 
-									  { "sells", 1 }, 
-									  { "she", 0 }, 
-									  { "shells", 3 }, 
-									  { "shore", 7 }, 
+	vector<pair<string, int>> vec = { { "by", 4 },
+									  { "sea", 6 },
+									  { "sells", 1 },
+									  { "she", 0 },
+									  { "shells", 3 },
+									  { "shore", 7 },
 									  { "the", 5 } };
 
 	for (int i = 0; i < vec.size(); i++) {
