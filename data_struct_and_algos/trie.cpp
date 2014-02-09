@@ -40,10 +40,6 @@ class trie
 private:
 	node<T> *root;
 
-	void init() {
-		root = get_node();
-	}
-
 	node<T> *get_node(int key = -1) {
 		node<T> *n = new node<T>();
 
@@ -76,47 +72,59 @@ private:
 		bool is_used = false;
 
 		for (int i = 0; i < ALPHABET_SIZE; i++) {
-			if (i != k && n->next[i]) {
+			if ((i != k && n->next[i]) || n->value != -1) {
 				is_used = true;
 				break;
 			}
 		}
 
-		if (!is_used) {
+ 		if (!is_used) {
 			n->is_end = true;
 		}
 
 		return is_used;
 	}
+	
+	void delete_key(node<T> *curr, node<T> *prev, string key, int index, bool &node_in_use) {
+		bool is_used = false;
 
-	void delete_key(node<T> *n, string key, int index) {
 		if (index <= key.size()) {
 			if (index < key.size()) {
 				char k = tolower(key[index]) - 'a';
 
-				if (n->next[k]) {
-					bool is_used = set_node_is_end(n, k);
-					delete_key(n->next[k], key, ++index);
+				if (curr->next[k]) {
+					is_used = set_node_is_end(curr, k);
+					delete_key(curr->next[k], curr, key, ++index, node_in_use);
 				}
 			}
 			else {
 				// key/value is not used any more
-				n->value = -1;
+				curr->value = -1;
 			}
 		}
 
-		// check if is_end
-		if (!is_root(n) && can_delete_node(n)) {
-			for (int i = 0; i < ALPHABET_SIZE; i++) {
-				delete n->next[i];
-				n->next[i] = NULL;
+		if (is_used) {
+			node_in_use = is_used;
+		}
+
+		if (!node_in_use && !is_root(curr) && can_delete_node(curr)) {
+			if (prev) {
+				for (int j = 0; j < ALPHABET_SIZE; j++) {
+					if (prev->next[j] == curr) {
+						prev->next[j] = NULL;
+						break;
+					}
+				}
 			}
+
+			delete curr;
+			curr = NULL;
 		}
 	}
 
 public:
 	trie() {
-		init();
+		root = get_node();
 	}
 
 	~trie() {
@@ -166,15 +174,15 @@ public:
 
 	// delete key and corresponding value
 	void del(string key) {
-		delete_key(root, key, 0);
+		bool node_in_use = false;
+		delete_key(root, root, key, 0, node_in_use);
 	}
 };
 
 int main() {
 	trie<int> t;
 
-	vector<pair<string, int>> vec = { { "by", 4 },
-									  { "sea", 6 },
+	vector<pair<string, int>> vec = { { "sea", 6 },
 									  { "sells", 1 },
 									  { "she", 0 },
 									  { "shells", 3 },
