@@ -4,13 +4,48 @@
 #include <vector>
 using namespace std;
 
-/* Runtime complexity:
+/*
+1.) A stable sort is one that's guaranteed not to reorder elements with identical keys:
+
+Quick sort: When you don't need a stable sort and average case performance matters more than worst case performance. A quick 
+            sort is O(N log N) on average, O(N^2) in the worst case. A good implementation uses O(log N) auxiliary storage in 
+			the form of stack space for recursion.
+
+Merge sort: When you need a stable, O(N log N) sort, this is about your only option. The only downsides to it are that it uses 
+            O(N) auxiliary space and has a slightly larger constant than a quick sort. There are some in - place merge sorts, 
+			but AFAIK they are all either not stable or worse than O(N log N). Even the O(N log N) in place sorts have so much 
+			larger a constant than the plain old merge sort that they're more theoretical curiosities than useful algorithms.
+
+Heap sort: When you don't need a stable sort and you care more about worst case performance than average case performance. It's 
+           guaranteed to be O(N log N), and uses O(1) auxiliary space, meaning that you won't unexpectedly run out of heap or 
+		   stack space on very large inputs.
+
+Insertion sort: When N is guaranteed to be small, including as the base case of a quick sort or merge sort. While 
+			    this is O(N ^ 2), it has a very small constant and is a stable sort.
+
+Bubble sort, selection sort : When you're doing something quick and dirty and for some reason you can't just use the standard 
+                              library's sorting algorithm. The only advantage these have over insertion sort is being slightly 
+							  easier to implement.
+
+
+2.) Non - comparison sorts: Under some fairly limited conditions it's possible to break the O(N log N) barrier and sort in O(N). 
+    Here are some cases where that's worth a try:
+
+Counting sort: When you are sorting integers with a limited range.
+
+Radix sort: When log(N) is significantly larger than K, where K is the number of radix digits.
+
+Bucket sort: When you can guarantee that your input is approximately uniformly distributed.
+
+/*
+   Runtime complexity:
    Best case: O(n^2), Average case: O(n^2), Worst case: O(n^2), 
    Additional Memory: O(1)
 
    Sort the array from left to right, look for a smallest element and swap it first list element
    Look for the second smallest element and swap it with the second list element
 */
+
 void selectionsort(int *a, int length)
 {
 	int pos = 0;
@@ -258,8 +293,8 @@ class heapsort
    Best case: O(n), Average case: O(n^2), Worst case: O(n^2), 
    Additional Memory: O(1)
 
-   The first loop increments selects the element to be inserted at the right pos. The second loop swaps the element which is selected in the for 
-   loop as long as there is not small element to the left.
+   The first loop increments selects the element to be inserted at the right pos. The second loop swaps the element which
+   is selected in the for loop as long as there is not small element to the left.
 */
 void insertionsort(int *a, int length)
 {
@@ -274,4 +309,52 @@ void insertionsort(int *a, int length)
             j--;
 		}
 	}
+}
+
+/* Runtime Complexity: O(n+k) where n is the number of elements in input array and k is the range of input.
+   Additional Memory: O(n+k)
+*/
+void counting_sort(int *a, int n) {
+	int *b = new int[n];
+	int range = *std::max_element(a, a + n);
+	int *count = new int[range + 1];
+
+	// init b array
+	for (int j = 0; j < n; j++) {
+		b[j] = 0;
+	}
+
+	// init count array
+	for (int i = 0; i <= range; i++) {
+		count[i] = 0;
+	}
+
+	// store count of each number
+	// input data : 1, 4, 1, 2, 7, 5, 2
+	// index: 0  1  2  3  4  5  6  7
+    // count: 0  2  2  0  1  1  0  1
+	for (int i = 0; i < n; i++) {
+		count[a[i]] = count[a[i]] + 1;
+	}
+
+	// modify the count array such that each element at each index stores the sum of previous counts
+	// index: 0  1  2  3  4  5  6  7
+	// count: 0  2  4  4  5  6  6  7
+	for (int i = 1; i <= range; i++) {
+		count[i] = count[i] + count[i - 1];
+	}
+
+	// generate b array
+	for (int i = n - 1; i >= 0; i--) {
+		b[count[a[i]] - 1] = a[i];
+		count[a[i]] = count[a[i]] - 1;
+	}
+
+	// Copy the output array b to a, so that it contains sorted numbers
+	for (int i = 0; i < n; i++) {
+		a[i] = b[i];
+	}
+
+	delete[] b;
+	delete[] count;
 }
