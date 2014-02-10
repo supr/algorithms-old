@@ -1,18 +1,7 @@
 #include <iostream>
 #include <stack>
 #include <queue>
-#include <list>
-#include <vector>
 #include <algorithm>
-#include <fstream>
-#include <map>
-#include <string>
-#include <set>
-#include <bitset>
-#include <sstream>
-#include <unordered_set>
-#include <unordered_map>
-#include <limits>
 using namespace std;
 
 typedef struct node {
@@ -171,6 +160,17 @@ public:
 		n->parent = NULL;
 		n->value = data;
 		return n;
+	}
+
+	node *get_most_left_node(node *current) {
+		node *prev = current;
+
+		while (current) {
+			prev = current;
+			current = current->left;
+		}
+
+		return prev;
 	}
 
 	node *create_tree_pre_in_order(int pre_order[], int in_order[], int start, int end) {
@@ -529,256 +529,6 @@ public:
 		return n;
 	}
 
-	node *findCP(node *root, int n1, int n2) {
-	  if (root == NULL)
-	   return NULL;
-
-	  node *l = findCP(root->left, n1, n2);
-	  node *r = findCP(root->right, n1, n2);
-	  
-	  if(root->value == n1 ||root->value == n2)
-	    return root;
-	  
-	  if(l!=NULL && r!=NULL)
-	   return root;
-	  
-	  else return (l==NULL)? r:l;
-	}
-
-	int get_k_largest_element(int k) {
-		node *curr = root;
-		std::stack<node*> stk;
-		int counter = 0;
-
-		while(!stk.empty() || curr) {
-			if(curr) {
-				stk.push(curr);
-				curr = curr->right;
-			}
-			else {
-				node *tmp = stk.top();
-				stk.pop();
-
-				counter++;
-
-				if(counter == k) {
-					return tmp->value;
-				}
-
-				curr = tmp->left;
-			}
-		}
-	}
-
-	unsigned int get_min(node *n) {
-		if(!n) {
-			return NULL;
-		}
-		else {
-			return 1 + std::min(get_min(n->left), get_min(n->right)); 
-		}
-	}
-
-	typedef struct node_info {
-		node_info(node *n1, int h): n(n1), height(h) {}
-		node *n;
-		int height;
-	}node_info;
-
-	void add_to_list(std::vector<std::list<node_info>> &l, node *n, int height) {
-	  std::vector<std::list<node_info>>::iterator it;
-	  std::list<node_info>::iterator it2;
-	  bool found = false;
-
-	  for(it = l.begin(); it != l.end(); it++) {
-		it2 = (*it).begin();
-
-		if(it2->height == height) {
-		  node_info t(n, height);
-		  it->push_back(t);
-		  found = true;
-		  break;
-		}
-	  }
-
-	  if(!found) {
-		node_info t(n, height);
-		std::list<node_info> l2;
-		l2.push_back(t);
-		l.push_back(l2);
-	  }  
-	}
-
-	// save all nodes of hight h1 into a std::list
-    bool get_list_nodes_of_height(std::list<node_info> &out, int h1) {
-	  typedef struct n_info {
-		n_info(node *nn, int h): n(nn), height(h) {}
-		node *n;
-		int height;	 
-	  }n_info;
-
-	  node *n = get_root();
-	  std::vector<std::list<node_info>> l;
-	  std::queue<n_info> s;
-	  int height = 0;
-
-	  s.push(n_info(n, height));
-
-	  while(!s.empty()) {
-		n_info nf = s.front();
-
-		height = nf.height;
-		node *t = nf.n;
-
-		add_to_list(l, t, height);
-
-		s.pop();
-
-		if(t->right) {
-		  s.push(n_info(t->right, height+1));
-		}
-		if(t->left) {
-		  s.push(n_info(t->left, height+1));
-		}
-	  }
-
-	  std::list<node_info>::iterator it2 = l[h1].begin();
-	  if(it2->height == h1) {
-		  out = l[h1];
-		  return true;
-	  }
-
-	  return false;
-	}
-
-	void get_siblings(node *n, std::list<node_info> &l) {
-		stack<node_info> s;
-		
-		s.push(node_info(n, 0));
-
-		while(!s.empty()) {
-			node_info nf = s.top();
-			s.pop();
-
-			l.push_back(nf);
-			node *r = nf.n;
-
-			if(r->left) {
-				s.push(node_info(r->left, 0));
-			}
-			if(r->right) {
-				s.push(node_info(r->right, 0));
-			}
-		}
-	}
-
-	void first_first_k_elements(node *root, int k, vector<int> &arr) {
-		stack<node*> stk;
-		stk.push(root);
-		int counter = 0;
-
-		while(!stk.empty() || root) {
-			if(root) {
-				stk.push(root);
-				root = root->left;
-			}
-			else {
-				node *n = stk.top();
-				stk.pop();
-
-				counter++;
-				if(counter <= k) {
-					arr.push_back(n->value);
-				}
-				else {
-					break;
-				}
-
-				root = n->right;
-			}
-		}
-	}
-
-	node *get_common_parent(node *root, int key1, int key2) {
-		while (root != NULL) {
-			int key = root->value;
-			if (key < key1 && key < key2)
-				root = root->right;
-            else if (key > key1 && key > key2)
-				root = root->left;
-            else
-                return root;
-        }
-
-        return NULL;
-    }
-
-	/*
-	Alternatively, you could follow a chain in which p and q are on the same side. That is, if p and q are both on the left of the node, 
-	branch left to look for the common ancestor. When p and q are no longer on the same side, you must have found the first common ancestor.
-	*/
-	node *common_ancestor(node *root, node *p, node *q) {
-		if (covers(root->left, p) && covers(root->left, q))
-			return common_ancestor(root->left, p, q);
-		if (covers(root->right, p) && covers(root->right, q))
-			return common_ancestor(root->right, p, q);
-		return root;
-	}
-
-	bool covers(node *root, node *p) { // is p a child of root?
-		if (root == NULL) return false;
-		if (root == p) return true;
-		return covers(root->left, p) || covers(root->right, p);
-	}
-
-	// For any node r, we know the following:
-	// 1. If p is on one side and q is on the other, r is the first common ancestor.
-	// 2. Else, the first common ancestor is on the left or the right side.
-	// So, we can create a simple recursive algorithm called search that calls search(left side) and search(right side) looking at how many nodes (p or q) are placed from the left side and from the right side of the current node. If there are two nodes on one of the sides, then we have
-	// to check if the child node on this side is p or q (because in this case the current node is the
-	// common ancestor)  If the child node is neither p nor q, we should continue to search further (starting from the child)
-
-	// If one of the searched nodes (p or q) is located on the right side of the current node, then the 
-	// other node is located on the other side  Thus the current node is the common ancestor
-	/*static int TWO_NODES_FOUND = 2;
-	static int ONE_NODE_FOUND = 1;
-	static int NO_NODES_FOUND = 0;
-
-	// Checks how many “special” nodes are located under this root
-	int covers(TreeNode root, TreeNode p, TreeNode q) {
-		int ret = NO_NODES_FOUND;
-		if (root == null) return ret;
-		if (root == p || root == q) ret += 1;
-		ret += covers(root.left, p, q);
-		if(ret == TWO_NODES_FOUND) // Found p and q
-			return ret;
-	    return ret + covers(root.right, p, q);
-	}
-
-	TreeNode commonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-		if (q == p && (root.left == q || root.right == q)) return root;
-		int nodesFromLeft = covers(root.left, p, q); // Check left side
-		if (nodesFromLeft == TWO_NODES_FOUND) {
-			if(root.left == p || root.left == q) return root.left;
-			else return commonAncestor(root.left, p, q);
-		} else if (nodesFromLeft == ONE_NODE_FOUND) {
-			if (root == p) return p;
-			else if (root == q) return q;
-		}
-		int nodesFromRight = covers(root.right, p, q); // Check right side
-		if(nodesFromRight == TWO_NODES_FOUND) {
-			if(root.right == p || root.right == q) return root.right;
-			else return commonAncestor(root.right, p, q);
-		} else if (nodesFromRight == ONE_NODE_FOUND) {
-			if (root == p) return p;
-			else if (root == q) return q;
-		}
-		if (nodesFromLeft == ONE_NODE_FOUND &&
-			nodesFromRight == ONE_NODE_FOUND) return root;
-		else return null;
-	}
-	*/
-
 	// find the distance between 2 values in a binary search tree. Node will have value, left node and right node 
 	// We can do a preorder traversal on the binary tree. 
     // Time compexity O(N), space complexity, O(log(n))
@@ -846,25 +596,23 @@ public:
 };
 
 int main() {
-   int in_order_traversal[] = {15,30,35,40,45,50,60,70,72,75,77,80};
-   int pre_order_traversal[] = {50,30,15,40,35,45,70,60,80,75,72,77};
-   int post_order_traversal[] = {15,35,45,40,30,60,72,77,75,80,70,50};
-   int level_order_traversal[] = {50,30,70,15,40,60,80,35,45,75,72,77};
-   
-   tree tt;
-   tt.create_tree_pre_in_order(pre_order_traversal, in_order_traversal, 0, sizeof(in_order_traversal)/sizeof(int)-1);
-   vector<int> vec3;
-   tt.first_first_k_elements(tt.get_root(), 5, vec3);
-   
+	int in_order_traversal[] = { 15, 30, 35, 40, 45, 50, 60, 70, 72, 75, 77, 80 };
+	int pre_order_traversal[] = { 50, 30, 15, 40, 35, 45, 70, 60, 80, 75, 72, 77 };
+	int post_order_traversal[] = { 15, 35, 45, 40, 30, 60, 72, 77, 75, 80, 70, 50 };
+	int level_order_traversal[] = { 50, 30, 70, 15, 40, 60, 80, 35, 45, 75, 72, 77 };
 
-   tree t;
-   t.insert(4);
-   t.insert(3);
-   t.insert(5);
+	tree t1;
+	t1.create_tree_pre_in_order(pre_order_traversal, in_order_traversal, 0, sizeof(in_order_traversal) / sizeof(int)-1);
 
-   t.in_order_traversal_recursive(t.get_root());
-   cout << '\n';
-   t.pre_order_traversal_recursive(t.get_root());
-   cout << '\n';
-   t.post_order_traversal_recursive(t.get_root());
+	tree t2;
+	t2.insert(4);
+	t2.insert(3);
+	t2.insert(5);
+	t2.insert(6);
+	t2.insert(1);
+
+	tree::tree_iterator it(&t2);
+	for (it = t2.begin(t2.get_most_left_node(t2.get_root())); it != t2.end(); it = it.get_next_node()) {
+		cout << (*it).value << endl;
+	}
 }
