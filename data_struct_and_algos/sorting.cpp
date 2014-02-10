@@ -7,29 +7,30 @@ using namespace std;
 /*
 1.) A stable sort is one that's guaranteed not to reorder elements with identical keys:
 
-Quick sort: When you don't need a stable sort and average case performance matters more than worst case performance. A quick 
-            sort is O(N log N) on average, O(N^2) in the worst case. A good implementation uses O(log N) auxiliary storage in 
-			the form of stack space for recursion.
+Quick sort: When you don't need a stable sort and average case performance matters more than worst case performance. 
+            A quick sort is O(N log N) on average, O(N^2) in the worst case. A good implementation uses O(log N) 
+            auxiliary storage in the form of stack space for recursion.
 
-Merge sort: When you need a stable, O(N log N) sort, this is about your only option. The only downsides to it are that it uses 
-            O(N) auxiliary space and has a slightly larger constant than a quick sort. There are some in - place merge sorts, 
-			but AFAIK they are all either not stable or worse than O(N log N). Even the O(N log N) in place sorts have so much 
-			larger a constant than the plain old merge sort that they're more theoretical curiosities than useful algorithms.
+Merge sort: When you need a stable, O(N log N) sort, this is about your only option. The only downsides to it are 
+            that it uses O(N) auxiliary space and has a slightly larger constant than a quick sort. There are some
+            in - place merge sorts, but AFAIK they are all either not stable or worse than O(N log N). Even the 
+            O(N log N) in place sorts have so much larger a constant than the plain old merge sort that they're more 
+            theoretical curiosities than useful algorithms.
 
-Heap sort: When you don't need a stable sort and you care more about worst case performance than average case performance. It's 
-           guaranteed to be O(N log N), and uses O(1) auxiliary space, meaning that you won't unexpectedly run out of heap or 
-		   stack space on very large inputs.
+Heap sort: When you don't need a stable sort and you care more about worst case performance than average case 
+           performance. It's guaranteed to be O(N log N), and uses O(1) auxiliary space, meaning that you won't 
+           unexpectedly run out of heap or stack space on very large inputs.
 
 Insertion sort: When N is guaranteed to be small, including as the base case of a quick sort or merge sort. While 
-			    this is O(N ^ 2), it has a very small constant and is a stable sort.
+                this is O(N ^ 2), it has a very small constant and is a stable sort.
 
-Bubble sort, selection sort : When you're doing something quick and dirty and for some reason you can't just use the standard 
-                              library's sorting algorithm. The only advantage these have over insertion sort is being slightly 
-							  easier to implement.
+Bubble sort, selection sort : When you're doing something quick and dirty and for some reason you can't just use 
+                              the standard library's sorting algorithm. The only advantage these have over insertion 
+                              sort is being slightly easier to implement.
 
 
-2.) Non - comparison sorts: Under some fairly limited conditions it's possible to break the O(N log N) barrier and sort in O(N). 
-    Here are some cases where that's worth a try:
+2.) Non - comparison sorts: Under some fairly limited conditions it's possible to break the O(N log N) barrier and 
+    sort in O(N). Here are some cases where that's worth a try:
 
 Counting sort: When you are sorting integers with a limited range.
 
