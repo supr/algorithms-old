@@ -20,11 +20,13 @@ private:
 	static Singleton *inst_;
 
 protected:
+	// default constructor: dont allow copies of the object (because protected)
 	Singleton() {}
 
-	//Copy-Konstruktor: Hierdurch werden Kopien dieses Objektes verhindert (da protected) 
+	// copy-constructor: dont allow copies of the object (because protected) 
 	Singleton(const Singleton& other) {}
 
+	// assignment operator: dont allow copies of the object (because protected)
 	Singleton& operator= (const Singleton&) {}
 
 public:
