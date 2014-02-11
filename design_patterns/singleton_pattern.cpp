@@ -65,10 +65,14 @@ public:
 
 
 protected:
+        // default constructor: dont allow copies of the object (because protected)
 	Singleton2() {}
 
-	//Copy-Konstruktor: Hierdurch werden Kopien dieses Objektes verhindert (da protected) 
+	// copy-constructor: dont allow copies of the object (because protected) 
 	Singleton2(const Singleton2& other) {}
+
+	// assignment operator: dont allow copies of the object (because protected)
+	Singleton2& operator= (const Singleton2&) {}
 
 };
 
