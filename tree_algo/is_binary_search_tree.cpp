@@ -1,40 +1,21 @@
-#include <bitset>
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <cstdio>
 #include <sstream>
-#include <stack>
-#include <iostream>
 #include <algorithm>
 #include <cassert>
-#include <ctime>
-#include <queue>
-#include <map>
-#include <list>
-#include <vector>
-#include <cstdlib>
 #include <limits>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <functional>
-#include <array>
-#include <thread>
-#include <future>
-#include <set>
-#include <utility>
 #include <limits>
 using namespace std;
 
 /*
 Question: How to verify whether a binary tree is a binary search tree?
--
--Analysis: Binary search tree is an important data structure. It has a specific character: Each node is greater than or equal to nodes in its left sub-tree,
--and less than or equal to nodes in its right sub-tree.
--
--The algorithm is implemented in:
--bool is_binary_tree(Node *root);
+
+Analysis: Binary search tree is an important data structure. It has a specific character: Each node is greater than or equal to 
+nodes in its left sub-tree, and less than or equal to nodes in its right sub-tree.
+
+The algorithm is implemented in:
+- bool is_BST1();
+- bool is_BST2();
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -485,30 +466,50 @@ public:
 		return root;
 	}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-	void is_binary_tree_internal(Node *root, int &old_value, bool is_binary_tree) {
+	bool is_BST_internal1(Node *root, int min, int max) {
 		if (!root) {
-			return;
+			return true;
 		}
 
-		is_binary_tree_internal(root->left, old_value, is_binary_tree);
-
-		if (root->value > old_value) {
-			is_binary_tree = false;
+		if (root->value < min || root->value > max) {
+			return false;
 		}
 
-		old_value = root->value;
-
-		is_binary_tree_internal(root->right, old_value, is_binary_tree);
+		return is_BST_internal1(root->left, min, root->value) &&
+			is_BST_internal1(root->right, root->value, max);
 	}
 
-	bool is_binary_tree(Node *root) {
-		int old_value = numeric_limits<int>::min();
-		bool is_binary_tree = true;
-		is_binary_tree_internal(root, old_value, is_binary_tree);
+	bool is_BST1() {
+		int min = numeric_limits<int>::min();
+		int max = numeric_limits<int>::max();
 
-		return is_binary_tree;
+		return is_BST_internal1(get_root(), min, max);
+	}
+
+	bool is_BST_internal2(Node *root, int &prev_value) {
+		if (!root) {
+			return true;
+		}
+
+		if (!is_BST_internal2(root->left, prev_value)) {
+			return false;
+		}
+
+		if (root->value < prev_value) {
+			return false;
+		}
+
+		prev_value = root->value;
+
+		return is_BST_internal2(root->right, prev_value);
+	}
+
+	bool is_BST2() {
+		int prev_value = numeric_limits<int>::min();
+
+		return is_BST_internal2(get_root(), prev_value);
 	}
 };
 
@@ -523,7 +524,7 @@ int main() {
 	t4.insert(7);
 	t4.insert(14);
 
-	bool is_bin_tree = t4.is_binary_tree(t4.get_root());
+	bool is_bin_tree = t4.is_BST1();
 
 	if (is_bin_tree) {
 		cout << "The tree is a binary tree" << endl;
