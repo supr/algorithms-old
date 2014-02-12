@@ -20,14 +20,17 @@ private:
 	static Singleton *inst_;
 
 protected:
-	// default constructor: dont allow copies of the object (because protected)
+	// default constructor: dont allow copies of the object (because its declared as protected)
 	Singleton() {}
 
-	// copy-constructor: dont allow copies of the object (because protected) 
+	// move constructure: dont allow to use it (because its declared as protected)
+	Singleton(Singleton&& other) {}
+
+	// copy-constructor: dont allow copies of the object (because its declared as protected) 
 	Singleton(const Singleton& other) {}
 
-	// assignment operator: dont allow copies of the object (because protected)
-	Singleton& operator= (const Singleton&) {}
+	// assignment operator: dont allow copies of the object (because its declared as protected)
+	Singleton& operator= (const Singleton& other) {}
 
 public:
 	~Singleton() {
@@ -65,14 +68,17 @@ public:
 
 
 protected:
-        // default constructor: dont allow copies of the object (because protected)
+    // default constructor: dont allow copies of the object (because its declared as protected)
 	Singleton2() {}
 
-	// copy-constructor: dont allow copies of the object (because protected) 
+	// move constructure: dont allow to use it (because its declared as protected)
+	Singleton2(Singleton2&& other) {}
+
+	// copy-constructor: dont allow copies of the object (because its declared as protected) 
 	Singleton2(const Singleton2& other) {}
 
-	// assignment operator: dont allow copies of the object (because protected)
-	Singleton2& operator= (const Singleton2&) {}
+	// assignment operator: dont allow copies of the object (because its declared as protected)
+	Singleton2& operator= (const Singleton2& other) {}
 
 };
 
