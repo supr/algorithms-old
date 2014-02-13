@@ -1,30 +1,13 @@
-#include <bitset>
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <cstdio>
 #include <sstream>
 #include <stack>
+#include <queue>
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include <limits>
 #include <cassert>
-#include <ctime>
-#include <queue>
-#include <map>
-#include <list>
-#include <vector>
-#include <cstdlib>
-#include <limits>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <functional>
-#include <array>
-#include <thread>
-#include <future>
-#include <set>
-#include <utility>
-#include <limits>
 using namespace std;
 
 /*
@@ -99,7 +82,7 @@ private:
 		if (node->right)
 			right_height = get_height(node->right);
 
-		// Der höchste Unterbaum bestimmt die Gesamthöhe
+		// Der hÃ¶chste Unterbaum bestimmt die GesamthÃ¶he
 		return std::max(left_height, right_height) + 1;
 	}
 
@@ -131,7 +114,7 @@ private:
 			dump_spaces(out, get_width(node->right));
 		}
 		else{
-			// In beiden Unterbäumen sind die Wurzeln um eins niedriger und darum verändert
+			// In beiden UnterbÃ¤umen sind die Wurzeln um eins niedriger und darum verÃ¤ndert
 			// sich die Zeilennummerierung.
 			dump_line(out, node->left, line - 1);
 			dump_spaces(out, format_label(node).length());
@@ -287,22 +270,22 @@ public:
 
 private:
 	void swap_near_nodes(Node*child, Node*parent){
-		// Als erstes passen wir den unbeteiligten Großelternknoten an.
+		// Als erstes passen wir den unbeteiligten GroÃŸelternknoten an.
 		*get_parent_ptr(parent) = child;
 
-		// Anschließend werden die Kind- und Elternzeiger ausgetauscht.
+		// AnschlieÃŸend werden die Kind- und Elternzeiger ausgetauscht.
 		std::swap(parent->left, child->left);
 		std::swap(parent->right, child->right);
 		std::swap(parent->parent, child->parent);
 
-		// Da eines der Kinder getauscht wird, benötigt es eine
+		// Da eines der Kinder getauscht wird, benÃ¶tigt es eine
 		// Sonderbehandlung.
 		if (child->left == child)
 			child->left = parent;
 		else
 			child->right = parent;
 
-		// Nun sind alle Kindzeiger richtig und die Elternzeiger können
+		// Nun sind alle Kindzeiger richtig und die Elternzeiger kÃ¶nnen
 		// dem angepasst werden.
 		if (child->left)
 			child->left->parent = child;
@@ -453,7 +436,7 @@ private:
 		else{
 			Node*other = get_prev_node(node);
 			swap_nodes(node, other);
-			// Löschen des Knotens durch Benutzen von einer
+			// LÃ¶schen des Knotens durch Benutzen von einer
 			// der beiden anderen Methoden
 			remove(node);
 		}
@@ -524,7 +507,7 @@ int main() {
 
 	t4.print_head(t4, cout);
 
-	Node *n = t4.find_k_max_node(t4.get_root(), 2);
+	Tree<int>::Node *n = t4.find_k_max_node(t4.get_root(), 2);
 	if (n) {
 		cout << n->value << endl;
 	}
