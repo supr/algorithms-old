@@ -1,30 +1,13 @@
-﻿#include <bitset>
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <cstdio>
 #include <sstream>
 #include <stack>
+#include <queue>
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include <limits>
 #include <cassert>
-#include <ctime>
-#include <queue>
-#include <map>
-#include <list>
-#include <vector>
-#include <cstdlib>
-#include <limits>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <functional>
-#include <array>
-#include <thread>
-#include <future>
-#include <set>
-#include <utility>
-#include <limits>
 using namespace std;
 
 /*
