@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cassert>
 #include <limits>
-#include <limits>
 using namespace std;
 
 /*
@@ -82,7 +81,7 @@ private:
 		if (node->right)
 			right_height = get_height(node->right);
 
-		// Der höchste Unterbaum bestimmt die Gesamthöhe
+		// Der hï¿½chste Unterbaum bestimmt die Gesamthï¿½he
 		return std::max(left_height, right_height) + 1;
 	}
 
@@ -114,7 +113,7 @@ private:
 			dump_spaces(out, get_width(node->right));
 		}
 		else{
-			// In beiden Unterbäumen sind die Wurzeln um eins niedriger und darum verändert
+			// In beiden Unterbï¿½umen sind die Wurzeln um eins niedriger und darum verï¿½ndert
 			// sich die Zeilennummerierung.
 			dump_line(out, node->left, line - 1);
 			dump_spaces(out, format_label(node).length());
@@ -270,22 +269,22 @@ public:
 
 private:
 	void swap_near_nodes(Node*child, Node*parent){
-		// Als erstes passen wir den unbeteiligten Großelternknoten an.
+		// Als erstes passen wir den unbeteiligten Groï¿½elternknoten an.
 		*get_parent_ptr(parent) = child;
 
-		// Anschließend werden die Kind- und Elternzeiger ausgetauscht.
+		// Anschlieï¿½end werden die Kind- und Elternzeiger ausgetauscht.
 		std::swap(parent->left, child->left);
 		std::swap(parent->right, child->right);
 		std::swap(parent->parent, child->parent);
 
-		// Da eines der Kinder getauscht wird, benötigt es eine
+		// Da eines der Kinder getauscht wird, benï¿½tigt es eine
 		// Sonderbehandlung.
 		if (child->left == child)
 			child->left = parent;
 		else
 			child->right = parent;
 
-		// Nun sind alle Kindzeiger richtig und die Elternzeiger können
+		// Nun sind alle Kindzeiger richtig und die Elternzeiger kï¿½nnen
 		// dem angepasst werden.
 		if (child->left)
 			child->left->parent = child;
@@ -436,7 +435,7 @@ private:
 		else{
 			Node*other = get_prev_node(node);
 			swap_nodes(node, other);
-			// Löschen des Knotens durch Benutzen von einer
+			// Lï¿½schen des Knotens durch Benutzen von einer
 			// der beiden anderen Methoden
 			remove(node);
 		}
