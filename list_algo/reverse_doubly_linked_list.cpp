@@ -84,7 +84,7 @@ public:
 		return curr;
 	}
 
-	void reverse_list() {
+	void reverse_doubly_linked_list() {
 		reverse_list_internal(first);
 	}
 };
@@ -103,7 +103,7 @@ int main() {
 
 	l.print();
 
-	l.reverse_list();
+	l.reverse_doubly_linked_list();
 
 	l.print();
 
