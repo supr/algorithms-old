@@ -11,7 +11,45 @@ equirement is that we want to make our URLs as different as possible, so that su
 return very different URIs. This is to ensure that small typo errors do not lead to users getting 
 to a valid URL, but rather throwing up an error page.
 
-TODO: use big numbers instead of unsigned long long
+Idea:
+Long URL: "http://www.example.org/abcdef". 
+Instead of "abcdef" there can be any other string with six characters containing a-z, A-Z and 0-9. 
+That makes 56~57 billion possible strings.
+
+I have a database table with three columns:
+id, integer, auto-increment
+long, string, the long URL the user entered
+short, string, the shortened URL (or just the six characters)
+
+insert the long URL into the table. Then I would select the auto-increment value for "id" and build a hash of it. 
+This hash should then be inserted as "short".
+
+For "http://www.google.de/" I get the auto-increment id 239472. Then I do the following steps:
+
+Think of an alphabet we want to use. In your case that's [a-zA-Z0-9]. It contains 62 letters.
+Take an auto-generated, unique numerical key (the auto-incremented id of a MySQL table for example).
+
+For this example I will use 125 (125 with a base of 10).
+
+Now you have to convert 125 to X_62 (base 62).
+
+125 = 2×62^1 + 1×62^0 = [2,1]
+
+Now map the indices 2 and 1 to your alphabet. This is how your mapping (with an array for example) could look like:
+
+0  -> a
+1  -> b
+...
+25 -> z
+...
+52 -> 0
+61 -> 9
+
+With 2 -> c and 1 -> b you will receive cb62 as the shortened URL.
+http://shor.ty/cb
+
+TODO: 
+use big numbers instead of unsigned long long
 */
 
 class URLShortner {
