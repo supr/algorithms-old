@@ -29,11 +29,9 @@ public:
 	{
 	}
 
-	void push(T element)
+	void push(T value)
 	{
-		struct node<T> *n = new node<T>();
-		n->data = element;
-		n->next = NULL;
+		struct node<T> *n = new node<T>(value);
 		struct node<T> *tmp = first;
 
 		// empty list
@@ -72,7 +70,7 @@ public:
 		}
 	}
 
-	int getsize()
+	int get_size()
 	{
 		return size;
 	}
