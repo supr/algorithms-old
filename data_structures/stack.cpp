@@ -8,17 +8,24 @@
    Insert: O(1)
    Delete: O(1)
 
+template <class T>
+class node {
+public:
+  T value;
+  node *next;
+  node(int value_): value(value_), next(NULL) {}
+};
+
 /* LIFO - Last in First out*/
 template <class T>
 class stack
 {
 private:
 	struct node<T> *first;
-	struct node<T> *last;
 	int size;
 
 public:
-	stack(): size(0), first(NULL), last(NULL)
+	stack(): size(0), first(NULL)
 	{
 	}
 
@@ -33,7 +40,6 @@ public:
 		if(first == NULL)
 		{
 			first = n;
-			last = n;
 		}
 		else // we add a new element at the beginning of the list
 		{
@@ -58,15 +64,10 @@ public:
 		{
 			data = first->data;
 			first = first->next;
-			
-			if(first == NULL)
-			{
-				last = NULL;
-			}
 
-		    size--;
+		        size--;
 
-			delete(tmp);
+			delete tmp;
 			return data;
 		}
 	}
@@ -76,6 +77,3 @@ public:
 		return size;
 	}
 };
-
-
-
