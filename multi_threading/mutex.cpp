@@ -6,9 +6,9 @@ int guard = 0;
 int value = FREE;
 
 // atomic execution by hardware
-bool test_and_set(bool &mutex) {
-   bool tmp = mutex;
-   mutex = true;
+int test_and_set(int &mutex) {
+   int tmp = mutex;
+   mutex = 1;
    return tmp;
 }
 
