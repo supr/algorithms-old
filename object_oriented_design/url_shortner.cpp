@@ -90,7 +90,7 @@ public:
 	}
 	
 	unsigned long long int decode(const string &str) {
-		unsigned long long int num = 0;
+	    unsigned long long int num = 0;
 	
 	    for(int i = 0; i < str.size(); i++) {
 	    	int index = alphabet_indexof(str[i]);
