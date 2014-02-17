@@ -58,10 +58,8 @@ private:
 	size_t base;
 	
 public:
-	URLShortner(std::string list)
-	  : alphabet(list.begin(), list.end())
-	  , base(list.length())
-		{ }
+	URLShortner(std::string list): alphabet(list.begin(), list.end()), 
+	                               base(list.length()) {}
 
 	string encode(unsigned long long int num) {
 		vector<char> sb;
