@@ -10,22 +10,17 @@ Implement an algoritm to convert an integer number into a binary string
 Implement an algorithm to convert an binary string into an integer number
 */
 
-string int2bin(int n) {
-	int bin_str_len = log2(n) + 1;
-	char *bin_str = new char[bin_str_len];
-	bin_str_len -= 1;
-
-	while (n) {
-		bin_str[bin_str_len] = '0' + n % 2;
-		bin_str_len--;
-
-		n = n >> 1;
+string int2bin(int number) {
+	string bin_str;
+	int index = log2(number);
+	bin_str.resize(index + 1);
+	
+	while(number) {
+		bin_str[index--] = '0' + number % 2;
+		number = number >> 1;
 	}
-
-	string bin_str_out(bin_str);
-	delete bin_str;
-
-	return bin_str_out;
+	
+	return bin_str;
 }
 
 int bin2int(string bin_str) {
