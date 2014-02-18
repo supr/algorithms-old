@@ -9,28 +9,25 @@ Question: Please write an algorithm to convert an Integer (int) to a String (cha
 
 char *int2str(int num) {
 	bool is_negative = false;
-	int str_len_index = 0;
+	int index = 0;
 
 	if (num < 0) {
 		is_negative = true;
 		num = num * (-1);
 	}
+	
+	index = log10(num);
 
 	if (is_negative) {
-		str_len_index = log10(num) + 2;
-	}
-	else {
-		str_len_index = log10(num) + 1;
+		index = index + 1;
 	}
 
-	char *str = new char[str_len_index];
-	memset(str, '\0', str_len_index);
+	char *str = new char[index + 1];
+	memset(str, '\0', index + 1);
 
 	while (num) {
-		int remainer = num % 10;
-
-		str[str_len_index - 1] = '0' + remainer;
-		str_len_index--;
+		str[index] = '0' + (num % 10);
+		index--;
 
 		num = num / 10;
 	}
