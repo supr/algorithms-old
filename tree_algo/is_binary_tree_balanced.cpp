@@ -506,7 +506,7 @@ public:
 			return 0;
 		}
 
-		return std::min(get_max_depth(root->left), get_max_depth(root->left));
+		return 1 + std::max(get_max_depth(root->left), get_max_depth(root->right));
 
 	}
 
@@ -515,7 +515,7 @@ public:
 			return 0;
 		}
 
-		return std::min(get_min_depth(root->left), get_min_depth(root->left));
+		return 1 + std::min(get_min_depth(root->left), get_min_depth(root->right));
 	}
 
 	bool is_tree_balanced2(Node *root) {
@@ -542,6 +542,6 @@ int main() {
 	else {
 		cout << "The Binary tree is not well balanced" << endl;
 	}
-
+	
 	return 0;
 }
