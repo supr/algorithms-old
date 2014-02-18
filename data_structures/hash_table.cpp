@@ -13,7 +13,7 @@
    Closed hashing ... use the next entry in the array if you more than one hash value
 
    Insert: O(1)
-   Search: O(n) ... n is the length of the list
+   Search: O(n) ... n is the size of the hashtable
    Remove: O(n)
 */
 class hashtable
@@ -22,23 +22,25 @@ private:
 	string *key_arr;
 	unsigned int *value_arr;
 	int *status_arr; // contains the status of the table at index pos: deleted, empty or used
-	unsigned int length;
+	unsigned int size;
 
 private:
 	unsigned int hash(string key)
 	{
 		int sum = 0;
 		
-		for(unsigned int i = 0; i < key.length(); i++)
+		for(unsigned int i = 0; i < key.size(); i++)
 		{
 			sum = sum + static_cast<unsigned int>(key[i]);
 		}
 
-		return sum = key.length() % length;
+		sum = sum % size;
+		
+		return sum;
 	}
 
 public:
-	hashtable(int n): length(n)
+	hashtable(int n): size(n)
 	{
 		value_arr = new unsigned int[n];
 		status_arr = new int[n];
@@ -65,7 +67,7 @@ public:
 		{
 			do {
 				hash_index ++;
-				hash_index = hash_index % length;
+				hash_index = hash_index % size;
 
 				if(status_arr[hash_index] != 1)
 				{
@@ -79,7 +81,7 @@ public:
 				{
 					j++;
 				}
-			} while(j < length);
+			} while(j < size);
 
 			throw("Error collision");
 		}
@@ -106,8 +108,8 @@ public:
 			}
 
 			hash_index ++;
-			hash_index = hash_index % length;
-		}while(j < length);
+			hash_index = hash_index % size;
+		}while(j < size);
 
 		return false;
 	}
@@ -133,8 +135,8 @@ public:
 			}
 
 			hash_index ++;
-			hash_index = hash_index % length;
-		}while(j < length);
+			hash_index = hash_index % size;
+		}while(j < size);
 
 		throw("Error calling item");
 	}
@@ -163,8 +165,8 @@ public:
 			}
 
 			hash_index ++;
-			hash_index = hash_index % length;
-		}while(j < length);
+			hash_index = hash_index % size;
+		}while(j < size);
 
 		return false;
 	}
