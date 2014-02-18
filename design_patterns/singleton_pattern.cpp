@@ -24,13 +24,13 @@ protected:
 	Singleton() {}
 
 	// move constructure: dont allow to use it (because its declared as protected)
-	Singleton(Singleton&& other) {}
+	Singleton(Singleton&& other);
 
 	// copy-constructor: dont allow copies of the object (because its declared as protected) 
-	Singleton(const Singleton& other) {}
+	Singleton(const Singleton& other);
 
 	// assignment operator: dont allow copies of the object (because its declared as protected)
-	Singleton& operator= (const Singleton& other) {}
+	Singleton& operator= (const Singleton& other);
 
 public:
 	~Singleton() {
@@ -72,13 +72,13 @@ protected:
 	Singleton2() {}
 
 	// move constructure: dont allow to use it (because its declared as protected)
-	Singleton2(Singleton2&& other) {}
+	Singleton2(Singleton2&& other);
 
 	// copy-constructor: dont allow copies of the object (because its declared as protected) 
-	Singleton2(const Singleton2& other) {}
+	Singleton2(const Singleton2& other);
 
 	// assignment operator: dont allow copies of the object (because its declared as protected)
-	Singleton2& operator= (const Singleton2& other) {}
+	Singleton2& operator= (const Singleton2& other);
 
 };
 
