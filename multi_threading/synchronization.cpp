@@ -13,7 +13,7 @@ Thread1 can access resource 1
 Thread2 can access resource 1 and resource 2
 Thread3 can access resource 1 and resource 2
 
-How would you implement the locking?
+Which synchronization would you use?
 */
   
 class SynchronizationTest { 
