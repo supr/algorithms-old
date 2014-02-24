@@ -230,31 +230,31 @@ string find_longest_intersection3(string &str1, string &str2) {
   
   for(int i = 0; i < m; i++) {
   	for(int j = 0;j < n;j++) {
-    	if(str1[i] != str2[j]) {
-     		num[i][j] = 0;
-    	}
-    	else {
-     		if(i == 0 || j == 0) {
-      			num[i][j] = 1;
-     		}
-     		else {
-      			num[i][j] = num[i-1][j-1] + 1;
-     		}
+    		if(str1[i] != str2[j]) {
+     			num[i][j] = 0;
+    		}
+    		else {
+     			if(i == 0 || j == 0) {
+      				num[i][j] = 1;
+     			}
+     			else {
+      				num[i][j] = num[i-1][j-1] + 1;
+     			}
      		
-     		if(num[i][j] > maxlen) {
-      			maxlen = num[i][j];
-      			this_subs_begin = (i + 1) - maxlen;
+     			if(num[i][j] > maxlen) {
+      				maxlen = num[i][j];
+      				this_subs_begin = (i + 1) - maxlen;
       
-      			if(this_subs_begin == last_subs_begin) {
-       				out += str1[i];
+      				if(this_subs_begin == last_subs_begin) {
+       					out += str1[i];
+      				}
+      				else {
+       					last_subs_begin = this_subs_begin;
+       					out.clear();
+       					out += str1.substr(this_subs_begin, i);
+      				}
       			}
-      			else {
-       				last_subs_begin = this_subs_begin;
-       				out.clear();
-       				out += str1.substr(this_subs_begin, i);
-      			}
-      		}
-    	}
+    		}
    	}
   }
   
