@@ -7,6 +7,12 @@ using namespace std;
 /* Question:
 Find the longest intersection between two strings
 Find the longest common contiguous substring of two given strings
+
+longest_common_contig_substr1  O(n * m)
+longest_common_contig_substr2: O(n * m^2)
+longest_common_contig_substr3: O(n * m) ... based on dynamic programming
+
+A suffix tree based solution would run in O(n + m)
 */
 
 const int ALPHABET_SIZE = 26;
@@ -167,7 +173,7 @@ public:
 	}
 };
 
-string find_longest_intersection2(string &str1, string &str2) {
+string longest_common_contig_substr1(const string &str1, const string &str2) {
 	trie<char> t;
 	int max_count = 0;
 	int count = 0;
@@ -189,7 +195,7 @@ string find_longest_intersection2(string &str1, string &str2) {
 	return str2.substr(index, max_count);
 }
 
-string find_longest_intersection1(string &str1, string &str2) {
+string longest_common_contig_substr2(const string &str1, const string &str2) {
 	int index_start = 0;
 	int index_end = 0;
 	int count = 0;
@@ -218,7 +224,7 @@ string find_longest_intersection1(string &str1, string &str2) {
 	return str1.substr(index_start, index_end - index_start + 1);
 }
 
-string find_longest_intersection3(string &str1, string &str2) {
+string longest_common_contig_substr3(const string &str1, const string &str2) {
   int this_subs_begin = 0;
   int last_subs_begin = 0;
   int m = str1.size();
@@ -243,12 +249,15 @@ string find_longest_intersection3(string &str1, string &str2) {
      		
      			if(num[i][j] > maxlen) {
       				maxlen = num[i][j];
+      				// generate substring from str1 => i
       				this_subs_begin = (i + 1) - maxlen;
       
+      				// if the current LCS is the same as the last time
       				if(this_subs_begin == last_subs_begin) {
        					out += str1[i];
       				}
       				else {
+      					// this resets the out string if a different LCS is found
        					last_subs_begin = this_subs_begin;
        					out.clear();
        					out += str1.substr(this_subs_begin, i);
@@ -267,9 +276,9 @@ int main() {
 	string str1 = "hello";
 	string str2 = "bella";
 	
-	cout << find_longest_intersection1(str1, str2) << endl;
-	cout << find_longest_intersection2(str1, str2) << endl;
-	cout << find_longest_intersection3(str1, str2) << endl;
+	cout << longest_common_contig_substr1(str1, str2) << endl;
+	cout << longest_common_contig_substr2(str1, str2) << endl;
+	cout << longest_common_contig_substr3(str1, str2) << endl;
 	
 	return 0;
 }
