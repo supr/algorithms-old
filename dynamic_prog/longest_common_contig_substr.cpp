@@ -8,9 +8,9 @@ using namespace std;
 Find the longest intersection between two strings
 Find the longest common contiguous substring of two given strings
 
-longest_common_contig_substr1  O(n * m)
-longest_common_contig_substr2: O(n * m^2)
-longest_common_contig_substr3: O(n * m) ... based on dynamic programming
+longest_common_contig_substr1  Time: O(n * m), Space: O(n^2)  ... based on trie
+longest_common_contig_substr2: Time: O(n * m^2), Space: O(1)
+longest_common_contig_substr3: Time: O(n * m), Space: O(m * n) ... based on dynamic programming
 
 A suffix tree based solution would run in O(n + m)
 */
