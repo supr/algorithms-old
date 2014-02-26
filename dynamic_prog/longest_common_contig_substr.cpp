@@ -264,7 +264,7 @@ string longest_common_contig_substr3(const string &str1, const string &str2) {
       					// this resets the out string if a different LCS is found
        					last_subs_begin = this_subs_begin;
        					out.clear();
-       					out += str1.substr(this_subs_begin, i);
+       					out += str1.substr(this_subs_begin, maxlen);
       				}
       			}
     		}
