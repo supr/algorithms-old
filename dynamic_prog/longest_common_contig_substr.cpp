@@ -200,27 +200,31 @@ string longest_common_contig_substr2(const string &str1, const string &str2) {
 	int index_end = 0;
 	int count = 0;
 	int count_max = 0;
-	
+
 	for(int i = 0; i < str1.size(); i++) {
 		int k = i;
-		
+
 		for(int j = 0; j < str2.size(); j++) {
+			if(k >= str1.size()) {
+				break;
+			}
+			
 			if(str1[k] == str2[j]) {
+				if(count > count_max) {
+					count_max = count;
+					index_start = i;
+					index_end = k;
+				}
+				
 				count++;
 				k++;
 			}
 			else {
-				if(count > count_max) {
-					count_max = count;
-					index_start = i;
-					index_end = k - 1;
-				}
-				
 				count = 0;
 			}
 		}
 	}
-	
+
 	return str1.substr(index_start, index_end - index_start + 1);
 }
 
