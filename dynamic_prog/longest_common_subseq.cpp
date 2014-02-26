@@ -32,7 +32,7 @@ vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
 	int n = Y.size() + 1;
 	int m = X.size() + 1;
 	vector<vector<int>> LCS;
-    LCS.resize(n, vector<int>(m, 0));
+        LCS.resize(n, vector<int>(m, 0));
 	int max_len = 0;
 	int index_i = 0;
 	int index_j = 0;
@@ -71,7 +71,7 @@ vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
 			index_j--;
 		}
 		else {
-            if(lookup(LCS, index_i - 1, index_j) > lookup(LCS, index_i, index_j - 1)) {
+                        if(lookup(LCS, index_i - 1, index_j) > lookup(LCS, index_i, index_j - 1)) {
 				index_i--;
 			}
 			else {
