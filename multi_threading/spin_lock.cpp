@@ -22,7 +22,7 @@ unlock:
 
 // spin on read (test_and_set)
 lock:	while (lock == busy) spin;
-	if (t&s(lock) == busy) goto lock;
+	if (test_and_set(lock) == busy) goto lock;
 			
 // why is this better?
 // exploits caching, goes to bus only when lock “looks” free
