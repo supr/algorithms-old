@@ -7,11 +7,11 @@ Write a function which determines if a stack grows up or downwards
 
 // true = stack grows upwards
 // false = stack grows downwards
-bool get_stack_grow_direction(int *p) {
+bool get_stack_growth_direction(int *p) {
 	int i;
 	
 	if(!p) {
-		get_stack_grow_direction(&i);
+		get_stack_growth_direction(&i);
 	}
 	else if(&i > p) {
 		return true;
@@ -25,7 +25,7 @@ bool get_stack_grow_direction(int *p) {
 int main() {
 	// your code goes here
 	
-	bool dir = get_stack_grow_direction(NULL);
+	bool dir = get_stack_growth_direction(NULL);
 	if(dir) {
 		cout << "stack grows upwards" << endl;
 	}
