@@ -8,7 +8,7 @@ Implement a spin lock
 // Version 1: test_and_set
 int value = 0; // Free
 Acquire() {
-  while (test&set(value)); // while busy
+  while (test_and_set(value)); // while busy
 }
 
 Release() {
