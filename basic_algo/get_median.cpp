@@ -17,49 +17,46 @@ Possible Improvement:
 - median of medians -> Worst Case: O(n)
 */
 
-int rand_partition(vector<int> &a, int left, int right) {
-	int pivotIndex = left + (rand() % (right - left));
-	//int m = left + (right - left) / 2; //... to test the algo...no rand at this point 
-	int pivot = a[pivotIndex];
-	int i = left;
-	int j = right;
+int partition(vector<int> &vec, int left, int right) {
+    int pivot_index = right + rand() % (right - right + 1);
+    int pivot = vec[pivot_index];
 
-	do {
-		while (a[i] < pivot) i++; // find left element > pivot 
-		while (a[j] > pivot) j--; // find right element < pivot 
-
-		// if i and j not already overlapped, we can swap 
-		if (i < j) {
-			swap(a[i], a[j]);
-		}
-	} while (i < j);
-
-	return i;
+    swap(vec[pivot_index], vec[right]);  // Move pivot to end
+    int store_index = left;
+    
+    for(int i = left; i < right; i++) {
+    	if(vec[i] <= pivot) {
+        	swap(vec[store_index], vec[i]);
+            store_index++;
+    	}
+    }
+    
+    swap(vec[right], vec[store_index]);  // Move pivot to its final place
+    return store_index;
 }
 
 // Returns the n-th smallest element of list within left..right inclusive (i.e. n is zero-based). 
-int rand_select(vector<int> &a, int left, int right, int n) {
-	if (left == right) {        // If the list contains only one element 
-		return a[left];  // Return that element 
+int quick_select(vector<int> &vec, int left, int right, int n) {
+	if(left == right) {
+		return vec[left];
+	}	
+	
+	int pivot_index = partition(vec, left, right);
+	
+	if(pivot_index == n) {
+		return vec[pivot_index];
 	}
-
-	int pivotIndex = rand_partition(a, left, right);
-
-	// The pivot is in its final sorted position 
-	if (n == pivotIndex) {
-		return a[n];
+	else if(pivot_index < n) {
+		return quick_select(vec, pivot_index + 1, right, n);
 	}
-	else if (n < pivotIndex) {
-		return rand_select(a, left, pivotIndex - 1, n);
-	}
-	else {
-		return rand_select(a, pivotIndex + 1, right, n);
+	else if(pivot_index > n) {
+		return quick_select(vec, left, pivot_index - 1, n);
 	}
 }
 
 int get_median(vector<int> vec) {
 	int n = vec.size() / 2;
-	return rand_select(vec, 0, vec.size() - 1, n);
+	return quick_select(vec, 0, vec.size() - 1, n);
 }
 
 int get_median2(vector<int> vec) {
