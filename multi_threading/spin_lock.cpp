@@ -5,11 +5,15 @@ using namespace std;
 Implement a spin lock
 */
 
-// Version 1:
-lock:
-	while (test_and_set(lock) == locked);
-unlock:
-	lock = unlocked;
+// Version 1: test_and_set
+int value = 0; // Free
+Acquire() {
+  while (test&set(value)); // while busy
+}
+
+Release() {
+  value = 0;
+}
 	
 // Problem:	
 // - test_and_set always goes to memory (bypasses caches) does not exploit caches
@@ -18,17 +22,37 @@ unlock:
 //   If you mean multiple CPUs with many caches, then you may get worse effects.
 // - introduces sequential overhead
 
-// Version 2:
 
-// spin on read (test_and_set)
-lock:	while (lock == busy) spin;
-	if (test_and_set(lock) == busy) goto lock;
+// Version 2: test_and_test_and_set
+// spin on read
+int value = 0; // Free
+Acquire() {
+  while (true) {
+    while(value); // Locked, spin with reads
+    if (!test_and_set(value))
+      break; // Success!
+  }
+}
+
+Release() {
+  value = 0;
+}
 			
 // why is this better?
 // exploits caching, goes to bus only when lock “looks” free
 
 // Problem: 
-// increased network traffic on lock release
+// – Multiple processors spinning on same memory location
+//   » Release/Reacquire causes lots of cache invalidation traffic
+//   » No guarantees of fairness – potential livelock
+// – Scales poorly with number of processors
+//   » Because of bus traffic, average time until some processor 
+//     acquires lock grows with number of processors
+// - increased network traffic on lock release
+// - busy waiting --> use exponential backoff
+
+// Improvement:
+// - use exponential backoff
 
 // Use of Spinlock
 // - only if the critical section is short
