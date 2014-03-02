@@ -3,6 +3,7 @@ using namespace std;
 
 /* Question:
 Implement a spin lock
+// Reference: http://www.cs.berkeley.edu/~kubitron/courses/cs194-24-S13/Lectures/
 */
 
 // Version 1: test_and_set
