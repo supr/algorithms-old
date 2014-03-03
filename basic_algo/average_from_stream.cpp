@@ -15,7 +15,7 @@ Space Complexity: O(1)
 
 class AverageFromStream {
 private:
-	int total;
+	long total;
 	int count;
 public:
 	float get_average(int number) {
