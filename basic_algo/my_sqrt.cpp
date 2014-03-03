@@ -13,6 +13,12 @@ This algorithm is implemented in two versions:
 - based on binary search
 */
 
+/*
+xn = sqrt(a)
+xn^2 - a = 0
+f(x) = x^2 - a
+f(x+1) = f(x) - (f(x+1) * f(x+1) - a) / (2 * f(x+1))
+*/
 float my_sqrt_newton(float a) {
 	float eps = 0.00001;
 	float xn_1 = a;
