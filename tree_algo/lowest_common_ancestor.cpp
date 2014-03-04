@@ -479,11 +479,25 @@ public:
 		Node *l = lowest_common_ancestor(root->left, n1, n2);
 		Node *r = lowest_common_ancestor(root->right, n1, n2);
 
+		// if we have found one node on right side of the node and other on left side,then 
+		// the given node is LCA
 		if (l && r) {
 			return root;
 		}
 
+		// p and q are on the same branch
 		return l ? l : r;
+		
+		/* the macro above means: 
+		// if we have found one node on the left side, we don't look below that node, and we return 
+		// to parent node to look for right sub tree for the other node
+		else if(l != Null)
+         		return l;
+     		// if we have found one node on the right side, we don't look below that node, and we return 
+     		// to parent node to check if other node was found in the left tree then return LCA
+     		else
+         		return r;
+		*/
 	}
 };
 
