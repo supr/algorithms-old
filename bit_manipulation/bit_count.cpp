@@ -4,8 +4,8 @@ using namespace std;
 // O(n) ... n is the number of binary digits
 // Loop through all bits in an integer, check if 
 // a bit is set and if it is then increment the set bit count
-int bit_count1(int num) {
-  int count = 0;
+unsigned int bit_count1(unsigned int num) {
+  unsigned int count = 0;
   
   while(num != 0) {
     if ((num & 1)==1)
@@ -21,8 +21,8 @@ int bit_count1(int num) {
 // bit(including the righmost set bit). So if we subtract a number by 1 and do bitwise & with itself 
 // (n & (n-1)), we unset the righmost set bit. If we do n & (n-1) in a loop and count the no of times loop 
 // executes we get the set bit count.
-int bit_count2(int num) {
-  int count = 0;
+unsigned int bit_count2(unsigned int num) {
+  unsigned int count = 0;
   
   while(num) {
     ++count;
