@@ -39,6 +39,32 @@ unsigned int bit_count2(unsigned int num) {
 // though it doesn't use 64-bit instructions. The counts of bits set in the bytes is done in parallel, and the sum 
 // total of the bits set in the bytes is computed by multiplying by 0x1010101 and shifting right 24 bits.
 // reference: http://graphics.stanford.edu/~seander/bithacks.html
+/*
+Admittedly it's a bit optimized which makes it harder to read. It's easier to read as:
+
+c = (v & 0x55555555) + ((v >> 1) & 0x55555555);
+c = (c & 0x33333333) + ((c >> 2) & 0x33333333);
+c = (c & 0x0F0F0F0F) + ((c >> 4) & 0x0F0F0F0F);
+c = (c & 0x00FF00FF) + ((c >> 8) & 0x00FF00FF);
+c = (c & 0x0000FFFF) + ((c >> 16)& 0x0000FFFF);
+Each step of those five, adds neighbouring bits together in groups of 1, then 2, then 4 etc. The method is based in 
+divide and conquer.
+
+In the first step we add together bits 0 and 1 and put the result in the two bit segment 0-1, add bits 2 and 3 and 
+put the result in the two-bit segment 2-3 etc...
+
+In the second step we add the two-bits 0-1 and 2-3 together and put the result in four-bit 0-3, add together two-bits 
+4-5 and 6-7 and put the result in four-bit 4-7 etc...
+
+Example:
+
+So if I have number 395 in binary 0000000110001011 (0 0 0 0 0 0 0 1 1 0 0 0 1 0 1 1)
+After the first step I have:      0000000101000110 (0+0 0+0 0+0 0+1 1+0 0+0 1+0 1+1) = 00 00 00 01 01 00 01 10
+In the second step I have:        0000000100010011 ( 00+00   00+01   01+00   01+10 ) = 0000 0001 0001 0011
+In the fourth step I have:        0000000100000100 (   0000+0001       0001+0011   ) = 00000001 00000100
+In the last step I have:          0000000000000101 (       00000001+00000100	... which is equal to 5, which is the 
+correct result
+*/
 unsigned int bit_count3(unsigned int num) {
   unsigned int count = 0;
   
