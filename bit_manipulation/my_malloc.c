@@ -50,7 +50,7 @@ void *my_malloc(unsigned int nbytes) {
 		if(curr->is_available && curr->size >= alloc_size) {
 			curr->is_available = MEMORY_USED;
 			curr->size = alloc_size;
-			curr->next = curr + alloc_size;
+			curr->next = (chunk_header_t*)((char*)curr + alloc_size);
 			
 			init_next_chunk(curr->next, alloc_size);
 		
