@@ -13,11 +13,12 @@ using namespace std;
 /*
 Problem: Given a binary tree node, return the next node preorder.
 
-The algorithm is implemented in:
-- Node *get_next_node_preorder(Node *current)
+- Node *get_next_node_preorder(Node *current) ... uses parent pointers.
+- Node *get_next_node_preorder2(Node *current) .. parent pointer is NOT needed in this algorithm.
 
-Solution:
-- is based on parent pointers
+Time complexity:
+both algorithms run in O(h) where h is height of tree.
+
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -497,6 +498,44 @@ public:
 
 		return next;
 	}
+	Node *get_next_node_preorder2(Node *curr) {
+		return get_next_node_preorder2_internal(get_root(), curr);
+	}
+
+	Node *get_next_node_preorder2_internal(Node *root, Node *curr) {
+		Node *next = NULL;
+		
+		if(curr->left) {
+			next = curr->left;
+		}
+		else if(curr->right) {
+			next = curr->right;
+		}
+		else {
+			Node *prev = NULL;
+			
+			while(root) {
+				if(curr->value < root->value) {
+					if(root->right) {
+						prev = root;
+					}
+					root = root->left;
+				}
+				else if(curr->value > root->value) {
+					root = root->right;
+				}
+				else {
+					break;
+				}
+			}
+			
+			if(prev) {
+				next = prev->right;
+			}
+		}
+		
+		return next;
+	}
 };
 
 int main() {
@@ -509,7 +548,9 @@ int main() {
 	t4.insert(2);
 	t4.insert(7);
 	t4.insert(14);
-
+	t4.insert(6);
+	t4.insert(8);
+	
 	t4.print_head(t4, cout);
 
 
@@ -517,6 +558,14 @@ int main() {
 	while (n) {
 		cout << n->value << ' ';
 		n = t4.get_next_node_preorder(n);
+	}
+
+	cout << '\n';
+	
+	n = t4.get_root();
+	while (n) {
+		cout << n->value << ' ';
+		n = t4.get_next_node_preorder2(n);
 	}
 
 	return 0;
