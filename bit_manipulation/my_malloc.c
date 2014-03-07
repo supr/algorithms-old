@@ -100,8 +100,9 @@ void print_heap_allocations() {
 
 int main() {
 	char *mem1 = (char*)my_malloc(20); 
-	if(mem1 == NULL) {
-		goto err;
+	if(!mem1) {
+		fprintf(stderr, "Error allocating memory to mem1.\n");
+    		return -1;
 	}
     	memset (mem1,'x',19); 
     	mem1[19] = '\0'; 
@@ -109,8 +110,9 @@ int main() {
     	print_heap_allocations();
     
     	char *mem2 = (char*)my_malloc(20); 
-    	if(mem2 == NULL) {
-		goto err;
+    	if(!mem2) {
+		fprintf(stderr, "Error allocating memory to mem2.\n");
+    		return -1;
 	}
     	memset (mem2,'y',19); 
     	mem2[19] = '\0'; 
@@ -118,8 +120,9 @@ int main() {
     	print_heap_allocations();
     
     	char *mem3 = (char*)my_malloc(20); 
-    	if(mem3 == NULL) {
-    		goto err;
+    	if(!mem3) {
+    		fprintf(stderr, "Error allocating memory to mem3.\n");
+    		return -1;
     	}
     	memset (mem3,'z',19); 
     	mem3[19] = '\0'; 
@@ -131,8 +134,9 @@ int main() {
   	print_heap_allocations();
   	
   	char *mem4 = (char*)my_malloc(20);
-  	if(mem4 == NULL) {
-		goto err;
+  	if(!mem4) {
+		fprintf(stderr, "Error allocating memory to mem4.\n");
+    		return -1;
 	} 
     	memset (mem4,'a',20); 
    	mem4[19] = '\0';
@@ -144,8 +148,4 @@ int main() {
     	printf("should be 19 z sein: %s\n", mem3);
 	
 	return 0;
-	
-err:
-    	printf("could not allocate mem\n");
-    	return 0;
 }
