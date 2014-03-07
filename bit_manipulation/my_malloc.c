@@ -12,7 +12,7 @@ Implement a memory allocator in C.
 
 typedef struct chunk_header {
 	struct chunk_header *next; // next pointer on free list
-  	unsigned int size;         // the size of this chunk
+  	unsigned int size;               // the size of this chunk
   	bool is_available;         // indicates if this chunk is MEMORY_AVAILABLE or MEMORY_USED
 }chunk_header_t;
 
@@ -87,11 +87,11 @@ void my_free(void *firstbyte) {
 void print_heap_allocations() {
 	chunk_header_t *curr = chunk_header_begin;
 
-	printf("\n\tSize\tAvailable\tMemory-Ptr");
+	printf("\n\tHeapsize\tChunksize\tAvailable\tMemory-Ptr");
 
 	while (curr) {
 		void *mem_ptr = curr + sizeof(chunk_header_t);
-		printf("\n\t%d\t%d\t\t%p", curr->size, curr->is_available, mem_ptr);
+		printf("\n\t%d\t\t%d\t\t%d\t\t%p", heap_size, curr->size, curr->is_available, mem_ptr);
 		curr = curr->next;
 	}
 	
@@ -101,8 +101,8 @@ void print_heap_allocations() {
 int main() {
 	char *mem1 = (char*)my_malloc(20); 
 	if(mem1 == NULL) {
- 		goto err;
-    	}
+		goto err;
+	}
     	memset (mem1,'x',19); 
     	mem1[19] = '\0'; 
     
@@ -111,7 +111,7 @@ int main() {
     	char *mem2 = (char*)my_malloc(20); 
     	if(mem2 == NULL) {
 		goto err;
-    	}
+	}
     	memset (mem2,'y',19); 
     	mem2[19] = '\0'; 
     
@@ -126,16 +126,16 @@ int main() {
   
     	print_heap_allocations();
     
-    	my_free(mem2);
+  	my_free(mem2);
   	
-    	print_heap_allocations();
+  	print_heap_allocations();
   	
-    	char *mem4 = (char*)my_malloc(20);
-    	if(mem4 == NULL) {
-  		goto err;
-    	} 
+  	char *mem4 = (char*)my_malloc(20);
+  	if(mem4 == NULL) {
+		goto err;
+	} 
     	memset (mem4,'a',20); 
-    	mem4[19] = '\0';
+   	mem4[19] = '\0';
         
     	print_heap_allocations();
     
@@ -143,7 +143,7 @@ int main() {
     	printf("should be 19 a sein: %s\n", mem4); 
     	printf("should be 19 z sein: %s\n", mem3);
 	
-    	return 0;
+	return 0;
 	
 err:
     	printf("could not allocate mem\n");
