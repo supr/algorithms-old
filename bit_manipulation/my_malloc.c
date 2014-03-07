@@ -6,30 +6,29 @@
 Implement a memory allocator in C.
 */
 
-#define HEAP_MEM_SIZE 150
+#define HEAP_MEM_SIZE 200
 #define MEMORY_AVAILABLE 1 
 #define MEMORY_USED 0 
 
-struct chunk_header {
-  struct chunk_header *next; // next pointer on free list
-  size_t size;               // the size of this chunk
-  bool is_available;         // indicates if this chunk is MEMORY_AVAILABLE or MEMORY_USED
-};
+typedef struct chunk_header {
+	struct chunk_header *next; // next pointer on free list
+  	unsigned int size;         // the size of this chunk
+  	bool is_available;         // indicates if this chunk is MEMORY_AVAILABLE or MEMORY_USED
+}chunk_header_t;
 
-typedef struct chunk_header chunk_header;
-chunk_header *chunk_header_begin;
+chunk_header_t *chunk_header_begin;
 static char buffer[HEAP_MEM_SIZE];
 unsigned int heap_size;
 
 void init() {
 	heap_size = HEAP_MEM_SIZE;
-	chunk_header_begin = (chunk_header*)&buffer;
+	chunk_header_begin = (chunk_header_t*)&buffer;
 	chunk_header_begin->next = NULL;
 	chunk_header_begin->size = heap_size;
 	chunk_header_begin->is_available = MEMORY_AVAILABLE;
 }
 
-void init_next_chunk(chunk_header *curr, unsigned int bytes) {
+void init_next_chunk(chunk_header_t *curr, unsigned int bytes) {
 	heap_size -= bytes;
 	curr->next = NULL;
 	curr->size = heap_size;
@@ -44,8 +43,8 @@ void *my_malloc(unsigned int nbytes) {
 		init_flag = true;
 	}
 
-	int alloc_size = nbytes + sizeof(chunk_header);	
-	chunk_header *curr = chunk_header_begin;
+	int alloc_size = nbytes + sizeof(chunk_header_t);	
+	chunk_header_t *curr = chunk_header_begin;
 
 	while(curr) {
 		if(curr->is_available && curr->size >= alloc_size) {
@@ -56,7 +55,7 @@ void *my_malloc(unsigned int nbytes) {
 			init_next_chunk(curr->next, alloc_size);
 		
 			// return memory region
-			curr = curr + sizeof(chunk_header);
+			curr = curr + sizeof(chunk_header_t);
 			return curr;
 		}
 		
@@ -67,8 +66,8 @@ void *my_malloc(unsigned int nbytes) {
 }
 
 void my_free(void *firstbyte) {
-	chunk_header *mem = (chunk_header*)firstbyte - sizeof(chunk_header);
-	chunk_header *curr = chunk_header_begin;
+	chunk_header_t *mem = (chunk_header_t*)firstbyte - sizeof(chunk_header_t);
+	chunk_header_t *curr = chunk_header_begin;
 
 	while (curr) {
 		if (curr == mem) {
@@ -86,13 +85,13 @@ void my_free(void *firstbyte) {
 }
 
 void print_heap_allocations() {
-	chunk_header *curr = chunk_header_begin;
+	chunk_header_t *curr = chunk_header_begin;
 
 	printf("\n\tSize\tAvailable\tMemory-Ptr");
 
 	while (curr) {
-		void *mem_ptr = curr + sizeof(chunk_header);
-		printf("\n\t%d\t%d\t\t%x", curr->size, curr->is_available, mem_ptr);
+		void *mem_ptr = curr + sizeof(chunk_header_t);
+		printf("\n\t%d\t%d\t\t%p", curr->size, curr->is_available, mem_ptr);
 		curr = curr->next;
 	}
 	
@@ -102,8 +101,8 @@ void print_heap_allocations() {
 int main() {
 	char *mem1 = (char*)my_malloc(20); 
 	if(mem1 == NULL) {
-		goto err;
-	}
+ 		goto err;
+    	}
     	memset (mem1,'x',19); 
     	mem1[19] = '\0'; 
     
@@ -112,7 +111,7 @@ int main() {
     	char *mem2 = (char*)my_malloc(20); 
     	if(mem2 == NULL) {
 		goto err;
-	}
+    	}
     	memset (mem2,'y',19); 
     	mem2[19] = '\0'; 
     
@@ -127,16 +126,16 @@ int main() {
   
     	print_heap_allocations();
     
-  	my_free(mem2);
+    	my_free(mem2);
   	
-  	print_heap_allocations();
+    	print_heap_allocations();
   	
-  	char *mem4 = (char*)my_malloc(20);
-  	if(mem4 == NULL) {
-		goto err;
-	} 
+    	char *mem4 = (char*)my_malloc(20);
+    	if(mem4 == NULL) {
+  		goto err;
+    	} 
     	memset (mem4,'a',20); 
-   	mem4[19] = '\0';
+    	mem4[19] = '\0';
         
     	print_heap_allocations();
     
@@ -144,7 +143,7 @@ int main() {
     	printf("should be 19 a sein: %s\n", mem4); 
     	printf("should be 19 z sein: %s\n", mem3);
 	
-	return 0;
+    	return 0;
 	
 err:
     	printf("could not allocate mem\n");
