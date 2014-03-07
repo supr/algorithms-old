@@ -14,10 +14,11 @@ using namespace std;
 Problem: Given a binary tree node, return the next node inorder.
 
 The algorithm is implemented in:
-- Node *get_next_node_inorder(Node *current)
+- Node *get_next_node_inorder(Node *current) ... uses parent pointers.
+- Node *get_next_node_inorder2(Node *current) .. parent pointer is NOT needed in this algorithm.
 
-Solution:
-- is based on parent pointers
+Time complexity:
+both algorithms run in O(h) where h is height of tree.
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -505,6 +506,34 @@ public:
 
 		return next;
 	}
+	
+	Node *get_next_node_inorder2(Node *curr) {
+		return get_next_node_inorder2_internal(get_root(), curr);
+	}
+
+	Node *get_next_node_inorder2_internal(Node *root, Node *curr) {
+		Node *next = NULL;
+		
+		if(curr->right) {
+			next = get_most_left_node(curr->right);
+		}
+		else {
+			while(root) {
+				if(curr->value < root->value) {
+					next = root;
+					root = root->left;
+				}
+				else if(curr->value > root->value) {
+					root = root->right;
+				}
+				else {
+					break;
+				}
+			}
+		}
+		
+		return next;
+	}
 };
 
 int main() {
@@ -525,6 +554,14 @@ int main() {
 	while (n) {
 		cout << n->value << ' ';
 		n = t4.get_next_node_inorder(n);
+	}
+
+	cout << '\n';
+	
+	n = t4.get_most_left_node(t4.get_root());
+	while (n) {
+		cout << n->value << ' ';
+		n = t4.get_next_node_inorder2(n);
 	}
 
 	return 0;
