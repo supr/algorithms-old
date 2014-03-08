@@ -28,9 +28,9 @@ void init() {
 	chunk_header_begin->is_available = MEMORY_AVAILABLE;
 }
 
-void init_next_chunk(chunk_header_t *curr, unsigned int bytes) {
+void init_next_chunk(chunk_header_t *new_chunk, chunk_header_t *curr, unsigned int bytes) {
 	heap_size -= bytes;
-	curr->next = NULL;
+	new_chunk->next = curr->next;
 	curr->size = heap_size;
 	curr->is_available = MEMORY_AVAILABLE;
 }
@@ -50,10 +50,11 @@ void *my_malloc(unsigned int nbytes) {
 		if(curr->is_available && curr->size >= alloc_size) {
 			curr->is_available = MEMORY_USED;
 			curr->size = alloc_size;
-			curr->next = (chunk_header_t*)((char*)curr + alloc_size);
+
+			chunk_header_t *new_chunk = (chunk_header_t*)((char*)curr + alloc_size);
+			init_next_chunk(new_chunk, curr, alloc_size);
+			curr->next = new_chunk;
 			
-			init_next_chunk(curr->next, alloc_size);
-		
 			// return memory region
 			curr = curr + sizeof(chunk_header_t);
 			return curr;
