@@ -15,10 +15,11 @@ aligned_free() will free memory allocated by align_malloc.
 void *aligned_malloc(size_t required_bytes, size_t alignment) {
     void *p1;
     void **p2;
-    int offset=alignment-1+sizeof（void*);
+    int offset = alignment - 1 + sizeof(void*); // max offset to an alignment byte is alignment + 1, e.g.
+                                                // p1 = 31 dec, offset is 31 in order to align to address 0 (alignment is 32)
     p1 = malloc(required_bytes + offset);
-    p2=(void**)(((size_t)(p1)+offset)&~(alignment-1));
-    p2[-1]=p1; //line 6
+    p2=(void**)(((size_t)(p1) + offset) & ~(alignment - 1));
+    p2[-1] = p1;
     return p2;
 }
 
