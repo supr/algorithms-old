@@ -21,7 +21,7 @@ in a suitable fraction representation. 0.5 would be 0.1, 0.250 would be 0.01,
 0.125 would be 0.001 etc.
 */
 
-int is_pow_of_two(int number){
+int is_pow_of_two(int number) {
 	return number && !(number & (number - 1));
 }
 
