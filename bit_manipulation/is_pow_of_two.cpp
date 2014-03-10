@@ -22,6 +22,11 @@ in a suitable fraction representation. 0.5 would be 0.1, 0.250 would be 0.01,
 */
 
 int is_pow_of_two(int number) {
+	if(number < 0) {
+		number = !number;
+		number += 1;
+	}
+	
 	return number && !(number & (number - 1));
 }
 
@@ -29,7 +34,7 @@ int main() {
 	// your code goes here
 	
 	assert(is_pow_of_two(2) == 1);
-	assert(is_pow_of_two(1) == 0);
+	assert(is_pow_of_two(1) == 1);
 	assert(is_pow_of_two(-2) == 1);
 	assert(is_pow_of_two(5) == 0);
 	
