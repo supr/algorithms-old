@@ -470,7 +470,7 @@ public:
 
 	int max_depth(Node *root) {
 		if(!root) {
-			return -1;
+			return 0;
 		}
 	
 		return std::max(max_depth(root->left) + 1, max_depth(root->right) + 1);
