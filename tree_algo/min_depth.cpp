@@ -12,10 +12,10 @@ using namespace std;
 
 /*
 Question:
-Given a binary search tree, return the max depth of the tree
+Given a binary search tree, return the min depth of the tree
 
 The algorithm is implemented in:
-- int max_depth(Node *root)
+- int min_depth(Node *root)
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
