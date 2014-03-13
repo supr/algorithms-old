@@ -470,7 +470,7 @@ public:
 
 	int min_depth(Node *root) {
 		if(!root) {
-			return 0;
+			return 1;
 		}
 	
 		return std::min(min_depth(root->left) + 1, min_depth(root->right) + 1);
