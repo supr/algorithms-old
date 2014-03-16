@@ -481,10 +481,10 @@ public:
 			return 1;
 		}
 	
-		int left_hight = min_depth2(root->left) + 1;
-		int right_hight = min_depth2(root->right) + 1;
+		int left_hight = min_depth2(root->left);
+		int right_hight = min_depth2(root->right);
 		
-		return std::min(left_hight, right_hight);
+		return std::min(left_hight, right_hight) + 1;
 	}
 };
 
