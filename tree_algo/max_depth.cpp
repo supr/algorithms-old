@@ -475,6 +475,17 @@ public:
 	
 		return std::max(max_depth(root->left) + 1, max_depth(root->right) + 1);
 	}
+	
+	int max_depth2(Node *root) {
+		if(!root) {
+			return 0;
+		}
+
+		int left_height = max_depth(root->left);
+  		int right_height = max_depth(root->right);
+		
+		return std::max(left_height, right_height) + 1;
+	}
 };
 
 int main() {
@@ -492,5 +503,7 @@ int main() {
 
 	cout << t4.max_depth(t4.get_root()) << endl;
 
+	cout << t4.max_depth2(t4.get_root()) << endl;
+	
 	return 0;
 }
