@@ -468,12 +468,23 @@ public:
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-	int min_depth(Node *root) {
+	int min_depth1(Node *root) {
 		if(!root) {
 			return 1;
 		}
 	
-		return std::min(min_depth(root->left) + 1, min_depth(root->right) + 1);
+		return std::min(min_depth1(root->left) + 1, min_depth1(root->right) + 1);
+	}
+	
+	int min_depth2(Node *root) {
+		if(!root) {
+			return 1;
+		}
+	
+		int left_hight = min_depth2(root->left) + 1;
+		int right_hight = min_depth2(root->right) + 1;
+		
+		return std::min(left_hight, right_hight);
 	}
 };
 
@@ -490,7 +501,9 @@ int main() {
 
 	t4.print_head(t4, cout);
 
-	cout << t4.min_depth(t4.get_root()) << endl;
+	cout << t4.min_depth1(t4.get_root()) << endl;
 
+	cout << t4.min_depth2(t4.get_root()) << endl;
+	
 	return 0;
 }
