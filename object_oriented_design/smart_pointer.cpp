@@ -62,21 +62,21 @@ int main() {
 	SmartPointer<int> x(new int); // x.pointer: <good> x.reference_count: 1
 	x.print_debug_infos();
 	{
-    	SmartPointer<int> y;     // y.pointer: NULL   y.reference_count: -1
+		SmartPointer<int> y;     // y.pointer: NULL   y.reference_count: -1
 		y.print_debug_infos();
 		
-    	y = x;  // x.pointer: <good> x.reference_count: 1
-                // y.pointer: <good> y.reference_count: 2
+		y = x;  // x.pointer: <good> x.reference_count: 1
+                        // y.pointer: <good> y.reference_count: 2
 
 		x.print_debug_infos(); y.print_debug_infos();
 		
-    	SmartPointer<int>  z;
-    	z.print_debug_infos();
+		SmartPointer<int>  z;
+		z.print_debug_infos();
     	
-    	x = z;  // x.pointer: NULL                        x.reference_count:  0 (BAD)
-                // z.pointer: NULL                        z.reference_count: -1
-                // y.pointer: <bad> (it was deleted by x) y.reference_count:  2
+		x = z;  // x.pointer: NULL                        x.reference_count:  0 (BAD)
+    		        // z.pointer: NULL                        z.reference_count: -1
+                        // y.pointer: <bad> (it was deleted by x) y.reference_count:  2
         
-        x.print_debug_infos(); y.print_debug_infos(); z.print_debug_infos();
+		x.print_debug_infos(); y.print_debug_infos(); z.print_debug_infos();
 	}
 }
