@@ -22,7 +22,7 @@ int partition(vector<int> &vec, int left, int right) {
     
     for(int i = left; i < right; i++) {
     	if(vec[i] <= pivot) {
-        	swap(vec[store_index], vec[i]);
+            swap(vec[store_index], vec[i]);
             store_index++;
     	}
     }
