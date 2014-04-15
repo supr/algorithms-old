@@ -13,20 +13,22 @@ Expected: O(n)
 Worst Case: O(n^2)
 */
 
-int rand_partition(vector<int> &vec, int low, int high) {
-	int l = low;
-	int r = high;
-	int pivot_index = l + rand() % (r - l); // (low + high) / 2; 
-	int pivot = vec[pivot_index];
+int rand_partition(vector<int> &vec, int left, int right) {
+    int pivot_index = left + rand() % (right - left + 1);
+    int pivot = vec[pivot_index];
 
-	while (true) {
-		while (vec[l] < pivot) l++;
-		while (vec[r] > pivot) r--;
-		if (l > r) break;
-		std::swap(vec[l++], vec[r--]);
-	}
-
-	return l;
+    swap(vec[pivot_index], vec[right]);  // Move pivot to end
+    int store_index = left;
+    
+    for(int i = left; i < right; i++) {
+    	if(vec[i] <= pivot) {
+            swap(vec[store_index], vec[i]);
+            store_index++;
+    	}
+    }
+    
+    swap(vec[right], vec[store_index]);  // Move pivot to its final place
+    return store_index;
 }
 
 int rand_selection(vector<int> &vec, int l, int r, int k) {
@@ -56,10 +58,10 @@ int main() {
 
 	srand(time(0));
 
-	vector<int> vec = { 10, 15, 2, 4, 1, 7, 5 };
+	vector<int> vec = { 10, 15, 2, 4, 1, 7, 5, 1, 10 };
 
 	for (int i = 0; i < vec.size(); i++) {
-		cout << find_k_smallest_element(vec, i) << endl;
+		cout << find_k_smallest_element(vec, i) << ' ';
 	}
 
 	return 0;
