@@ -14,7 +14,7 @@ sorting the elements < k). Complexity O(k log k).
 */
 
 int partition(vector<int> &vec, int left, int right) {
-    int pivot_index = right + rand() % (right - right + 1);
+    int pivot_index = left + rand() % (right - left + 1);
     int pivot = vec[pivot_index];
 
     swap(vec[pivot_index], vec[right]);  // Move pivot to end
@@ -63,6 +63,8 @@ vector<int> find_top_k_elements(vector<int> &vec, int k) {
 
 int main() {
 	// your code goes here
+	
+	srand(time(0));
 	
 	vector<int> vec = {5,7,1,9,3,7,3,11,16,1};
 	vector<int> top_k_elements = find_top_k_elements(vec, 3);
