@@ -24,16 +24,15 @@ vector<int> get_intersection1(vector<int> &arr1, vector<int> &arr2) {
 	}
 	
 	while(it1 != arr1.end() && it2 != arr2.end()) {
-		if(*it1 < *it2) {
-			it1++;
-		}	
-		else if(*it2 < *it1) {
-			it2++;
-		}
-		
 		if(*it1 == *it2) {
 			out.push_back(*it1);
 			it1++;
+			it2++;
+		}
+		else if(*it1 < *it2) {
+			it1++;
+		}	
+		else if(*it1 > *it2) {
 			it2++;
 		}
 		
