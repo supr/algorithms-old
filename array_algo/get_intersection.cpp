@@ -11,7 +11,7 @@ array with numbers {1, 7}.
 
 Solution:
 - vector<int> get_intersection1(vector<int> &arr1, vector<int> &arr2): Complexity: O(m + n)
-- vector<int> gget_intersection2(vector<int> &arr1, vector<int> &arr2): Complexity: O(m * log n)
+- vector<int> get_intersection2(vector<int> &arr1, vector<int> &arr2): Complexity: O(m * log n) ... based on binary search
 */
 
 vector<int> get_intersection1(vector<int> &arr1, vector<int> &arr2) {
