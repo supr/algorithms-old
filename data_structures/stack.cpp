@@ -1,8 +1,9 @@
-// Stack
-/* The Queue is a one-dimensional structures with LIFO (last in first out) ordering
+/* Stack
+   The Stack is a one-dimensional structures with LIFO (last in first out) ordering
    supports two types of basic operations:
  - push (val): inserting one element with value val at the beginning of the stack
- - pop: removing one element from the beginning of the stack and returning its value*/
+ - pop: removing one element from the beginning of the stack and returning its value
+*/
  
 //   Runtime Complexity:
 //   Insert: O(1)
