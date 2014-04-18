@@ -168,34 +168,37 @@ void mergesort(int *a, int *b, int l, int r)
    Best case: O(n*log(n)), Average case: O(n*log(n)), Worst case: O(n^2), 
    Additional Memory: O(log(n))
 */
-void quicksort(int *a, int l, int r)
-{
-	int m = (l + r) / 2;
-	int pivot = a[m];
-	int i = l;
-	int j = r-1;
 
-	do {
-		while(a[i] < pivot) i++; // find left element > pivot
-		while(a[j] > pivot) j--; // find right element < pivot
+int partition(vector<int> &vec, int left, int right) {
+    int pivot_index = left + rand() % (right - left + 1);
+    int pivot = vec[pivot_index];
 
-		// if i and j not already overlapped, we can swap
-		if(i < j)
-		{
-			swap(a[i], a[j]);
-		}
-	} while(i < j);
-
-	// sort left part
-	if(l < j)
-	{
-		quicksort(a, l, j);
-	}
-	// sort right part
-	if(j < r-1)
-	{
-		quicksort(a, i, r);
-	}
+    swap(vec[pivot_index], vec[right]);  // Move pivot to end
+    int store_index = left;
+    
+    for(int i = left; i < right; i++) {
+    	if(vec[i] <= pivot) {
+            swap(vec[store_index], vec[i]);
+            store_index++;
+    	}
+    }
+    
+    swap(vec[right], vec[store_index]);  // Move pivot to its final place
+    return store_index;
+}
+    
+void quicksort(int *a, int l, int r) {
+    // If the list has 2 or more items
+    // sort left part
+    if(l < j) {
+    	// Get lists of bigger and smaller items and final position of pivot
+        int pivot_index = partition(vec, left, right);
+        
+        // Recursively sort elements smaller than the pivot (assume pivotNewIndex - 1 does not underflow)
+        quicksort(a, left, pivot_index - 1);
+        // Recursively sort elements at least as big as the pivot (assume pivotNewIndex + 1 does not overflow)
+        quicksort(a, pivot_index + 1, right);
+    }
 }
 
 
