@@ -1,14 +1,15 @@
-// Queue
-/* The Queue is a one-dimensional structures with FIFO (first in first out) ordering
+/* Queue
+   The Queue is a one-dimensional structures with FIFO (first in first out) ordering
    supports two types of basic operations:
  - insert (enqueue): inserting one element with value val at the beginning of the queue
  - remove (dequeue): removing one element from the end of the queue and returning its   
    Value
 
-   Runtime Complexity:
-   Insert: O(1)
-   Delete: O(1)
+Runtime Complexity:
+- Insert: O(1)
+- Delete: O(1)
 */
+
 template <class T>
 struct node
 {
