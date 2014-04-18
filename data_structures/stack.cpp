@@ -3,11 +3,11 @@
    supports two types of basic operations:
  - push (val): inserting one element with value val at the beginning of the stack
  - pop: removing one element from the beginning of the stack and returning its value
-*/
  
-//   Runtime Complexity:
-//   Insert: O(1)
-//   Delete: O(1)
+Runtime Complexity:
+- Insert: O(1)
+- Delete: O(1)
+*/
 
 template <class T>
 class node {
