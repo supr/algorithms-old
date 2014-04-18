@@ -192,7 +192,7 @@ void quicksort(int *a, int l, int r) {
     // sort left part
     if(l < j) {
     	// Get lists of bigger and smaller items and final position of pivot
-        int pivot_index = partition(vec, left, right);
+        int pivot_index = partition(a, left, right);
         
         // Recursively sort elements smaller than the pivot (assume pivotNewIndex - 1 does not underflow)
         quicksort(a, left, pivot_index - 1);
