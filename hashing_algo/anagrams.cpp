@@ -6,10 +6,9 @@ using namespace std;
 
 /*
 Question: Anagram Strings
-Posted on November 17, 2011 by Arden
-Given two strings, check if they’re anagrams or not. Two strings are anagrams if they are written using the same exact letters, ignoring space,
-punctuation and capitalization. Each letter should have the same count in both strings. For example, ‘Eleven plus two’ and ‘Twelve plus one’ are
-meaningful anagrams of each other.
+Given two strings, check if they are anagrams or not. Two strings are anagrams if they are written using the same 
+exact letters, ignoring space, punctuation and capitalization. Each letter should have the same count in both 
+strings. For example, "Eleven plus two" and "Twelve plus one" are meaningful anagrams of each other.
 */
 
 bool are_anagram_strings1(string s1, string s2) {
