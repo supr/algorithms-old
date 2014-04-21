@@ -6,8 +6,7 @@
 using namespace std;
 
 /*
-Given an array of numbers and a sliding window size, how do you get the maximum numbers in all sliding 
-windows?
+Given an array of numbers and a sliding window size, how do you get the maximum numbers in all sliding windows?
 For example, if the input array is {2, 3, 4, 2, 6, 2, 5, 1} and the size of the sliding windows is 3, 
 the output of maximums are {4, 4, 6, 6, 6, 5}
 
