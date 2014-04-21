@@ -12,12 +12,12 @@ For example, if the input array is {2, 3, 4, 2, 6, 2, 5, 1} and the size of the 
 the output of maximums are {4, 4, 6, 6, 6, 5}
 
 Sliding Windows in an Array		Maximums in Sliding Windows
-[2,3,4],2,6,2,5,1				      4 
-2,[3,4,2],6,2,5,1             4
-2,3,[4,2,6],2,5,1             6
-2,3,4,[2,6,2],5,1 				    6
-2,3,4,2,[6,2,5],1 				    6
-2,3,4,2,6,[2,5,1]				      5
+[2,3,4],2,6,2,5,1                       4 
+2,[3,4,2],6,2,5,1                       4
+2,3,[4,2,6],2,5,1                       6
+2,3,4,[2,6,2],5,1                       6
+2,3,4,2,[6,2,5],1                       6
+2,3,4,2,6,[2,5,1]                       5
 */
 
 vector<int> maxInWindows(vector<int> maxi, unsigned int windowSize) {
