@@ -16,8 +16,9 @@
    Search: O(n) ... n is the size of the hashtable
    Remove: O(n)
 */
-class hashtable
-{
+
+
+class Hashtable {
 private:
 	string *key_arr;
 	unsigned int *value_arr;
@@ -25,159 +26,114 @@ private:
 	unsigned int size;
 
 private:
-	unsigned int hash(string key)
-	{
+	unsigned int hash(string key) {
 		int sum = 0;
-		
-		for(unsigned int i = 0; i < key.size(); i++)
-		{
+
+		for(unsigned int i = 0; i < key.size(); i++) {
 			sum = sum + static_cast<unsigned int>(key[i]);
 		}
 
 		sum = sum % size;
-		
+
 		return sum;
 	}
 
 public:
-	hashtable(int n): size(n)
-	{
+	Hashtable(int n): size(n) {
 		value_arr = new unsigned int[n];
 		status_arr = new int[n];
 		key_arr = new string[n];
 
-		for(unsigned int i = 0; i < n; i++)
-		{
+		for(unsigned int i = 0; i < n; i++) {
 			status_arr[i] = 0;
 		}
 	}
 
-	void add(const string &key, const unsigned int &value)
-	{
+	void insert(const string &key, const unsigned int &value) {
 		unsigned int hash_index = hash(key);
-		unsigned int j = 0;
+		unsigned int offset = 0;
+		unsigned int index = 0;
 
-		if(status_arr[hash_index] != 1)
-		{
-			key_arr[hash_index] = key;
-			value_arr[hash_index] = value;
-			status_arr[hash_index] = 1;
-		}
-		else
-		{
-			do {
-				hash_index ++;
-				hash_index = hash_index % size;
+		while (offset < size) {
+    			index = (hash_index + offset) % size_max;
 
-				if(status_arr[hash_index] != 1)
-				{
-					key_arr[hash_index] = key;
-					value_arr[hash_index] = value;
-					status_arr[hash_index] = 1;
+			if(status_arr[hash_index] != 1) {
+ 				key_arr[hash_index] = key;
+				value_arr[hash_index] = value;
+				status_arr[hash_index] = 1;
 
-					return;
-				}
-				else
-				{
-					j++;
-				}
-			} while(j < size);
+				return;
+			}
+ 			
+			offset++;
+  		}
 
-			throw("Error collision");
-		}
+		throw("Error calling insert");
 	}
 
-	bool contains(const string &key)
-	{
+	unsigned int find(const string &key) {
 		unsigned int hash_index = hash(key);
-		int j = 0;
+		unsigned int offset = 0;
+		unsigned int index = 0;
 
-		do
-		{
-			if(status_arr[hash_index] == 1 && key == key_arr[hash_index])
-			{
+		while (offset < size) {
+    			index = (hash_index + offset) % size_max;
+
+			if(status_arr[index] == 1 && key == key_arr[index]) {
+ 				return value_arr[index];
+			}
+ 			else if(status_arr[index] == 0) {
+				throw("Error calling find");
+			}
+
+			offset++;
+  		}
+
+		throw("Error calling find");
+	}
+
+	bool erase(const string &key) {
+		unsigned int hash_index = hash(key);
+		unsigned int offset = 0;
+		unsigned int index = 0;
+
+		while (offset < size) {
+    			index = (hash_index + offset) % size_max;
+
+			if(status_arr[index] == 1 && key == key_arr[index]) {
+ 				value_arr[index] = 0;
+				status_arr[index] = -1;
+
 				return true;
 			}
-			else if(status_arr[hash_index] == 0)
-			{
+ 			else if(status_arr[index] == 0) {
 				return false;
 			}
-			else
-			{
-				j++;
-			}
 
-			hash_index ++;
-			hash_index = hash_index % size;
-		}while(j < size);
+			offset++;
+  		}
 
 		return false;
 	}
 
-	unsigned int item(const string &key)
-	{
-		unsigned int hash_index = hash(key);
-		int j = 0;
-
-		do
-		{
-			if(status_arr[hash_index] == 1 && key == key_arr[hash_index])
-			{
-				return value_arr[hash_index];
-			}
-			else if(status_arr[hash_index] == 0)
-			{
-				throw("Error calling item");
-			}
-			else
-			{
-				j++;
-			}
-
-			hash_index ++;
-			hash_index = hash_index % size;
-		}while(j < size);
-
-		throw("Error calling item");
-	}
-
-	bool remove(const string &key)
-	{
-		unsigned int hash_index = hash(key);
-		int j = 0;
-
-		do
-		{
-			if(status_arr[hash_index] == 1 && key == key_arr[hash_index])
-			{
-				value_arr[hash_index] = 0;
-				status_arr[hash_index] = -1;
-
-				return true;
-			}
-			else if(status_arr[hash_index] == 0)
-			{
-				return false;
-			}
-			else
-			{
-				j++;
-			}
-
-			hash_index ++;
-			hash_index = hash_index % size;
-		}while(j < size);
-
-		return false;
-	}
-
-	~hashtable()
-	{
+	~Hashtable() {
 		delete[] value_arr;
 		delete[] key_arr;
 		delete[] status_arr;
 	}
 };
-
-
-
+ 
+int main() {
+  Hashtable map;
+  map.insert("k1", 1);
+  map.insert("k2", 2);
+ 
+  map.insert("k1", 5);
+ 
+  cout << "k2: " << map.find("k2") << endl;
+  cout << "k3: " << map.find("k3") << endl;
+ 
+  cout << "k2: " << map.remove("k2") << endl;
+ 
+  return 0;
+}
