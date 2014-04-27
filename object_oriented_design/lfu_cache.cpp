@@ -116,7 +116,6 @@ int main() {
   c.print();
     
   cout << c.find(3) << endl;
-  //c.print();
   cout << c.find(1) << endl;
   cout << c.find(4) << endl;
   cout << c.find(5) << endl;
