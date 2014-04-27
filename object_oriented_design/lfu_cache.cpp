@@ -7,28 +7,28 @@
 using namespace std;
 
 typedef struct entry {
-	int key;
-	int value;
-	int local_counter;
- 	int global_counter_start;
-	entry(int key_, int value_, int global_counter_start_): key(key_), 
-	                                                        value(value_),  
-	                                                        local_counter(1), 
-	                                                        global_counter_start(global_counter_start_) {}
+  int key;
+  int value;
+  int local_counter;
+  int global_counter_start;
+  entry(int key_, int value_, int global_counter_start_): key(key_), 
+                                                          value(value_),  
+                                                          local_counter(1), 
+                                                          global_counter_start(global_counter_start_) {}
 }entry;
 
 class LFU_Cache {
 public:
-	static unsigned int global_counter;
+  static unsigned int global_counter;
     
 private:
-	class Comparison {
-	public:
-		bool operator()(const entry &lhs, const entry &rhs) const {
+  class Comparison {
+  public:
+    bool operator()(const entry &lhs, const entry &rhs) const {
       float freq_lhs = static_cast<float>(lhs.local_counter) / (LFU_Cache::global_counter - lhs.global_counter_start);
-			float freq_rhs = static_cast<float>(rhs.local_counter) / (LFU_Cache::global_counter - rhs.global_counter_start);
+      float freq_rhs = static_cast<float>(rhs.local_counter) / (LFU_Cache::global_counter - rhs.global_counter_start);
 
-			return freq_lhs > freq_rhs;  
+      return freq_lhs > freq_rhs;  
     }
   };
 
@@ -40,11 +40,11 @@ private:
    
 private:
   void erase() {
-  	auto it = pq.begin();
+    auto it = pq.begin();
   
     cout << "delete key: " << it->key << endl;
   
-  	ht.erase(it->key);
+    ht.erase(it->key);
     auto h = MyPriQue::s_handle_from_iterator(it);
     pq.erase(h);
   }
@@ -52,7 +52,7 @@ private:
 public:
   LFU_Cache(int cache_size_): cache_size(cache_size_) {}
   
-	void insert(int key, int value) {
+  void insert(int key, int value) {
     int current_size = ht.size() + 1;
     if (current_size > cache_size) {
       erase();
@@ -70,27 +70,26 @@ public:
     }
     else {
       handle_t h = pq.push(entry(key, value, LFU_Cache::global_counter));
-    
       ht.insert(make_pair(key, h));
     }
   
     LFU_Cache::global_counter++;
-	}
+  }
   
-	int find(int key) {
+  int find(int key) {
     auto it = ht.find(key);
  
-  	if (it != ht.end()) {
+    if (it != ht.end()) {
       handle_t h = it->second;
       (*h).local_counter++;
       LFU_Cache::global_counter++;
       pq.update(h);
     
-  		return (*h).value;
-  	}
+      return (*h).value;
+    }
  
-  	return 0;
-	}
+    return 0;
+  }
   
   void print() {
     for(auto it = pq.begin(); it != pq.end(); it++) {
