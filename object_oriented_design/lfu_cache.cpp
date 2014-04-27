@@ -58,9 +58,6 @@ public:
 
     if (it != ht.end()) {
       handle_t h = it->second;
-      
-      cout << "already in hashmap" << (*h).key << endl;
-            
       (*h).local_counter++;
       (*h).value = value;
       pq.update(h);
