@@ -10,11 +10,9 @@ typedef struct entry {
   int key;
   int value;
   int local_counter;
-  int global_counter_start;
-  entry(int key_, int value_, int global_counter_start_): key(key_), 
-                                                          value(value_),  
-                                                          local_counter(1), 	                                                        
-                                                          global_counter_start(global_counter_start_) {}
+  entry(int key_, int value_): key(key_), 
+                               value(value_),  
+                               local_counter(1) {}
 }entry;
 
 class LFU_Cache {
@@ -24,11 +22,8 @@ public:
 private:
   class Comparison {
   public:
-    bool operator()(const entry &lhs, const entry &rhs) const {
-      float freq_lhs = static_cast<float>(lhs.local_counter) / (LFU_Cache::global_counter - lhs.global_counter_start);
-      float freq_rhs = static_cast<float>(rhs.local_counter) / (LFU_Cache::global_counter - rhs.global_counter_start);
-
-      return freq_lhs < freq_rhs;  
+    bool operator()(const entry &lhs, const entry &rhs) const {      
+      return lhs.local_counter > rhs.local_counter;
     }
   };
 
@@ -71,12 +66,10 @@ public:
       pq.update(h);
     }
     else {
-      handle_t h = pq.push(entry(key, value, LFU_Cache::global_counter));
+      handle_t h = pq.push(entry(key, value));
     
       ht.insert(make_pair(key, h));
     }
-  
-    LFU_Cache::global_counter++;
   }
   
   int find(int key) {
@@ -85,7 +78,6 @@ public:
     if (it != ht.end()) {
       handle_t h = it->second;
       (*h).local_counter++;
-      LFU_Cache::global_counter++;
       pq.update(h);
     
       return (*h).value;
@@ -99,13 +91,11 @@ public:
     cout << "\tmin_key: " << pq.top().key << endl;
     
     for(auto it = pq.begin(); it != pq.end(); it++) {
-      float freq = static_cast<float>(it->local_counter) / (LFU_Cache::global_counter - it->global_counter_start);
+      unsigned int freq = it->local_counter;
       cout << "\tkey: " << it->key << " \tfreq: " << freq << endl;
     }
   }
 };
-
-unsigned int LFU_Cache::global_counter = 1;
 
 int main() {
   LFU_Cache c(3);
