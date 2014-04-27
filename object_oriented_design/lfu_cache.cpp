@@ -7,11 +7,11 @@
 using namespace std;
 
 typedef struct entry {
-	int key;
-	int value;
-	int local_counter;
- 	int global_counter_start;
-	entry(int key_, int value_, int global_counter_start_): key(key_), 
+  int key;
+  int value;
+  int local_counter;
+  int global_counter_start;
+  entry(int key_, int value_, int global_counter_start_): key(key_), 
 	                                                        value(value_),  
 	                                                        local_counter(0), 
 	                                                        global_counter_start(global_counter_start_) {}
@@ -19,16 +19,16 @@ typedef struct entry {
 
 class LFU_Cache {
 public:
-	static unsigned int global_counter;
+  static unsigned int global_counter;
 
 private:
-	class Comparison {
-	public:
-		bool operator()(const entry &lhs, const entry &rhs) const {
+  class Comparison {
+  public:
+    bool operator()(const entry &lhs, const entry &rhs) const {
       float freq_lhs = static_cast<float>(lhs.local_counter) / (LFU_Cache::global_counter - lhs.global_counter_start);
-			float freq_rhs = static_cast<float>(lhs.local_counter) / (LFU_Cache::global_counter - rhs.global_counter_start);
+      float freq_rhs = static_cast<float>(lhs.local_counter) / (LFU_Cache::global_counter - rhs.global_counter_start);
 
-			return freq_lhs < freq_rhs;  
+      return freq_lhs < freq_rhs;  
     }
   };
 
@@ -42,7 +42,7 @@ private:
   
 public:
   LFU_Cache(int cache_size_);
-	void insert(int key, int value);
-	int find(int key);
+  void insert(int key, int value);
+  int find(int key);
   void print();
 };
