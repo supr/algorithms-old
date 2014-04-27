@@ -64,7 +64,6 @@ public:
     }
     else {
       handle_t h = pq.push(entry(key, value));
-    
       ht.insert(make_pair(key, h));
     }
   }
