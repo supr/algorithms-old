@@ -28,7 +28,7 @@ private:
       float freq_lhs = static_cast<float>(lhs.local_counter) / (LFU_Cache::global_counter - lhs.global_counter_start);
 			float freq_rhs = static_cast<float>(rhs.local_counter) / (LFU_Cache::global_counter - rhs.global_counter_start);
 
-			return freq_lhs > freq_rhs;  
+			return freq_lhs < freq_rhs;  
     }
   };
 
@@ -40,13 +40,12 @@ private:
    
 private:
   void erase() {
-  	auto it = pq.begin();
+  	auto key = pq.top().key;
   
-    cout << "delete key: " << it->key << endl;
+    cout << "delete key: " << key << endl;
   
-  	ht.erase(it->key);
-    auto h = MyPriQue::s_handle_from_iterator(it);
-    pq.erase(h);
+  	ht.erase(key);
+    pq.pop();
   }
   
 public:
