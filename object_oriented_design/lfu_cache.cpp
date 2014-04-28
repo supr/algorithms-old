@@ -16,9 +16,6 @@ typedef struct entry {
 }entry;
 
 class LFU_Cache {
-public:
-  static unsigned int global_counter;
-    
 private:
   class Comparison {
   public:
