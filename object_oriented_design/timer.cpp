@@ -124,7 +124,7 @@ int main() {
 	t.add_event(5500, &test4);
 	t.add_event(2000, &Test::test5);
 
-	std::thread cpu_clock_thread(timer_irq, t);
+	std::thread cpu_clock_thread(timer_irq, std::ref(t));
 	cpu_clock_thread.join();
 
 	return 0;
