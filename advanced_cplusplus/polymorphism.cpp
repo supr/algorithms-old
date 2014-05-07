@@ -25,7 +25,12 @@ using namespace std;
 // example, since pointed or referred object is of derived type, vptr of derived class is accessed). Once 
 // vptr is fetched, vtable of derived class can be accessed. Using vtable, address of derived derived class 
 // function show() is accessed and called.
-// if a class has any virtual function, it should have a virtual destructor, and that classes not designed 
+// If the Base Class Destruktor is not virtual:
+// Since Base's destructor (Polygon) is not virtual and b is a Base* pointing to a Derived object (Triangle), 
+// delete b has undefined behaviour. In most implementations, the call to the destructor will be resolved 
+// like any non-virtual code, meaning that the destructor of the base class will be called but not the one 
+// of the derived class, resulting in resources leak.
+// If a class has any virtual function, it should have a virtual destructor, and that classes not designed 
 // to be base classes or not designed to be used polymorphically should not declare virtual destructors.
 
 class Polygon
