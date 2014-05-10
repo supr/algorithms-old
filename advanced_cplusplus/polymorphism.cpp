@@ -81,7 +81,7 @@ public:
     ~Calculator(){}
 
     int calculate(int i1, int i2) { 
-        return doOperation.operator()(i1, i2); // This is the "inner" function.
+        return doOperation(i1, i2); // This is the "inner" function.
     } 
   
 private: 
