@@ -135,14 +135,14 @@ int main ()
   for_each(polygons.begin(), polygons.end(), [](std::shared_ptr<Polygon> sp) { cout << sp.get()->area() << endl; } );
 
 
-	Calculator<Adder> c1{Adder()};
+  Calculator<Adder> c1{Adder()};
   cout << c1.calculate(2, 3) << endl;
 
-	Calculator<Multiplier> c2{Multiplier()};
- 	cout << c2.calculate(2, 3) << endl;
+  Calculator<Multiplier> c2{Multiplier()};
+  cout << c2.calculate(2, 3) << endl;
   
-	Calculator<WeightedSum> c3{WeightedSum(2, 5)};
- 	cout << c3.calculate(2, 3) << endl;
+  Calculator<WeightedSum> c3{WeightedSum(2, 5)};
+  cout << c3.calculate(2, 3) << endl;
  	
   return 0;
 }
