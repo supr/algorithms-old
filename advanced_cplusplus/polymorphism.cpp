@@ -78,7 +78,7 @@ class Calculator
 { 
 public: 
     Calculator(){} 
-    virtual ~Calculator(){}
+    ~Calculator(){}
 
     int calculate(int i1, int i2) { 
         return doOperation.operator()(i1, i2); // This is the "inner" function.
@@ -92,7 +92,7 @@ class Adder /* Notice the lack of inheritance here */
 { 
 public: 
     Adder() {} 
-    virtual ~Adder(){}
+    ~Adder(){}
 
     int operator() (int i1, int i2) { 
         return i1 + i2; 
@@ -103,7 +103,7 @@ class Multiplier
 { 
 public: 
     Multiplier() {} 
-    virtual ~Multiplier(){}
+    ~Multiplier(){}
 
     int operator() (int i1, int i2) { 
         return i1 * i2; 
@@ -125,7 +125,7 @@ int main ()
 
   Calculator<Multiplier> *c2 = new Calculator<Multiplier>(); 
   cout << c2->calculate(2, 3) << endl;
-  delete c1;
+  delete c2;
 
   return 0;
 }
