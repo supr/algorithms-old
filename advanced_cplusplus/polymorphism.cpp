@@ -91,11 +91,11 @@ private:
 struct WeightedSum 
 {
 private:
-	int weight1;
-	int weight2;
+  int weight1;
+  int weight2;
 	
 public: 
-	WeightedSum(int myweight1, int myweight2): weight1(myweight1), weight2(myweight2) {} 
+  WeightedSum(int myweight1, int myweight2): weight1(myweight1), weight2(myweight2) {} 
   WeightedSum() {} 
   ~WeightedSum(){}
 
