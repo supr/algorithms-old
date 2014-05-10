@@ -73,41 +73,57 @@ public:
 // in as an instantiation argument. This creates a new type, which is the dynamic behavior we want. Using the 
 // following code, we achieve the same output as before. 
 
-template <class Operator> 
-class Calculator 
+template <class T>
+class Calculator
 { 
 public: 
-    Calculator(){} 
-    ~Calculator(){}
+  Calculator<T>(T t): op(t) {}
+  ~Calculator(){}
 
-    int calculate(int i1, int i2) { 
-        return doOperation(i1, i2); // This is the "inner" function.
-    } 
+  int calculate(int i1, int i2) { 
+    return op(i1, i2); // This is the "inner" function.
+  } 
   
 private: 
-    Operator doOperation; 
+  T op; 
 }; 
+  
+struct WeightedSum 
+{
+private:
+	int weight1;
+	int weight2;
+	
+public: 
+	WeightedSum(int myweight1, int myweight2): weight1(myweight1), weight2(myweight2) {} 
+  WeightedSum() {} 
+  ~WeightedSum(){}
+
+  int operator() (int i1, int i2) { 
+    return weight1 * i1 + weight2 * i2; 
+  } 
+};
   
 class Adder /* Notice the lack of inheritance here */
 { 
 public: 
-    Adder() {} 
-    ~Adder(){}
+  Adder() {} 
+  ~Adder(){}
 
-    int operator() (int i1, int i2) { 
-        return i1 + i2; 
-    } 
+  int operator() (int i1, int i2) { 
+    return i1 + i2; 
+  } 
 }; 
   
 class Multiplier 
 { 
 public: 
-    Multiplier() {} 
-    ~Multiplier(){}
+  Multiplier() {} 
+  ~Multiplier(){}
 
-    int operator() (int i1, int i2) { 
-        return i1 * i2; 
-    } 
+  int operator() (int i1, int i2) { 
+    return i1 * i2; 
+  }
 };
 
 int main () 
@@ -119,13 +135,14 @@ int main ()
   for_each(polygons.begin(), polygons.end(), [](std::shared_ptr<Polygon> sp) { cout << sp.get()->area() << endl; } );
 
 
-  Calculator<Adder> *c1 = new Calculator<Adder>(); 
-  cout << c1->calculate(2, 3) << endl;
-  delete c1;
+	Calculator<Adder> c1{Adder()};
+  cout << c1.calculate(2, 3) << endl;
 
-  Calculator<Multiplier> *c2 = new Calculator<Multiplier>(); 
-  cout << c2->calculate(2, 3) << endl;
-  delete c2;
-
+	Calculator<Multiplier> c2{Multiplier()};
+ 	cout << c2.calculate(2, 3) << endl;
+  
+	Calculator<WeightedSum> c3{WeightedSum(2, 5)};
+ 	cout << c3.calculate(2, 3) << endl;
+ 	
   return 0;
 }
