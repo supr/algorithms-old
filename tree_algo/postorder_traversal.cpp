@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 Question:
-Given a binary search tree, print the elements post-order iteratively without using recursion.
+Given a binary search tree, print the elements post-order iterative and recursive.
 
 Post-order
 1. Traverse the left subtree.
@@ -20,6 +20,7 @@ Post-order
 3. Visit the root.
 
 The algorithm is implemented in:
+- void postorder_traversal_recursive(Node *root);
 - void postorder_traversal_iterative(Node *root);
 */
 
@@ -473,6 +474,17 @@ public:
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
+  void postorder_traversal_recursive(Node *root) {
+    if(!root) {
+      return;
+    }
+
+    postorder_traversal_iterative(root->left);
+    postorder_traversal_iterative(root->right);
+
+    cout << root->value << ' ';
+  }
+
 	void postorder_traversal_iterative(Node *root) {
 		stack<Node*> s;
 		stack<Node*> out;
@@ -513,6 +525,8 @@ int main() {
 
 	t4.print_head(t4, cout);
 
+  t4.postorder_traversal_recursive(t4.get_root());
+  cout << '\n';
 	t4.postorder_traversal_iterative(t4.get_root());
 
 	return 0;

@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 Question:
-Given a binary search tree, print the elements in-order iteratively without using recursion.
+Given a binary search tree, print the elements in-order iterative and recursive.
 
 Inorder:
 1. Traverse the left subtree.
@@ -486,7 +486,7 @@ void inorder_traversal_recursive(Node *root) {
     inorder_traversal_recursive(root->right);
   }
 
-	void inorder_traversal_iterative(Node *root) {
+void inorder_traversal_iterative(Node *root) {
 		stack<Node*> s;
 		Node *curr = root;
 		
