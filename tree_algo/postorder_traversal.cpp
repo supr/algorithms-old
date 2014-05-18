@@ -22,6 +22,7 @@ Post-order
 The algorithm is implemented in:
 - void postorder_traversal_recursive(Node *root);
 - void postorder_traversal_iterative(Node *root);
+- void postorder_traversal_iterative2(Node *root);
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -510,6 +511,41 @@ public:
 			cout << curr->value << ' ';
 		}
 	}
+
+  void postorder_traversal_iterative2(Node *root) {
+    if (!root) return;
+    
+    stack<Node*> s;
+    s.push(root);
+    Node *prev = NULL;
+  
+    while (!s.empty()) {
+      Node *curr = s.top();
+      
+      // we are traversing down the tree
+      if (!prev || prev->left == curr || prev->right == curr) {
+        if (curr->left) {
+          s.push(curr->left);
+        }
+        else if (curr->right) {
+          s.push(curr->right);
+        }
+      } 
+      // we are traversing up the tree from the left
+      else if (curr->left == prev) {
+        if (curr->right) {
+          s.push(curr->right);
+        }
+      } 
+      // we are traversing up the tree from the right
+      else {
+        cout << curr->data << " ";
+        s.pop();
+      }
+      
+      prev = curr; // record previously traversed node
+    }
+  }
 };
 
 int main() {
@@ -528,6 +564,8 @@ int main() {
   t4.postorder_traversal_recursive(t4.get_root());
   cout << '\n';
 	t4.postorder_traversal_iterative(t4.get_root());
+  cout << '\n';
+  t4.postorder_traversal_iterative2(t4.get_root());
 
 	return 0;
 }
