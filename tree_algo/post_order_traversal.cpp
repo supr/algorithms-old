@@ -14,6 +14,11 @@ using namespace std;
 Question:
 Given a binary search tree, print the elements post-order iteratively without using recursion.
 
+Post-order
+1. Traverse the left subtree.
+2. Traverse the right subtree.
+3. Visit the root.
+
 The algorithm is implemented in:
 - void postorder_traversal_iterative(Node *root);
 */

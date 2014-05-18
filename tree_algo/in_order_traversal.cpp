@@ -14,7 +14,13 @@ using namespace std;
 Question:
 Given a binary search tree, print the elements in-order iteratively without using recursion.
 
+Inorder:
+1. Traverse the left subtree.
+2. Visit the root.
+3. Traverse the right subtree.
+
 The algorithm is implemented in:
+- void inorder_traversal_recursive(Node *root);
 - void inorder_traversal_iterative(Node *root);
 */
 
@@ -468,6 +474,18 @@ public:
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
+void inorder_traversal_recursive(Node *root) {
+    if(!root) {
+      return;
+    }
+
+    inorder_traversal_recursive(root->left);
+
+    cout << root->value << ' ';
+
+    inorder_traversal_recursive(root->right);
+  }
+
 	void inorder_traversal_iterative(Node *root) {
 		stack<Node*> s;
 		Node *curr = root;
@@ -502,6 +520,8 @@ int main() {
 
 	t4.print_head(t4, cout);
 
+  t4.inorder_traversal_recursive(t4.get_root());
+  cout << '\n';
 	t4.inorder_traversal_iterative(t4.get_root());
 
 	return 0;
