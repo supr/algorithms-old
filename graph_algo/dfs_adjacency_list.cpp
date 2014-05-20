@@ -37,7 +37,31 @@ void print_prev(std::vector<vertex_t> &prev) {
   }
 }
 
-void DFS(adjacency_list_t &l, vertex_t src) {
+void DFS_recursive_iternal(adjacency_list_t &l, std::vector<bool> &visited, vertex_t src) {
+  visited[src] = true;
+
+  cout << "current: " << src << endl;
+
+  for (auto it = l[src].begin(); it != l[src].end(); it++) {
+    vertex_t neighbor = it->target;
+
+    if (!visited[neighbor]) {
+      DFS_recursive_iternal(l, visited, neighbor);
+    }
+  }
+}
+
+void DFS_recursive(adjacency_list_t &l, vertex_t src) {
+  std::vector<bool> visited;
+
+  for (int i = 0; i < l.size(); i++) {
+    visited.push_back(false);
+  }
+
+  DFS_recursive_iternal(l, visited, src);
+}
+
+void DFS_iterative(adjacency_list_t &l, vertex_t src) {
   stack<vertex_t> s;
   vertex_t current = src;
   std::vector<bool> visited;
@@ -96,7 +120,11 @@ int main() {
   adjacency_list[7].push_back(node(2, 7));
   adjacency_list[7].push_back(node(5, 6));
 
-  DFS(adjacency_list, 0);
+  cout << "DFS_iterative: " << endl;
+  DFS_iterative(adjacency_list, 0);
+
+  cout << "DFS_recursive: " << endl;
+  DFS_recursive(adjacency_list, 0);
 
   return 0;
 }
