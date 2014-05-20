@@ -257,11 +257,19 @@ public:
 
     return tmp;
   }
-    
+  
   // recursive DFS
   pos get_exit2(pos curr_pos) {
+    pos exit_pos;
+
+    get_exit2_internal(curr_pos, exit_pos);
+
+    return exit_pos;
+  }
+
+  void get_exit2_internal(pos curr_pos, pos &exit_pos) {
     if(curr_pos == end_pos) {
-      return curr_pos;
+      exit_pos = curr_pos;
     }
     
     set_visited(curr_pos, true);
@@ -269,25 +277,25 @@ public:
     if(getLower(curr_pos)) {
       pos new_pos = move_lower(curr_pos);
       if(!is_visited(new_pos)) {
-        get_exit2(new_pos);
+        get_exit2_internal(new_pos, exit_pos);
       }
     }
     if(getUpper(curr_pos)) {
       pos new_pos = move_upper(curr_pos);
       if(!is_visited(new_pos)) {
-        get_exit2(new_pos);
+        get_exit2_internal(new_pos, exit_pos);
       }
     }
     if(getRight(curr_pos)) {
       pos new_pos = move_right(curr_pos);
       if(!is_visited(new_pos)) {
-        get_exit2(new_pos);
+        get_exit2_internal(new_pos, exit_pos);
       }
     }
     if(getLeft(curr_pos)) {
       pos new_pos = move_left(curr_pos);
       if(!is_visited(new_pos)) {
-        get_exit2(new_pos);
+        get_exit2_internal(new_pos, exit_pos);
       }
     }
  }
