@@ -15,8 +15,8 @@ where S is the start location and F is the end location.
 0 0 0 0 0 0 0 0 0 
 
 0 Wall
-# End
-+ Start
+F End
+S Start
 1 path
 
 The idea (as with any rat maze) is to traverse from S to F. The matrix can 
