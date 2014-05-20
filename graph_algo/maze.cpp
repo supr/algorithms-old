@@ -111,7 +111,7 @@ public:
   }
   
   bool getLeft(const pos &curr_pos) {
-    if(is_valid_pos(curr_pos.row, curr_pos.col - 1) == false) {
+    if(!is_valid_pos(curr_pos.row, curr_pos.col - 1)) {
       return false;
     }
     
@@ -123,7 +123,7 @@ public:
   }
   
   bool getRight(const pos &curr_pos) {
-    if(is_valid_pos(curr_pos.row, curr_pos.col + 1) == false) {
+    if(!is_valid_pos(curr_pos.row, curr_pos.col + 1)) {
       return false;
     }
     
@@ -135,7 +135,7 @@ public:
   }
 
   bool getUpper(const pos &curr_pos) {
-    if(is_valid_pos(curr_pos.row - 1, curr_pos.col) == false) {
+    if(!is_valid_pos(curr_pos.row - 1, curr_pos.col)) {
       return false;
     }
     
@@ -147,7 +147,7 @@ public:
   }
   
   bool getLower(const pos &curr_pos) {
-    if(is_valid_pos(curr_pos.row + 1, curr_pos.col) == false) {
+    if(!is_valid_pos(curr_pos.row + 1, curr_pos.col)) {
       return false;
     }
     
