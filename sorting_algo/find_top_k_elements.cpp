@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
 /* Question:
@@ -8,9 +9,9 @@ An unsorted array is given and we need to find top k elements in an efficient wa
 and we cannot sort the array.
 
 Solution:
-Option 1: Using a Priority Queue (heap). Complexity O(n log k)
-Option 2: Using Selection algorithm (first finding kth largest element and then 
+Option 1: Using Selection algorithm (first finding kth largest element and then 
 sorting the elements < k). Complexity O(k log k).
+Option 2: Using a Priority Queue (heap). Complexity O(n log k)
 */
 
 int partition(vector<int> &vec, int left, int right) {
@@ -50,12 +51,40 @@ int quick_select(vector<int> &vec, int left, int right, int k) {
     }
 }
 
+// Option 1: Selection algorithm
 vector<int> find_top_k_elements(vector<int> &vec, int k) {
 	vector<int> out;
-	
+
 	for(int i = 0; i < k; i++) {
 		quick_select(vec, 0, vec.size() - 1, i);
 		out.push_back(vec[i]);
+	}
+
+	return out;
+}
+
+// Option 2: Min Heap: https://www.cise.ufl.edu/~mssz/DatStrucAlg/Min-MaxHeaps.gif
+vector<int> find_top_k_elements2(const vector<int> &vec, int k) {
+	priority_queue<int, vector<int>, std::less<int>> pq;
+	vector<int> out;
+	
+	for(int i = 0; i < vec.size(); i++) {
+		if(pq.size() < k) {
+			pq.push(vec[i]);
+		}
+		else {
+			int top_element = pq.top();
+			
+			if(vec[i] < top_element) {
+				pq.pop();
+				pq.push(vec[i]);
+			}
+		}
+	}
+	
+	while(!pq.empty()) {
+		out.push_back(pq.top());
+		pq.pop();
 	}
 	
 	return out;
@@ -63,13 +92,19 @@ vector<int> find_top_k_elements(vector<int> &vec, int k) {
 
 int main() {
 	// your code goes here
-	
+
 	srand(time(0));
-	
+
 	vector<int> vec = {5,7,1,9,3,7,3,11,16,1};
 	vector<int> top_k_elements = find_top_k_elements(vec, 3);
-	
+
 	for_each(top_k_elements.begin(), top_k_elements.end(), [](int val) { cout << val << ' '; });
+
+	cout << '\n';
+	
+	vector<int> top_k_elements2 = find_top_k_elements2(vec, 3);
+
+	for_each(top_k_elements2.begin(), top_k_elements2.end(), [](int val) { cout << val << ' '; });
 	
 	return 0;
 }
