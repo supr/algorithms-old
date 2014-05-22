@@ -513,24 +513,54 @@ public:
 };
 
 int main() {
-  Tree<int> t4;
-  t4.insert(10);
-  t4.insert(5);
-  t4.insert(12);
-  t4.insert(4);
-  t4.insert(3);
-  t4.insert(2);
-  t4.insert(7);
-  t4.insert(14);
+  Tree<int> t1;
+  t1.insert(3);
+  t1.insert(1);
+  t1.insert(5);
+  t1.get_root()->right->value = 2;
 
-  bool is_bin_tree = t4.is_BST1();
+  bool is_bin_tree1 = t1.is_BST1();
 
-  if (is_bin_tree) {
+  if (is_bin_tree1) {
     cout << "The tree is a binary tree" << endl;
   }
   else {
     cout << "The tree is not a binary tree" << endl;
   }
 
+  bool is_bin_tree2 = t1.is_BST2();
+
+  if (is_bin_tree2) {
+    cout << "The tree is a binary tree" << endl;
+  }
+  else {
+    cout << "The tree is not a binary tree" << endl;
+  }
+  
+  
+  Tree<int> t2;
+  t2.insert(3);
+  t2.insert(1);
+  t2.insert(5);
+  t2.insert(2);
+
+  is_bin_tree1 = t2.is_BST1();
+
+  if (is_bin_tree1) {
+    cout << "The tree is a binary tree" << endl;
+  }
+  else {
+    cout << "The tree is not a binary tree" << endl;
+  }
+  
+  is_bin_tree2 = t2.is_BST2();
+
+  if (is_bin_tree2) {
+    cout << "The tree is a binary tree" << endl;
+  }
+  else {
+    cout << "The tree is not a binary tree" << endl;
+  }
+  
   return 0;
 }
