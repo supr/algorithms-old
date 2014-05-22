@@ -61,14 +61,26 @@ public:
 		cout << '\n';
 	}
 
-	node *reverse_list_internal(node *curr) {
+	void print_rev() {
+		node *tmp = last;
+		
+		while(tmp != NULL) {
+			cout << tmp->value << ' ';
+			
+			tmp = tmp->prev;
+		}
+		
+		cout << '\n';
+	}
+	
+	node *reverse_list_internal_recursive(node *curr) {
 		if (curr->next == NULL) {
 			first = curr;
 			curr->prev = NULL;
 			return curr;
 		}
 
-		node *prev_node = reverse_list_internal(curr->next);
+		node *prev_node = reverse_list_internal_recursive(curr->next);
 
 		if (curr->prev != NULL) {
 			prev_node->next = curr;
@@ -84,8 +96,30 @@ public:
 		return curr;
 	}
 
-	void reverse_doubly_linked_list() {
-		reverse_list_internal(first);
+	void reverse_doubly_linked_list_recursive() {
+		reverse_list_internal_recursive(first);
+	}
+	
+	void reverse_doubly_linked_list_iterative() {
+		node *prev = NULL;
+		node *next = NULL;
+		node *curr = first;
+		
+		last = curr;
+		
+		while(curr->next != NULL) {
+			next = curr->next;
+			
+			curr->next = prev;
+			curr->prev = next;
+			
+			prev = curr;
+			curr = next;
+		}
+		
+		first = curr;
+		curr->next = prev;
+		curr->prev = NULL;
 	}
 };
 
@@ -103,9 +137,15 @@ int main() {
 
 	l.print();
 
-	l.reverse_doubly_linked_list();
-
+	l.reverse_doubly_linked_list_recursive();
+		
 	l.print();
-
+	l.print_rev();
+	
+	l.reverse_doubly_linked_list_iterative();
+	
+	l.print();
+	l.print_rev();
+	
 	return 0;
 }
