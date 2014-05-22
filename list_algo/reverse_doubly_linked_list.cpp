@@ -107,7 +107,7 @@ public:
 		
 		last = curr;
 		
-		while(curr->next != NULL) {
+		while(curr != NULL) {
 			next = curr->next;
 			
 			curr->next = prev;
@@ -117,9 +117,7 @@ public:
 			curr = next;
 		}
 		
-		first = curr;
-		curr->next = prev;
-		curr->prev = NULL;
+		first = prev;
 	}
 };
 
