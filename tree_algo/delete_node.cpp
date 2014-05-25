@@ -535,19 +535,15 @@ public:
         Node *tmp = curr;
 
         if(curr->left) {
-          curr = curr->left;
+          root = curr->left;
+          root->parent = NULL;
         }
         else if(curr->right) {
-          curr = curr->right;
-        }
-
-        // if only 1 node available, we set root to NULL
-        if(curr == root) {
-          root = NULL;
+          root = curr->right;
+          root->parent = NULL;
         }
         else {
-          curr->parent = NULL;
-          root = curr;
+          root = NULL;
         }
 
         delete tmp;
