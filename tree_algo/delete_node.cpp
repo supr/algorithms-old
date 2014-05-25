@@ -519,7 +519,7 @@ public:
     else {
       Node *parent = get_parent(root, curr);
     
-      // if the current node has a parent, we need to change the parents child pointer
+      // if the node to delete has a parent, we need to change the parents child pointer
       if(parent) {
         if(parent->left == curr) {
           parent->left = curr->left;
@@ -530,7 +530,7 @@ public:
 
         delete curr;
       }
-      // if the current node has no parent, the node to delete is the root
+      // if the node to delete has no parent (node to delete == root), we set a new root node
       else {
         Node *tmp = curr;
 
