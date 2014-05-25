@@ -16,133 +16,6 @@ private:
 	node *root;
 
 public:
-	class tree_iterator {
-	private:
-		struct tree *ptree;
-		struct node *curr;
-		struct node *prev;
-
-	public:
-		tree_iterator(tree *ptree_): ptree(ptree_) {}
-
-		node *get_curr() {
-			return curr;
-		}
-
-		node *get_root() {
-			return ptree->get_root();
-		}
-
-		void tree_iterator_begin(node *start) {
-			prev = NULL;
-			curr = start;
-		}
-
-		void tree_iterator_end() {
-			curr = NULL;
-		}
-
-		bool operator== (tree_iterator &it) {
-			return this->get_curr() == it.get_curr();
-		}
-
-		bool operator!= (tree_iterator &it) {
-			return get_curr() != it.get_curr();
-		}
-
-		node operator* () {
-			return *this->get_curr();
-		}
-
-		// inorder_traversal
-		tree_iterator &get_next_node() {
-			if(curr) {
-				node *tmp;
-
-				// Found right children -> return 1st inorder node on right
-				if (curr->parent == NULL || curr->right != NULL) {
-					tmp = leftMostChild(curr->right);
-				} else {
-					// Go up until we’re on left instead of right (case 2b)
-					while ((tmp = curr->parent) != NULL) {
-						if (tmp->left == curr) {
-							break;
-						}
-						curr = tmp;
-					}
-				}
-				curr = tmp;
-			}
-			return *this;
-		}
-
-		node *leftMostChild(node *e) {
-			if (e == NULL) return NULL;
-
-			while (e->left != NULL) 
-				e = e->left;
-			
-			return e;
-		}
-	};
-
-public:
-	tree(): root(NULL) {}
-
-	node *get_root() {
-		return root;
-
-	}
-
-	class tree_iterator begin(node *start) {
-		class tree_iterator it(this);
-		it.tree_iterator_begin(start);
-		return it;
-	}
-
-	class tree_iterator end() {
-		class tree_iterator it(this);
-		it.tree_iterator_end();
-		return it;
-	}
-
-	void insert(int value) {
-		struct node *curr = root;
-		struct node *prev = NULL;
-		struct node *tmp = new node;
-		tmp->value = value;
-		tmp->left = NULL;
-		tmp->right = NULL;
-		tmp->parent = NULL;
-
-		if(root == NULL) {
-			root = tmp;
-		}
-		else {
-			while(curr) {
-				if(value < curr->value) {
-					prev = curr;
-					curr = curr->left;
-				}
-				else {
-					prev = curr;
-					curr = curr->right;
-				}
-			}
-
-			curr = prev;
-
-			if(value < curr->value) {
-				curr->left = tmp;	
-			}
-			else {
-				curr->right = tmp;
-			}
-
-			tmp->parent = prev;
-		}
-	}
-
 	int search_index(int  in_order[], int start, int end, int value) {
 		for(int i = start; i <= end; i++) {
 			if(in_order[i] == value) {
@@ -263,116 +136,52 @@ public:
 		return n;
 	}
 
-	// depth first search
-	void pre_order_traversal_recursive(node *n) {
-		if(n != NULL) {
-			cout << n->value;
-			pre_order_traversal_recursive(n->left);
-			pre_order_traversal_recursive(n->right);
-		}
-	}
+  node *create_tree_from_pre_order(int pre_order[], int start, int end) {
+    static int index = 0;
 
-	void pre_order_traversal_iterative(node *n) {
-		stack<node*> stk;
-		stk.push(n);
+    if(end < start)
+      return NULL;
 
-		while(!stk.empty()) {
-			node *tmp = stk.top();
-			stk.pop();
+    node *n = create_node(pre_order[index++]);
+    if(index == 1) {
+      root = n;
+    }
 
-			cout << tmp->value << endl;
+    int i = 0;
+    for(i = start; i <= end; i++) {
+      if(pre_order[i] > pre_order[start])
+        break;
+    }
 
-			if(tmp->left) {
-				stk.push(tmp->left);
-			}
+    n->left = create_tree_from_pre_order(pre_order, start+1, i-1);
+    n->right = create_tree_from_pre_order(pre_order, i, end);
+    
+    return n;
+  }
 
-			if(tmp->right) {
-				stk.push(tmp->right);
-			}
-		}
-	}
+  node *create_tree_from_post_order(int post_order[], int start, int end) {
+    static int index = end;
+    static int end_ = end;
 
-	void in_order_traversal_recursive(node *n) {
-		if(n != NULL) {
-			in_order_traversal_recursive(n->left);
-			cout << n->value;
-			in_order_traversal_recursive(n->right);
-		}
-	}
+    if(end < start)
+      return NULL;
 
-	void in_order_traversal_iterative(node *n) {
-		if (!n) return;
-		stack<node*> stk;
-		node *curr = n;
+    node *root_n = create_node(post_order[index--]);
+    if(index == end_-1) {
+      root = root_n;
+    }
 
-		while(!stk.empty() || curr) {
-			if(curr != NULL) {
-				stk.push(curr);
-				curr = curr->left;
-			}
-			else {
-				node *tmp = stk.top();
-				stk.pop();
+    int i = 0;
+    for(i = end; i >= 0; i--) {
+      if(post_order[i] < post_order[end])
+        break;
+    }
 
-				cout << tmp->value << endl;
+    root_n->right = create_tree_from_post_order(post_order, i+1, end-1);
+    root_n->left = create_tree_from_post_order(post_order, start, i);
 
-				curr = tmp->right;
-			}
-		}
-	}
-
-	void post_order_traversal_recursive(node *n) {
-		if(n != NULL) {
-			post_order_traversal_recursive(n->left);
-			post_order_traversal_recursive(n->right);
-			cout << n->value;
-		}
-	}
-
-	void post_order_traversal_iterative(node *n) {
-		stack<node*> stk;
-		stack<node*> output;
-		stk.push(n);
-
-		while(!stk.empty()) {
-			node *tmp = stk.top();
-			stk.pop();
-			output.push(tmp);
-
-			if(tmp->left) {
-				stk.push(tmp->left);
-			}
-			if(tmp->right) {
-				stk.push(tmp->right);
-			}
-		}
-
-		while(!output.empty()) {
-			node *tmp = output.top();
-			output.pop();
-
-			cout << tmp->value << endl;
-		}
-	}
-
-	// breath first search
-	void level_order_traversal_iterative(node *n) {
-		if (!n) return;
-		queue<node*> s;  
-		s.push(n);  
-
-		while (!s.empty()) {  
-			node *curr = s.front(); 
- 
-			cout << curr->value << endl;
-
-			s.pop(); 
-			if (curr->left)  // first put left child on to the queue because its FIFO
-				s.push(curr->left);  
-			if (curr->right)  
-				s.push(curr->right);  
-		}
-	}
+    return root_n;
+  }
 
 	node *get_in_order_predecessor(node *current) {
 			if(current) {
@@ -461,53 +270,6 @@ public:
 		}
 
 		return NULL;
-	}
-
-	node *create_tree_from_pre_order(int pre_order[], int start, int end) {
-		static int index = 0;
-
-		if(end < start)
-			return NULL;
-
-		node *n = create_node(pre_order[index++]);
-		if(index == 1) {
-			root = n;
-		}
-
-		int i = 0;
-		for(i = start; i <= end; i++) {
-			if(pre_order[i] > pre_order[start])
-				break;
-		}
-
-		n->left = create_tree_from_pre_order(pre_order, start+1, i-1);
-		n->right = create_tree_from_pre_order(pre_order, i, end);
-		
-		return n;
-	}
-
-	node *create_tree_from_post_order(int post_order[], int start, int end) {
-		static int index = end;
-		static int end_ = end;
-
-		if(end < start)
-			return NULL;
-
-		node *root_n = create_node(post_order[index--]);
-		if(index == end_-1) {
-			root = root_n;
-		}
-
-		int i = 0;
-		for(i = end; i >= 0; i--) {
-			if(post_order[i] < post_order[end])
-				break;
-		}
-
-		root_n->right = create_tree_from_post_order(post_order, i+1, end-1);
-		root_n->left = create_tree_from_post_order(post_order, start, i);
-
-		return root_n;
 	}
 
 	node *create_MST(int in_order[], int start, int end) {
@@ -603,16 +365,4 @@ int main() {
 
 	tree t1;
 	t1.create_tree_pre_in_order(pre_order_traversal, in_order_traversal, 0, sizeof(in_order_traversal) / sizeof(int)-1);
-
-	tree t2;
-	t2.insert(4);
-	t2.insert(3);
-	t2.insert(5);
-	t2.insert(6);
-	t2.insert(1);
-
-	tree::tree_iterator it(&t2);
-	for (it = t2.begin(t2.get_most_left_node(t2.get_root())); it != t2.end(); it = it.get_next_node()) {
-		cout << (*it).value << endl;
-	}
 }
