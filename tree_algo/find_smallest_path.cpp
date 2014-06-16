@@ -11,7 +11,14 @@
 using namespace std;
 
 /*
-Problem: Given a Binary tree and two nodes. Need to find smallest path between them
+Problem: Given a binary tree node, return the next node inorder.
+
+The algorithm is implemented in:
+- Node *get_next_node_inorder(Node *current) ... uses parent pointers.
+- Node *get_next_node_inorder2(Node *current) .. parent pointer is NOT needed in this algorithm.
+
+Time complexity:
+both algorithms run in O(h) where h is height of tree.
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -487,39 +494,48 @@ Node *lca(Node *root, Node *p, Node *q) {
   return r;
 }
 
-void dfs(Node *root, bool &found, Node *find, vector<Node*> &path) {
+void dfs(Node *root, bool pushfront, bool &found, Node *find, deque<Node*> &path) {
   if(!root || found) {
     return;
   }
   
-  cout << root->value << endl;
-  
   if(!found) {
-    path.push_back(root);
+    if(pushfront) {
+      path.push_front(root);
+    }
+    else {
+      path.push_back(root);
+    }
   }
   
   if(root == find) {
-    return;
+    found = true;
   }
   
-  dfs(root->left, found, find, path);
+  dfs(root->left, pushfront, found, find, path);
+  dfs(root->right, pushfront, found, find, path);
   
-  path.pop_back();
-  
-  dfs(root->right, found, find, path);
+  if(!found) {
+    if(pushfront) {
+      path.pop_front();
+    }
+    else {
+      path.pop_back();
+    }
+  }
 }
 
-vector<Node*> path_between_p_q(Node *p, Node *q) {
+deque<Node*> path_between_p_q(Node *p, Node *q) {
   Node *r = lca(root, p, q);
-  vector<Node*> path;
+  deque<Node*> path;
     
-  bool found = false;
-  dfs(r->left, found, p, path);
+    bool found = false;
+  dfs(r->left, true, found, p, path);
   
   path.push_back(r);
     
   found = false;
-  dfs(r->right, found, q, path);
+  dfs(r->right, false, found, q, path);
   
   return path;
 }
@@ -538,8 +554,7 @@ int main() {
 
   t4.print_head(t4, cout);
 
-
-  vector<Tree<int>::Node*> path = t4.path_between_p_q(t4.get_root()->left->left, t4.get_root()->right);
+  deque<Tree<int>::Node*> path = t4.path_between_p_q(t4.get_root()->left->left, t4.get_root()->left->right);
 
   for(int i = 0; i < path.size(); i++) {
       cout << path[i]->value << ' ';
