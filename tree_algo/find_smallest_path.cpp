@@ -11,14 +11,10 @@
 using namespace std;
 
 /*
-Problem: Given a binary tree node, return the next node inorder.
+Problem: Given a Binary tree and two nodes. Need to find smallest path between them.
 
 The algorithm is implemented in:
-- Node *get_next_node_inorder(Node *current) ... uses parent pointers.
-- Node *get_next_node_inorder2(Node *current) .. parent pointer is NOT needed in this algorithm.
-
-Time complexity:
-both algorithms run in O(h) where h is height of tree.
+- deque<Node*> path_between_p_q(Node *root, Node *p, Node *q)
 */
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -472,70 +468,71 @@ public:
   //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
   // Given a Binary tree and two nodes. Need to find smallest path between them
-Node *lca(Node *root, Node *p, Node *q) {
+Node *lca(Node *root, Node *p, Node *q, deque<Node*> &path, bool &both_found) {
   if(!root) {
     return NULL;
   } 
+  
+  path.push_back(root);
   
   if(root == p || root == q) {
     return root;
   }
   
-  Node *l = lca(root->left, p, q);
-  Node *r = lca(root->right, p, q);
+  Node *l = lca(root->left, p, q, path, both_found);
+  Node *r = lca(root->right, p, q, path, both_found);
   
   if(l && r) {
+    both_found = true;
     return root;
   }
   else if(l) {
+    path.pop_back();
     return l;
   }
-  
+  path.pop_back();
   return r;
 }
 
-void dfs(Node *root, bool pushfront, bool &found, Node *find, deque<Node*> &path) {
+void dfs(Node *root, bool &found, Node *find, deque<Node*> &path) {
   if(!root || found) {
     return;
   }
   
   if(!found) {
-    if(pushfront) {
-      path.push_front(root);
-    }
-    else {
-      path.push_back(root);
-    }
+    path.push_front(root);
   }
   
   if(root == find) {
     found = true;
   }
   
-  dfs(root->left, pushfront, found, find, path);
-  dfs(root->right, pushfront, found, find, path);
+  dfs(root->left, found, find, path);
+  dfs(root->right, found, find, path);
   
   if(!found) {
-    if(pushfront) {
-      path.pop_front();
-    }
-    else {
-      path.pop_back();
-    }
+    path.pop_front();
   }
 }
 
-deque<Node*> path_between_p_q(Node *p, Node *q) {
-  Node *r = lca(root, p, q);
+deque<Node*> path_between_p_q(Node *root, Node *p, Node *q) {
   deque<Node*> path;
-    
+  bool both_found = false;
+
+  Node *r = lca(root, p, q, path, both_found);
+
+  if(!both_found) {
     bool found = false;
-  dfs(r->left, true, found, p, path);
-  
-  path.push_back(r);
     
-  found = false;
-  dfs(r->right, false, found, q, path);
+    path.clear();
+    
+    if(r == p) {
+      dfs(r, found, q, path);
+    }
+    else if(r == q) {
+      dfs(r, found, p, path);
+    }
+  }
   
   return path;
 }
@@ -554,7 +551,7 @@ int main() {
 
   t4.print_head(t4, cout);
 
-  deque<Tree<int>::Node*> path = t4.path_between_p_q(t4.get_root()->left->left, t4.get_root()->left->right);
+  deque<Tree<int>::Node*> path = t4.path_between_p_q(t4.get_root(), t4.get_root()->left->left, t4.get_root()->right);
 
   for(int i = 0; i < path.size(); i++) {
       cout << path[i]->value << ' ';
