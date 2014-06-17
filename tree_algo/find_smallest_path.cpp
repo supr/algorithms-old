@@ -486,7 +486,6 @@ public:
       return root;
     }
     else if(l) {
-      path.pop_back();
       return l;
     }
     path.pop_back();
