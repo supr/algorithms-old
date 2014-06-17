@@ -467,75 +467,74 @@ public:
 
   //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-  // Given a Binary tree and two nodes. Need to find smallest path between them
-Node *lca(Node *root, Node *p, Node *q, deque<Node*> &path, bool &both_found) {
-  if(!root) {
-    return NULL;
-  } 
+  Node *lca(Node *root, Node *p, Node *q, deque<Node*> &path, bool &both_found) {
+    if(!root) {
+      return NULL;
+    } 
   
-  path.push_back(root);
+    path.push_back(root);
   
-  if(root == p || root == q) {
-    return root;
-  }
+    if(root == p || root == q) {
+      return root;
+    }
   
-  Node *l = lca(root->left, p, q, path, both_found);
-  Node *r = lca(root->right, p, q, path, both_found);
-  
-  if(l && r) {
-    both_found = true;
-    return root;
-  }
-  else if(l) {
+    Node *l = lca(root->left, p, q, path, both_found);
+    Node *r = lca(root->right, p, q, path, both_found);
+    
+    if(l && r) {
+      both_found = true;
+      return root;
+    }
+    else if(l) {
+      path.pop_back();
+      return l;
+    }
     path.pop_back();
-    return l;
+    return r;
   }
-  path.pop_back();
-  return r;
-}
 
-void dfs(Node *root, bool &found, Node *find, deque<Node*> &path) {
-  if(!root || found) {
-    return;
-  }
-  
-  if(!found) {
-    path.push_front(root);
-  }
-  
-  if(root == find) {
-    found = true;
-  }
-  
-  dfs(root->left, found, find, path);
-  dfs(root->right, found, find, path);
-  
-  if(!found) {
-    path.pop_front();
-  }
-}
-
-deque<Node*> path_between_p_q(Node *root, Node *p, Node *q) {
-  deque<Node*> path;
-  bool both_found = false;
-
-  Node *r = lca(root, p, q, path, both_found);
-
-  if(!both_found) {
-    bool found = false;
-    
-    path.clear();
-    
-    if(r == p) {
-      dfs(r, found, q, path);
+  void dfs(Node *root, bool &found, Node *find, deque<Node*> &path) {
+    if(!root || found) {
+      return;
     }
-    else if(r == q) {
-      dfs(r, found, p, path);
+    
+    if(!found) {
+      path.push_front(root);
+    }
+    
+    if(root == find) {
+      found = true;
+    }
+    
+    dfs(root->left, found, find, path);
+    dfs(root->right, found, find, path);
+    
+    if(!found) {
+      path.pop_front();
     }
   }
-  
-  return path;
-}
+
+  deque<Node*> path_between_p_q(Node *root, Node *p, Node *q) {
+    deque<Node*> path;
+    bool both_found = false;
+
+    Node *r = lca(root, p, q, path, both_found);
+
+    if(!both_found) {
+      bool found = false;
+      
+      path.clear();
+      
+      if(r == p) {
+        dfs(r, found, q, path);
+      }
+      else if(r == q) {
+        dfs(r, found, p, path);
+      }
+    }
+    
+    return path;
+  }
 };
 
 int main() {
