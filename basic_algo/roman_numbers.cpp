@@ -86,7 +86,7 @@ int roman_to_integer2(const string &str) {
 	return number;
 }
 
-string integer_to_string(int number) {
+string integer_to_roman(int number) {
 	struct romandata_t { int value; string numeral; };
     	const struct romandata_t romandata[] = {
 	    	{1000, "M"}, 
@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
 	assert(-1 == roman_to_integer2("123123"));
 	assert(109 == roman_to_integer2("CIX"));
 
-	assert("CIX" == integer_to_string(109));
+	assert("CIX" == integer_to_roman(109));
 	
 	return 0;
 }
