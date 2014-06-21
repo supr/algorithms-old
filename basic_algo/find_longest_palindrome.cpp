@@ -12,55 +12,55 @@ Answer - dddmmmkkkmmmddd
 
 // searches for the largest palindrome for a given middle point left, right
 // compares each character on the left with the character on the right side
-void palindrome_search(const string &s, int left, int right, string &longest_palindrome) {
-	bool found = false;
-
-	while (left >= 0 && right < s.size()) {
-		if (s[left] == s[right]) {
-			left--;
-			right++;
-			found = true;
-		}
-		else {
-			break;
-		}
-
-	}
-
-	if (found) {
-		left++;
-		right--;
-
-		if (right - left + 1 > longest_palindrome.size()) {
-			longest_palindrome = s.substr(left, right - left + 1);
-		}
-	}
+void palindrome_search(const string &s, int middle_index, int l, int r, string &longest_pal) {
+  bool found = false;
+  string pal;
+  
+  if(middle_index != -1) {
+    pal = s[middle_index];
+  }
+  
+  while(l >= 0 && r < s.size()) {
+    if(s[l] == s[r]) {
+      pal = pal + s[r];
+      pal = s[l] + pal;
+      found = true;
+      l--;
+      r++;
+    }
+    else {
+      break;
+    }
+  }
+  
+  if(found && pal.size() > longest_pal.size()) {
+    longest_pal = pal;
+  }
 }
 
-string find_longest_palindrome(const string &s) {
-	string longest_palindrome;
-
-	for (int i = 0; i < s.size(); i++) {
-		// pair element in the middle of the palindrome
-		// e.g. 1221
-		if (i < s.size() - 2 && s[i] == s[i + 1]) {
-			palindrome_search(s, i - 1, i + 2, longest_palindrome);
-		}
-
-		// single element in the middle of the palindrome
-		// e.e.g 22122
-		if (i < s.size() - 1) {
-			palindrome_search(s, i - 1, i + 1, longest_palindrome);
-		}
-	}
-
-	return longest_palindrome;
+string find_longest_palindrome(string str) {
+  string longest_pal;
+  
+  for(int i = 0; i < str.size(); i++) {
+    // pair element in the middle of the palindrome
+    // e.g. 1221
+    if(i < str.size() - 1 && str[i] == str[i+1]) {
+      palindrome_search(str, -1, i, i+1, longest_pal);
+    } 
+    // single element in the middle of the palindrome
+    // e.e.g 22122
+    if(i < str.size() - 2 && str[i] == str[i+2]) {
+      palindrome_search(str, i+1, i, i+2, longest_pal);
+    }
+  }
+  
+  return longest_pal;
 }
 
 int main() {
-	// your code goes here
-
-	cout << find_longest_palindrome("aaabbaaaccdeqjncsdddmmmkkkmmmddd") << endl;
-
-	return 0;
+  // your code goes here
+  
+  cout << find_longest_palindrome("aaabbaaaccdeqjncsdddmmmkkkmmmddd") << endl;
+  
+  return 0;
 }
