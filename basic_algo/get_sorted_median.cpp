@@ -18,12 +18,11 @@ float get_median_of_two_sorted_vec(const vector<int> &vec1, const vector<int> &v
   
   // the number of all elements is even -> 2 median elements
   if((len % 2) == 0) {
-    median_index += 1;
     median_two_elements = true;
   }
   
-  for(int index = 0; index < len; index++) {
-    if(median.size() > 0) {
+  while(index <= median_index) {
+    if(!median.empty()) {
       median.pop_front();
     }
     
@@ -36,23 +35,20 @@ float get_median_of_two_sorted_vec(const vector<int> &vec1, const vector<int> &v
       j++;
     }
     else {
-      median.push_back(vec1[i]);
-      
       if(median_two_elements) {
-        if(median.size() == 2) {
+        if(!median.empty()) {
           median.pop_front();
         }
         median.push_back(vec1[i]);  
       }
       
+      median.push_back(vec1[i]);
       i++;
       j++;
       index++;
     }
     
-    if(index >= median_index) {
-      break;
-    }
+    index++;
   }
       
   if(!median_two_elements) {
