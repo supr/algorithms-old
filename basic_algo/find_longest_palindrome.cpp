@@ -38,7 +38,7 @@ void palindrome_search(const string &s, int middle_index, int l, int r, string &
   }
 }
 
-string find_longest_palindrome(string str) {
+string find_longest_palindrome(const string &str) {
   string longest_pal;
   
   for(int i = 0; i < str.size(); i++) {
