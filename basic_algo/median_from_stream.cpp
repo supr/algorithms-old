@@ -16,6 +16,26 @@ If neither of those are true, insert it into whichever heap has smaller size.
 Then, if necessary, pop an element from the smaller size heap and insert it 
 into the larger size heap, to keep their sizes within 1 of each other
 
+if( maxheap.count > 0 and maxheap.top > current){
+  maxheap.push(current);
+}
+else if(minheap.count > 0 and minheap.top < current){
+  minheap.push(current);
+}
+else if(minheap.count >= maxheap.count){
+  maxheap.push(current);
+}
+else{
+  minheap.push(current);
+}
+
+if (minheap.count > maxheap.count + 1){
+  maxheap.push(minheap.pop());
+}
+else if (maxheap.count > minheap.count + 1){
+  minheap.push(maxheap.pop());
+}
+
 Time Complexity: O(log(n))
 Space Complexity: O(n)
 */
