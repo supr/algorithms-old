@@ -126,11 +126,22 @@ int get_num_of_occurrences2(vector<int> &vec, int num) {
 	return -1;
 }
 
+int countNumRep(std::vector<int> &vec, int num) {
+  auto it = std::find(vec.begin(), vec.end(), num);
+  auto it2 = std::find(vec.rbegin(), vec.rend(), num);
+  
+  if (it == vec.end() || it2 == vec.rbegin()) {
+    return -1;
+  }
+  return std::distance(it, it2.base());
+}
+
 int main() {
 	vector<int> vec = { 1, 2, 3, 3, 3, 3, 4, 5 };
 
 	cout << get_num_of_occurrences1(vec, 3) << endl;
 	cout << get_num_of_occurrences2(vec, 3) << endl;
-
+  cout << countNumRep(vec, 3) << endl;
+  
 	return 0;
 }
