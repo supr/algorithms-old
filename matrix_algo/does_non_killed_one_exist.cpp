@@ -45,6 +45,19 @@ typedef struct index {
   index(int r, int c): row(r), col(c) {}
 }index;
 
+void clearOnesWithKilledCol(vector<index> &foundOnes, int &vecSize, int col) {
+  int index = 0;
+        
+  while(index < foundOnes.size()) {
+    if (foundOnes[index].col == col) {
+      vecSize--;
+      foundOnes.erase(foundOnes.begin() + index);
+    } else {
+      ++index;
+    }
+  }
+}
+
 bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
   unordered_set<int> killedCols;
   vector<index> foundOnes;
@@ -65,17 +78,8 @@ bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
         foundOnes.push_back(index(i, j));
       }
       
-      if(it != killedCols.end()) {
-        int index = 0;
-        
-        while(index < foundOnes.size()) {
-            if (foundOnes[index].col == j) {
-              vecSize--;
-                foundOnes.erase(foundOnes.begin() + index);
-            } else {
-                ++index;
-            }
-        }
+      if(it != killedCols.end()) {       
+        clearOnesWithKilledCol(foundOnes, vecSize, j);
       }
     }
     
