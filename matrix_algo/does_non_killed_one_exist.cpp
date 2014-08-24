@@ -8,19 +8,22 @@
 using namespace std;
 
 /*
-input the size of Matrix in N X M, input 0 , 1 , or 2 in all the location, and as 
-2 can kill everyone that is in up and right and left direction, i have to find if 
-there is any one who have not been killed.
+given a Matrix with N X M. 
+input 0, 1, or 2 in all the location, 
+a 2 can kill everyone that is in up and right and left direction, 
+find if there is any one who have not been killed.
 
 e.g. input matrix:
 01000111 
 02012020 
 02102100
 
-final matrix:
+final matrix (x means the cell is killed):
 0x00x1x1
 xxxxxxxx
 xxxxxxxx
+
+-> return true
 */
 
 void printMatrix(const vector<vector<int>> &m) {
@@ -45,21 +48,8 @@ typedef struct index {
   index(int r, int c): row(r), col(c) {}
 }index;
 
-void clearOnesWithKilledCol(vector<index> &foundOnes, int &vecSize, int col) {
-  int index = 0;
-        
-  while(index < foundOnes.size()) {
-    if (foundOnes[index].col == col) {
-      vecSize--;
-      foundOnes.erase(foundOnes.begin() + index);
-    } else {
-      ++index;
-    }
-  }
-}
-
 bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
-  unordered_set<int> killedCols;
+  unordered_map<int,rowMinMax> killedCols;
   vector<index> foundOnes;
   
   for(int i = m.size() - 1; i >= 0; i--) {
@@ -68,7 +58,7 @@ bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
     
     for(int j = 0; j < m[i].size(); j++) {
       if(m[i][j] == 2) {
-        killedCols.insert(j);
+        killedCols.insert(make_pair(j, rowMinMax(i, 0)));
         foundTwo = true;
       }
     
@@ -76,10 +66,6 @@ bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
       
       if(m[i][j] == 1 && it == killedCols.end()) {
         foundOnes.push_back(index(i, j));
-      }
-      
-      if(it != killedCols.end()) {       
-        clearOnesWithKilledCol(foundOnes, vecSize, j);
       }
     }
     
@@ -106,7 +92,7 @@ int main() {
   printMatrix(m);
   
   cout << doesNoneKilledOneExist(m) << endl;
-
+  
   vector<vector<int>> m2 = {{0,1,2,0,0,1,1,1},
                            {0,2,0,1,2,0,2,0},
                            {0,1,1,0,1,1,0,0}};
