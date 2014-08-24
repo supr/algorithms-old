@@ -133,6 +133,7 @@ int countNumRep(std::vector<int> &vec, int num) {
   if (it == vec.end() || it2 == vec.rbegin()) {
     return -1;
   }
+  
   return std::distance(it, it2.base());
 }
 
@@ -142,6 +143,6 @@ int main() {
 	cout << get_num_of_occurrences1(vec, 3) << endl;
 	cout << get_num_of_occurrences2(vec, 3) << endl;
   cout << countNumRep(vec, 3) << endl;
-  
+
 	return 0;
 }
