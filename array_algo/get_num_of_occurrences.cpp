@@ -116,8 +116,8 @@ int get_last_occurrence(vector<int> &vec, int l, int r, int val) {
 }
 
 int get_num_of_occurrences2(vector<int> &vec, int num) {
-	int first_index = get_first_occurrence(vec, 0, vec.size() - 1, num);
-	int last_index = get_last_occurrence(vec, 0, vec.size() - 1, num);
+  int first_index = get_first_occurrence(vec, 0, vec.size() - 1, num);
+  int last_index = get_last_occurrence(vec, 0, vec.size() - 1, num);
 
 	if (first_index != -1 && last_index != -1) {
 		return last_index - first_index;
