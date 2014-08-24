@@ -36,12 +36,6 @@ void printMatrix(const vector<vector<int>> &m) {
   cout << endl;
 }
 
-typedef struct rowMinMax {
-  int min;
-  int max;
-  rowMinMax(int mi, int ma): min(mi), max(ma) {} 
-}rowMinMax;
-
 typedef struct index {
   int row;
   int col;
@@ -49,7 +43,7 @@ typedef struct index {
 }index;
 
 bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
-  unordered_map<int,rowMinMax> killedCols;
+  unordered_set<int> killedCols;
   vector<index> foundOnes;
   
   for(int i = m.size() - 1; i >= 0; i--) {
@@ -58,7 +52,7 @@ bool doesNoneKilledOneExist(const vector<vector<int>> &m) {
     
     for(int j = 0; j < m[i].size(); j++) {
       if(m[i][j] == 2) {
-        killedCols.insert(make_pair(j, rowMinMax(i, 0)));
+        killedCols.insert(j);
         foundTwo = true;
       }
     
