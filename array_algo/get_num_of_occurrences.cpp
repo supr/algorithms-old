@@ -127,14 +127,9 @@ int get_num_of_occurrences2(vector<int> &vec, int num) {
 }
 
 int countNumRep(std::vector<int> &vec, int num) {
-	auto it = std::find(vec.begin(), vec.end(), num);
-	auto it2 = std::find(vec.rbegin(), vec.rend(), num);
-  
-	if (it == vec.end() || it2 == vec.rbegin()) {
-		return -1;
-	}
-  
-	return std::distance(it, it2.base());
+  auto bounds = std::equal_range(vec.begin(), vec.end(), num);
+
+  return bounds.second - bounds.first;
 }
 
 int main() {
