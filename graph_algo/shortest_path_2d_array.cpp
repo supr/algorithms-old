@@ -10,10 +10,11 @@ to a destination cell.
 */
 
 enum Direction {
-  UP = -1,
-  DOWN = 1,
-  LEFT = -1,
-  RIGHT = 1
+  NONE = 0,
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT
 } direction;
 
 class pos {
@@ -45,20 +46,6 @@ public:
   }
 };
 
-class moveDir {
-public:
-  int x;
-  int y;
-  moveDir(): x(0), y(0) {}
-  moveDir &operator=(const moveDir &other) {
-    if (this != &other) {
-      y = other.y;
-      x = other.x;    
-    }
-    return *this;
-  }
-};
-
 template <typename T>
 void printMatrix(const vector<vector<T>> &m) {
   for(int i = 0; i < m.size(); i++) {
@@ -70,17 +57,27 @@ void printMatrix(const vector<vector<T>> &m) {
   cout << endl;
 }
 
-bool checkBoundX(pos curr, moveDir mD, int maxX) {
-  if (((curr.x + mD.x) >= 0) && ((curr.x + mD.x) < maxX)) {
+int getMoveDir(const Direction &moveDir) {
+  if (moveDir == LEFT || moveDir == UP) {
+    return -1;
+  } else if (moveDir == RIGHT || moveDir == DOWN) {
+    return 1;
+  }
+}
+
+bool checkBoundX(pos curr, const Direction &moveDir, int maxX) {
+  if (((curr.x + getMoveDir(moveDir)) >= 0) && 
+      ((curr.x + getMoveDir(moveDir)) < maxX)) {
     return true;
   } 
   return false;
 }
 
-bool checkBoundY(pos curr, moveDir mD, int maxY) {
-  if (((curr.y + mD.y) >= 0) && ((curr.y + mD.y) < maxY)) {
+bool checkBoundY(pos curr, const Direction &moveDir, int maxY) {
+  if (((curr.y + getMoveDir(moveDir)) >= 0) && 
+      ((curr.y + getMoveDir(moveDir)) < maxY)) {
     return true;
-  } 
+  }
   return false;
 }
 
@@ -95,53 +92,55 @@ bool isCellVisited(pos curr, pos end, vector<vector<bool>> &visited) {
   return false;
 }
 
-bool doMove(pos &curr, moveDir mD, int maxX, int maxY) {
-  if (mD.x != 0 && checkBoundX(curr, mD, maxX)) {
-    curr.x += mD.x;
+bool doMove(pos &curr, const Direction &moveDir, int maxX, int maxY) {
+  if ((moveDir == LEFT || moveDir == RIGHT) && checkBoundX(curr, moveDir, maxX)) {
+    curr.x += getMoveDir(moveDir);
     return true;
   }
-  if (mD.y != 0 && checkBoundY(curr, mD, maxY)) {
-    curr.y += mD.y;
+  if ((moveDir == UP || moveDir == DOWN) && checkBoundY(curr, moveDir, maxY)) {
+    curr.y += getMoveDir(moveDir);
     return true;
   }
   return false;
 }
 
-bool checkMoveX(moveDir &mD, pos curr, pos end, vector<vector<bool>> &visited) {
+bool checkMoveX(Direction &moveDir, pos curr, pos end, vector<vector<bool>> &visited) {
     if (curr.x != end.x) {
       if (curr.x < end.x) {
-        mD.x = RIGHT;
+        moveDir = RIGHT;
       } else {
-        mD.x = LEFT;
+        moveDir = LEFT;
       }
       
-      if (!isCellVisited(curr + pos(mD.x, 0), end, visited)) {
+      int nextMoveTo = getMoveDir(moveDir);
+      if (!isCellVisited(curr + pos(nextMoveTo, 0), end, visited)) {
         return true; 
       }
     }
     return false;
 }
 
-bool checkMoveY(moveDir &mD, pos curr, pos end, vector<vector<bool>> &visited) {
+bool checkMoveY(Direction &moveDir, pos curr, pos end, vector<vector<bool>> &visited) {
     if (curr.y != end.y) {
       if (curr.y < end.y) {
-        mD.y = DOWN;
+        moveDir = DOWN;
       } else {
-        mD.y = UP;
+        moveDir = UP;
       }
       
-      if (!isCellVisited(curr + pos(0, mD.y), end, visited)) {
+      int nextMoveTo = getMoveDir(moveDir);
+      if (!isCellVisited(curr + pos(0, nextMoveTo), end, visited)) {
         return true; 
       }
     }
     return false;
 }
 
-bool getMoveDir(moveDir &mD, pos curr, pos end, vector<vector<bool>> &visited) {
-  if(checkMoveX(mD, curr, end, visited)) {
+bool getMoveDir(Direction &moveDir, pos curr, pos end, vector<vector<bool>> &visited) {
+  if(checkMoveX(moveDir, curr, end, visited)) {
     return true;
   }
-  if(checkMoveY(mD, curr, end, visited)) {
+  if(checkMoveY(moveDir, curr, end, visited)) {
       return true;
     }
     return false;
@@ -169,24 +168,19 @@ vector<vector<pos>> findAllPaths(vector<vector<int>> &m, pos start, pos end) {
     vector<pos> currPath;
     
     while (curr != end) {
-      moveDir mD;
-      
-      bool canMove = getMoveDir(mD, curr, end, visited);
+      Direction moveDir = NONE;
+      bool canMove = getMoveDir(moveDir, curr, end, visited);
       
       updateFailCount(canMove, moveFailedCount);
       if (moveFailedCount != 0) {
         break;
       }
       
-        doMove(curr, mD, maxX, maxY);
-        
-        //cout << curr.x << ", " << curr.y << endl;
-        
+      doMove(curr, moveDir, maxX, maxY);  
       currPath.push_back(curr);
     }
     
     if (moveFailedCount == 2) {
-      printMatrix(visited);
       break;
     }
     
@@ -205,14 +199,14 @@ int main() {
                            {0,0,0,0,0,0,0,0},
                            {0,0,0,0,0,0,0,0}};
                               
-    //printMatrix(m);
+  //printMatrix(m);
   
-    vector<vector<pos>> shortestP = findAllPaths(m, pos(0,0), pos(2,4));
+  vector<vector<pos>> shortestP = findAllPaths(m, pos(0,0), pos(2,4));
     
-    for (int i = 0; i < shortestP.size(); i++) {
-      for_each(shortestP[i].begin(), shortestP[i].end(), [](pos curr){ cout << curr.x << "," << curr.y << " ";});
-      cout << endl;
-    }
+  for (int i = 0; i < shortestP.size(); i++) {
+    for_each(shortestP[i].begin(), shortestP[i].end(), [](pos curr){ cout << curr.x << "," << curr.y << " ";});
+    cout << endl;
+  }
     
   return 0;
 }
