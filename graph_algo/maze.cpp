@@ -158,15 +158,6 @@ private:
     return true;  
   }
   
-  void print() {
-    for(int i = 0; i < matrix.size(); i++) {
-      for(int j = 0; j < matrix[0].size(); j++) {
-        cout << matrix[i][j] << ' ';
-      }
-      cout << '\n';
-    }
-  }
-  
   bool isVisited(const pos &p) {
     if(visited[p.row][p.col] == 0) {
       return false;
@@ -248,6 +239,15 @@ public:
     }
     
     return false;
+  }
+
+  void print() {
+    for(int i = 0; i < matrix.size(); i++) {
+      for(int j = 0; j < matrix[0].size(); j++) {
+        cout << matrix[i][j] << ' ';
+      }
+      cout << '\n';
+    }
   }
 };
 
