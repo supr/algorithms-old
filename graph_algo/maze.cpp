@@ -40,7 +40,16 @@ of ways to optimize the algo?
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <algorithm>
 using namespace std;
+
+enum Direction {
+  NONE,
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT
+} direction;
 
 class pos {
 public:
@@ -48,54 +57,50 @@ public:
   int col;
   pos(): row(0), col(0) {}
   pos(int row_, int col_): row(row_), col(col_) {}
-  
   bool operator==(const pos &rhs) {
     return row == rhs.row && col == rhs.col;
+  }
+  bool operator!=(const pos &rhs) {
+    return !(row == rhs.row && col == rhs.col);
+  }
+  pos operator+(const pos &rhs) {
+    pos tmp(row, col);
+    tmp.row += rhs.row;
+    tmp.col += rhs.col;
+    return tmp;
+  }
+  pos &operator+=(const pos &rhs) {
+    row += rhs.row;
+    col += rhs.col;
+    return *this;
+  }
+  pos operator-(const pos &rhs) {
+    pos tmp(row, col);
+    tmp.row -= rhs.row;
+    tmp.col -= rhs.col;
+    return tmp;
   }
 };
 
 class Maze {
 public:
-  pos end_pos;
+  pos endPos;
   int max_row;
   int max_col;
   
-  vector<vector<int>> vec = {{0,1,0,0,0,0,0,0,0},
-                             {0,1,1,1,0,1,1,0,0},
-                             {0,1,0,1,0,1,0,0,0},
-                             {0,0,0,1,1,1,1,1,0},
-                             {0,0,0,0,0,0,1,0,0},
-                             {0,1,0,1,1,1,1,0,0},
-                             {0,1,0,1,0,0,1,0,0},
-                             {0,1,1,1,1,1,1,0,0},
-                             {0,1,0,0,0,1,0,0,0},
-                             {0,0,0,0,0,0,0,0,0}};
-                                  
-  vector<vector<int>> visited = {{0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0},
-                                 {0,0,0,0,0,0,0,0,0}}; 
+  vector<vector<int>> matrix;
+  vector<vector<int>> visited; 
 
 private:
-  void setPos(const pos &p, char val) {
-    vec[p.row][p.col] = val; 
+  bool isWall(const pos &p) {
+    return matrix[p.row][p.col] == 0;
   }
   
-  char getPos(const int &row, const int &col) {
-    return vec[row][col];
-  }
-  
-  bool isValidPos(const int &row, const int &col) {
-    if(row < 0 || row > max_row) {
+  bool isValidPos(const pos &p) {
+    if(p.row < 0 || p.row > max_row) {
       return false;
     }
-    if(col < 0 || col > max_col) {
+    if(p.col < 0 || p.col > max_col) {
       return false;
     } 
     
@@ -103,65 +108,60 @@ private:
   }
   
 public:
-  Maze(const pos &init_end) {
-    end_pos = init_end;
-    
-    max_col = vec.size();
-    max_row = vec[0].size();
+  Maze() {
+    init();
   }
   
-  bool canMoveLeft(const pos &curr_pos) {
-    if(!isValidPos(curr_pos.row, curr_pos.col - 1)) {
+private:
+  void init() {
+     matrix = {{0,1,0,0,0,0,0,0,0},
+               {0,1,1,1,0,1,1,0,0},
+               {1,1,0,0,0,1,0,0,0},
+               {1,0,0,1,1,1,1,1,0},
+               {1,0,0,0,0,0,1,0,0},
+               {1,1,0,1,1,1,1,0,0},
+               {0,1,0,1,0,0,1,0,0},
+               {0,1,1,1,1,1,1,0,0},
+               {0,1,0,0,0,1,0,0,0},
+               {0,0,0,0,0,0,0,0,0}};
+                             
+    max_col = matrix.size();
+    max_row = matrix[0].size();
+    
+    visited.resize(max_row, vector<int>(max_col, 0));
+  }
+  
+  pos getNextStep(const Direction &dir) {
+    if (dir == UP) { 
+      return pos(-1,0); 
+    }
+    else if (dir == LEFT) {
+      return pos(0,-1);
+    } 
+    else if (dir == DOWN) {
+      return pos(1,0);
+    }
+    else if (dir == RIGHT) {
+      return pos(0,1);  
+    }
+  }
+  
+  bool canMove(pos currPos, const Direction &dir) {
+    if(!isValidPos(currPos + getNextStep(dir))) {
       return false;
     }
     
-    if(getPos(curr_pos.row, curr_pos.col - 1) == 0) {
+    if(isWall(currPos + getNextStep(dir))) {
       return false;
     }
     
     return true;  
-  }
-  
-  bool canMoveRight(const pos &curr_pos) {
-    if(!isValidPos(curr_pos.row, curr_pos.col + 1)) {
-      return false;
-    }
-    
-    if(getPos(curr_pos.row, curr_pos.col + 1) == 0) {
-      return false;
-    }
-    
-    return true;  
-  }
-
-  bool canMoveUp(const pos &curr_pos) {
-    if(!isValidPos(curr_pos.row - 1, curr_pos.col)) {
-      return false;
-    }
-    
-    if(getPos(curr_pos.row - 1, curr_pos.col) == 0) {
-      return false;
-    }
-    
-    return true;
-  }
-  
-  bool canMoveDown(const pos &curr_pos) {
-    if(!isValidPos(curr_pos.row + 1, curr_pos.col)) {
-      return false;
-    }
-    
-    if(getPos(curr_pos.row + 1, curr_pos.col) == 0) {
-      return false;
-    }
-    
-    return true;
   }
   
   void print() {
-    for(int i = 0; i < vec.size(); i++) {
-      for(int j = 0; j < vec[0].size(); j++) {
-        cout << vec[i][j] << ' ';
+    for(int i = 0; i < matrix.size(); i++) {
+      for(int j = 0; j < matrix[0].size(); j++) {
+        cout << matrix[i][j] << ' ';
       }
       cout << '\n';
     }
@@ -175,146 +175,93 @@ public:
     return true;
   }
   
-  void setVisited(const pos &p, bool flag) {
-    if(flag) {
-      visited[p.row][p.col] = 1;
-    }
-    else {
-      visited[p.row][p.col] = 0;
-    }
+  void setVisited(const pos &p) {
+    visited[p.row][p.col] = 1;
   }
   
-  pos moveLeft(const pos &curr_pos) {
-    pos new_pos = curr_pos;
-    new_pos.col -= 1; 
+  pos move(const pos &currPos, const Direction &dir) {
+    pos new_pos = currPos;
+    new_pos += getNextStep(dir); 
     return new_pos;
-  }
-  
-  pos moveRight(const pos &curr_pos) {
-    pos new_pos = curr_pos;
-    new_pos.col += 1;
-    return new_pos;
-  }
-  
-  pos moveUp(const pos &curr_pos) {
-    pos new_pos = curr_pos;
-    new_pos.row -= 1;
-    return new_pos;
-  }
-  
-  pos moveDown(const pos &curr_pos) {
-    pos new_pos = curr_pos;
-    new_pos.row += 1;
-    return new_pos;
-  }
-  
-  void resetVisited() {
-    for(int i = 0; i < visited.size(); i++) {
-      for(int j = 0; j < visited[0].size(); j++) {
-        visited[i][j] = 0;
-      }
-    }
   }
 
-  // iterative DFS
-  pos getExitIterative(const pos &start_pos) {
-    pos tmp;
-    stack<pos> q;
-    q.push(start_pos);
-    
-    while(!q.empty()) {
-      tmp = q.top();  
-      q.pop();
-      
-      if(tmp == end_pos) {
-        break;
+  void backtrack(vector<pos> &path, pos curr) {
+    while (!path.empty()) {
+      bool canDelete = true;
+     
+      vector<Direction> moveVec = {UP, DOWN, LEFT, RIGHT};
+      for (auto m : moveVec) { 
+        if (path.back() == (curr + getNextStep(m))) {
+          canDelete = false;
+        }
       }
       
-      if(!isVisited(tmp)) {
-        setVisited(tmp, true);
+      if (canDelete) {
+        path.pop_back();  
+      } else {
+        break;
+      }
+    }
+  }
+  
+public:
+  // iterative DFS
+  bool findPathToEndPos(const pos &startPos, const pos &endPos, vector<pos> &path) {
+    pos currPos;
+    stack<pos> q;
+    q.push(startPos);
+    
+    while(!q.empty()) {
+      currPos = q.top();  
+      q.pop();
+      
+      backtrack(path, currPos);
+      
+      if(currPos == endPos) {
+        path.push_back(currPos);
+        return true;
+      }
+      
+      if(!isVisited(currPos)) {
+        setVisited(currPos);
       }
       else {
         continue;
       }
       
-      if(canMoveDown(tmp)) {
-        pos new_pos = moveDown(tmp);
-        q.push(new_pos);
+      path.push_back(currPos);
+      
+      bool moveSuccess = false;
+      vector<Direction> moveVec = {UP, DOWN, LEFT, RIGHT};
+    
+      for (auto m : moveVec) {
+        if(canMove(currPos, m)) {
+          pos new_pos = move(currPos, m);
+          q.push(new_pos);
+          moveSuccess = true;
+        }
       }
-      if(canMoveUp(tmp)) {
-        pos new_pos = moveUp(tmp);
-        q.push(new_pos);
+      
+      if (!moveSuccess) {
+        path.pop_back();
       }
-      if(canMoveLeft(tmp)) {
-        pos new_pos = moveLeft(tmp);
-        q.push(new_pos);
-      }
-      if(canMoveRight(tmp)) {
-        pos new_pos = moveRight(tmp);
-        q.push(new_pos);
-      }
-    }
-
-    return tmp;
-  }
-  
-  // recursive DFS
-  pos getExitRecursive(pos curr_pos) {
-    pos exit_pos;
-
-    getExitRec(curr_pos, exit_pos);
-
-    return exit_pos;
-  }
-
-  void getExitRec(pos curr_pos, pos &exit_pos) {
-    if(curr_pos == end_pos) {
-      exit_pos = curr_pos;
     }
     
-    setVisited(curr_pos, true);
-      
-    if(canMoveDown(curr_pos)) {
-      pos new_pos = moveDown(curr_pos);
-      if(!isVisited(new_pos)) {
-        getExitRec(new_pos, exit_pos);
-      }
-    }
-    if(canMoveUp(curr_pos)) {
-      pos new_pos = moveUp(curr_pos);
-      if(!isVisited(new_pos)) {
-        getExitRec(new_pos, exit_pos);
-      }
-    }
-    if(canMoveRight(curr_pos)) {
-      pos new_pos = moveRight(curr_pos);
-      if(!isVisited(new_pos)) {
-        getExitRec(new_pos, exit_pos);
-      }
-    }
-    if(canMoveLeft(curr_pos)) {
-      pos new_pos = moveLeft(curr_pos);
-      if(!isVisited(new_pos)) {
-        getExitRec(new_pos, exit_pos);
-      }
-    }
- }
+    return false;
+  }
 };
 
 
 int main() {
-  Maze m(pos(0,1));
+  pos startPos = pos(5,3);
+  pos endPos = pos(0,1);
   
-  m.print();
+  Maze m;
   
-  pos start_pos = pos(5,3);
-  pos exit_pos = m.getExitIterative(start_pos);
-  cout << "exit_pos: " << exit_pos.row << ", " << exit_pos.col << endl;
-
-  m.resetVisited();
-
-  pos exit_pos2 = m.getExitRecursive(start_pos);
-  cout << "exit_pos: " << exit_pos2.row << ", " << exit_pos2.col << endl;
+  vector<pos> path;
+  bool found = m.findPathToEndPos(startPos, endPos, path);
+  cout << "path found: " << found << endl;
+  for_each(path.begin(), path.end(), [](pos curr) { cout << curr.row << "," << curr.col << " "; });
   
   return 0;
 }
