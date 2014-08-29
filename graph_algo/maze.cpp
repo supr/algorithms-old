@@ -83,7 +83,7 @@ public:
 };
 
 class Maze {
-public:
+private:
   pos endPos;
   int max_row;
   int max_col;
@@ -195,9 +195,86 @@ private:
     }
   }
   
-public:
+  void cleanup(vector<pos> &path, pos curr) {
+    for (auto it = path.rbegin(); it != path.rend(); it++) {
+      if(*it == curr) {
+        continue;
+      }
+      
+      bool canDelete = true;
+      
+      vector<Direction> moveVec = {UP, DOWN, LEFT, RIGHT};
+      for (auto m : moveVec) { 
+        if (*it == (curr + getNextStep(m))) {
+          canDelete = false;
+        }
+      }
+      
+      if (canDelete) {
+        auto it2 = it++;
+        path.erase(it.base());
+        it = it2;
+      } else {
+        curr = *it;
+      }
+    }
+  }
+ 
+public: 
+  void resetVisted() {
+    for (int i = 0; i < visited.size(); i++) {
+      for (int j = 0; j < visited[0].size(); j++) {
+        visited[i][j] = 0;
+      }
+    }
+  }
+  
+  // iterative BFS
+  bool findPathBFS(const pos &startPos, const pos &endPos, vector<pos> &path) {
+    pos currPos;
+    queue<pos> q;
+    q.push(startPos);
+    
+    while(!q.empty()) {
+      currPos = q.front();  
+      q.pop();
+      
+      if(currPos == endPos) {
+        path.push_back(currPos);
+        cleanup(path, currPos);
+        return true;
+      }
+      
+      if(!isVisited(currPos)) {
+        setVisited(currPos);
+      }
+      else {
+        continue;
+      }
+      
+      path.push_back(currPos);
+      
+      bool moveSuccess = false;
+      vector<Direction> moveVec = {UP, DOWN, LEFT, RIGHT};
+    
+      for (auto m : moveVec) {
+        if(canMove(currPos, m)) {
+          pos new_pos = move(currPos, m);
+          q.push(new_pos);
+          moveSuccess = true;
+        }
+      }
+      
+      if (!moveSuccess) {
+        path.pop_back();
+      }
+    }
+    
+    return false;
+  }
+
   // iterative DFS
-  bool findPathToEndPos(const pos &startPos, const pos &endPos, vector<pos> &path) {
+  bool findPathDFS(const pos &startPos, const pos &endPos, vector<pos> &path) {
     pos currPos;
     stack<pos> q;
     q.push(startPos);
@@ -258,10 +335,17 @@ int main() {
   
   Maze m;
   
-  vector<pos> path;
-  bool found = m.findPathToEndPos(startPos, endPos, path);
-  cout << "path found: " << found << endl;
-  for_each(path.begin(), path.end(), [](pos curr) { cout << curr.row << "," << curr.col << " "; });
+  vector<pos> path1;
+  bool found1 = m.findPathDFS(startPos, endPos, path1);
+  cout << "path found: " << found1 << endl;
+  for_each(path1.begin(), path1.end(), [](pos curr) { cout << curr.row << "," << curr.col << " "; });
   
+  m.resetVisted();
+  
+  vector<pos> path2;
+  bool found2 = m.findPathBFS(startPos, endPos, path2);
+  cout << "\npath found: " << found2 << endl;
+  for_each(path2.begin(), path2.end(), [](pos curr) { cout << curr.row << "," << curr.col << " "; });
+
   return 0;
 }
