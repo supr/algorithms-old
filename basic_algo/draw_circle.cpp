@@ -12,7 +12,8 @@ Solution:
 
 see: http://moishelettvin.blogspot.com/2005/12/programming-interviews-sort-of-exposed.html
 
-Install Opencv to compile this program
+Install Opencv to compile this program:
+g++ -o draw_circle draw_circle.cpp -lopencv_core -lopencv_highgui
 */
 
 void set_pixel(Mat &src, int x, int y, int val) {
@@ -21,7 +22,7 @@ void set_pixel(Mat &src, int x, int y, int val) {
 
 void draw_circle1(Mat &src, int x, int y, int r, int value) {
 	for (int x_inc = 0; x_inc <= r; x_inc++) {
-		int y_inc = static_cast<int>((sqrt(static_cast<double>(pow(r, 2) - pow(x_inc, 2)))));
+		int y_inc = sqrt(r * r - x_inc * x_inc);
 
 		set_pixel(src, x + x_inc, y - y_inc, value);
 		set_pixel(src, x + x_inc, y + y_inc, value);
@@ -32,7 +33,7 @@ void draw_circle1(Mat &src, int x, int y, int r, int value) {
 
 void draw_circle2(Mat &src, int x, int y, int r, int value) {
 	for (int y_inc = 0; y_inc <= r; y_inc++) {
-		int x_inc = static_cast<int>((sqrt(static_cast<double>(pow(r, 2) - pow(y_inc, 2)))));
+    int x_inc = sqrt(r * r - y_inc * y_inc);
 
 		set_pixel(src, x + x_inc, y - y_inc, value);
 		set_pixel(src, x + x_inc, y + y_inc, value);
@@ -70,7 +71,7 @@ void draw_circle3(Mat &src, int x, int y, int r, int value) {
 int main(int argc, char** argv)
 {
 	Mat image = Mat::zeros(600, 600, CV_8UC1);
-	draw_circle3(image, 300, 300, 200, 255);
+	draw_circle1(image, 300, 300, 200, 255);
 
 	namedWindow("Display window", WINDOW_AUTOSIZE);    // Create a window for display.
 	imshow("Display window", image);                   // Show our image inside it.
