@@ -317,7 +317,33 @@ public:
     
     return false;
   }
-
+  
+  bool findPathDFSRecur(const pos &startPos, const pos &endPos, vector<pos> &path) {
+    pos currPos = startPos;
+    return findPathDFSRecurInternal(startPos, endPos, currPos, path);
+  }
+  
+  bool findPathDFSRecurInternal(const pos &startPos, const pos &endPos, pos &currPos, vector<pos> &path) {
+    path.push_back(currPos);
+    
+    if (currPos == endPos) {
+      cleanup(path, currPos);
+      return true;
+    }
+    
+    setVisited(currPos);
+    
+    vector<Direction> moveVec = {UP, DOWN, LEFT, RIGHT};
+    for (auto m : moveVec) {
+      if(canMove(currPos, m)) {
+        pos newPos = move(currPos, m);
+        if(!isVisited(newPos)) {
+          return findPathDFSRecurInternal(startPos, endPos, newPos, path);
+        }
+      }
+    }
+  }
+  
   void print() {
     for(int i = 0; i < matrix.size(); i++) {
       for(int j = 0; j < matrix[0].size(); j++) {
@@ -347,5 +373,11 @@ int main() {
   cout << "\npath found: " << found2 << endl;
   for_each(path2.begin(), path2.end(), [](pos curr) { cout << curr.row << "," << curr.col << " "; });
 
+  m.resetVisted();
+  vector<pos> path3;
+  bool found3 = m.findPathDFSRecur(startPos, endPos, path3);
+  cout << "\npath found: " << found3 << endl;
+  for_each(path3.begin(), path3.end(), [](pos curr) { cout << curr.row << "," << curr.col << " "; });
+  
   return 0;
 }
