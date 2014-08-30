@@ -327,7 +327,6 @@ public:
     path.push_back(currPos);
     
     if (currPos == endPos) {
-      cleanup(path, currPos);
       return true;
     }
     
@@ -342,6 +341,8 @@ public:
         }
       }
     }
+
+    return false;
   }
   
   void print() {
