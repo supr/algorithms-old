@@ -61,27 +61,14 @@ int getNextMove(const Direction &move) {
   }
 }
 
-bool checkBoundX(const pos &curr, int maxX) {
-  if ((curr.x >= 0) && 
-      (curr.x < maxX)) {
-    return true;
-  } 
-  return false;
-}
-
-bool checkBoundY(const pos &curr, int maxY) {
-  if ((curr.y >= 0) && 
-      (curr.y < maxY)) {
-    return true;
-  }
-  return false;
-}
-
 bool isValidPos(const pos &curr, int maxX, int maxY) {
-  if (checkBoundX(curr, maxX) &&  checkBoundY(curr, maxY)) {
-    return true;
+  if(curr.x < 0 || curr.x >= maxX) {
+    return false;
   }
-  return false;
+  if(curr.y < 0 || curr.y >= maxY) {
+    return false;
+  }
+  return true;
 }
 
 void doMove(pos &curr, const Direction &move, int maxX, int maxY) {
@@ -93,27 +80,27 @@ void doMove(pos &curr, const Direction &move, int maxX, int maxY) {
 }
 
 bool canMoveX(Direction &move, const pos &curr, const pos &end) {
-    if (curr.x != end.x) {
-      if (curr.x < end.x) {
-        move = RIGHT;
-      } else {
-        move = LEFT;
-      }
-      return true;
+  if (curr.x != end.x) {
+    if (curr.x < end.x) {
+      move = RIGHT;
+    } else {
+      move = LEFT;
     }
-    return false;
+    return true;
+  }
+  return false;
 }
 
 bool canMoveY(Direction &move, const pos &curr, const pos &end) {
-    if (curr.y != end.y) {
-      if (curr.y < end.y) {
-        move = DOWN;
-      } else {
-        move = UP;
-      }
-      return true;
+  if (curr.y != end.y) {
+    if (curr.y < end.y) {
+      move = DOWN;
+    } else {
+      move = UP;
     }
-    return false;
+    return true;
+  }
+  return false;
 }
 
 bool getNextMove(Direction &move, const pos &curr, const pos &end) {
