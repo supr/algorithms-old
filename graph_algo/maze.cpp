@@ -97,10 +97,10 @@ private:
   }
   
   bool isValidPos(const pos &p) {
-    if(p.row < 0 || p.row > max_row) {
+    if(p.row < 0 || p.row >= max_row) {
       return false;
     }
-    if(p.col < 0 || p.col > max_col) {
+    if(p.col < 0 || p.col >= max_col) {
       return false;
     } 
     
