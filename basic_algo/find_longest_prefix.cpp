@@ -16,33 +16,47 @@ using namespace std;
 const int alphabet_size = 26;
 
 class Node {
-private:
-  Node *next;
+public:
+  Node *next[alphabet_size];
   bool isEnd;
   int count;
   
 public:
-  Node(): next(NULL), isEnd(false), count(0) {}
+  Node(): isEnd(false), count(0) {}
 };
 
 class trie {
 private:
-  Node *root[alphabet_size];
+  Node *root;
   
 public:
   trie() {
-    for(int i = 0; i < alphabet_size; i++) {
-      root[i] = new Node;
+    root = createNode();
+  }
+  
+  Node *createNode() {
+    Node *n = new Node;
+    
+    for (int i = 0; i < alphabet_size; i++) {
+      n->next[i] = NULL;
     }
+    
+    return n;
   }
   
   void insert(string str) {
-    for (int i = 0; i < alphabet_size; i++) {
-      if (i == ('z' - str[i])) {
-        root[i]->count++;
+    Node *tmp = root;
+    
+    for (int i = 0; i < str.size(); i++) {
+      char k = str[i] - 'a';
+      
+      if (!tmp->next[k]) {
+        tmp->next[k] = createNode();
       } 
     }
     
+    tmp->isEnd = true;
+    tmp->count++;
   }
 };
 
