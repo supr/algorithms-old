@@ -101,10 +101,9 @@ int main() {
   trie t;
   
   vector<string> text = { 
-    {"dasistdererste"}, 
-    {"dasistdoof"}, 
-    {"dahinterstecktnix"}, 
-    {"dasistalles"}
+    {"flower"}, 
+    {"flow"}, 
+    {"flight"}
   };
    
   for (int i = 0; i < text.size(); i++) {  
