@@ -11,6 +11,7 @@ Fl
 */
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 const int alphabet_size = 26;
@@ -28,9 +29,11 @@ public:
 class trie {
 private:
   Node *root;
+  int wordsCount;
   
 public:
   trie() {
+    wordsCount = 0;
     root = createNode();
   }
   
@@ -53,10 +56,42 @@ public:
       if (!tmp->next[k]) {
         tmp->next[k] = createNode();
       } 
+      
+      tmp->isEnd = false;
+      tmp->count++;
+    tmp = tmp->next[k];
     }
     
     tmp->isEnd = true;
-    tmp->count++;
+    wordsCount++;
+  }
+  
+  string findLongestCommonPrefix() {
+    Node *tmp = root;
+    string prefix;
+    
+    while(true) {
+      bool found = false;
+      int storeIndex = 0;
+      
+      for (int i = 0; i < alphabet_size; i++) {
+        if (tmp->next[i] && 
+            tmp->next[i]->count == wordsCount) {
+          storeIndex = i;
+          found = true;
+        }
+      }
+      
+      if (found) {
+        prefix += static_cast<char>(storeIndex + 'a');
+        tmp = tmp->next[storeIndex];
+      }
+      else {
+        break;
+      }
+    }
+    
+    return prefix;
   }
 };
 
@@ -64,6 +99,19 @@ int main() {
   // your code goes here
   
   trie t;
+  
+  vector<string> text = { 
+    {"dasistdererste"}, 
+    {"dasistdoof"}, 
+    {"dahinterstecktnix"}, 
+    {"dasistalles"}
+  };
+   
+  for (int i = 0; i < text.size(); i++) {  
+    t.insert(text[i]);
+  }
+
+  cout << t.findLongestCommonPrefix() << endl;
   
   return 0;
 }
