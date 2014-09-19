@@ -95,6 +95,28 @@ public:
   }
 };
 
+std::string findLongestCommonPrefix(vector<string>::iterator from, vector<string>::iterator to) {
+  size_t n = from->size();
+  
+  for (auto curr = from; curr != to; curr++) {
+    size_t n2 = 0;
+    
+    for (auto i = begin(*from), j = begin(*curr); i != end(*from), j != end(*curr); i++, j++) {
+      if (*i == *j) {
+        n2++;
+      } else {
+        break;
+      }
+    }
+    
+    if (n2 < n) {
+      n = n2;
+    }
+  }
+  
+  return string(begin(*from), begin(*from) + n);
+}
+
 int main() {
   // your code goes here
   
@@ -112,5 +134,7 @@ int main() {
 
   cout << t.findLongestCommonPrefix() << endl;
   
+  cout << findLongestCommonPrefix(begin(text), end(text)) << endl;
+
   return 0;
 }
