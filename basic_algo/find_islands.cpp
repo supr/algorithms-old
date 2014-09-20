@@ -12,6 +12,8 @@ E.g (below there is U shaped island)
 
 Find the number of connected islands
 Find the largest connected island
+
+similar problem: http://codercareer.blogspot.co.at/2013/02/no-41-group-of-1s-in-matrix.html
 */
 
 #include <vector>
