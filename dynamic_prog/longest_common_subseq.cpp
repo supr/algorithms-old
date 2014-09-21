@@ -19,6 +19,8 @@ lcs("AX", "AYZX") lcs("AXY", "AYZ")   lcs("AXY", "AYZ") lcs("AXYT", "AY")
 
 Complexity:
 O(m * n)
+
+algorithm explanation https://www.youtube.com/watch?v=wJ-rP9hJXO0
 */
 
 int lookup(const vector<vector<int>> &LCS, int i, int j) {
