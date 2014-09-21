@@ -13,6 +13,8 @@ longest_common_contig_substr2: Time: O(n * m^2), Space: O(1)
 longest_common_contig_substr3: Time: O(n * m), Space: O(m * n) ... based on dynamic programming
 
 A suffix tree based solution would run in O(n + m)
+
+algorithm is explained here: http://www.geeksforgeeks.org/longest-common-substring/
 */
 
 const int ALPHABET_SIZE = 26;
