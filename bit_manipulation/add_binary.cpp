@@ -94,7 +94,7 @@ string addBinary(string a, string b) {
   vector<vector<SumCarry>> andVec = {{SumCarry('0','0'), SumCarry('1','0')},
                                       // a=1,b=0         // a=1,b=1
                                      {SumCarry('1','0'), SumCarry('0','1')}};
-                                               // a=0,b=0         // a=0,b=1
+  // addVector for carry=1                     // a=0,b=0         // a=0,b=1
   vector<vector<SumCarry>> andVecWithCarry = {{SumCarry('1','0'), SumCarry('1=0','1')},
                                                // a=1,b=0         // a=1,b=1
                                               {SumCarry('0','1'), SumCarry('1','1')}};  
@@ -138,6 +138,6 @@ int main() {
   cout << addBinary("1100", "111") << endl;
 
   cout << addBinary("1", "1") << endl;
-  
+
 	return 0;
 }
