@@ -42,7 +42,10 @@ vector<coord> find_k_nearest_points1(vector<coord> vec, coord p, int k) {
 	vector<coord> k_nearest_points;
 
 	for (int i = 0; i < vec.size(); i++) {
-		float distance = sqrt(abs(vec[i].x - p.x) + abs(vec[i].y - p.y));
+    int x = abs(vec[i].x - p.x); 
+    int y = abs(vec[i].y - p.y); 
+    float distance = sqrt(x * x + y * y);
+
 		dist.push_back(dist_index(distance, i));
 	}
 
@@ -64,7 +67,9 @@ vector<coord> find_k_nearest_points2(vector<coord> vec, coord p, int k) {
 	vector<coord> k_nearest_points;
 
 	for (int i = 0; i < vec.size(); i++) {
-		float distance = sqrt(abs(vec[i].x - p.x) + abs(vec[i].y - p.y));
+    int x = abs(vec[i].x - p.x); 
+    int y = abs(vec[i].y - p.y); 
+    float distance = sqrt(x * x + y * y);
 
 		if (max_heap.size() < k) {
 			max_heap.push(dist_index(distance, i));
@@ -142,7 +147,9 @@ vector<coord> find_k_nearest_points3(vector<coord> vec, coord p, int k) {
 	// yd = y2-y1
 	// Distance = SquareRoot(xd*xd + yd*yd)
 	for (int i = 0; i < vec.size(); i++) {
-		float distance = sqrt(abs(vec[i].x - p.x) + abs(vec[i].y - p.y));
+    int x = abs(vec[i].x - p.x); 
+    int y = abs(vec[i].y - p.y); 
+    float distance = sqrt(x * x + y * y);
 
 		dist.push_back(dist_index(distance, i));
 	}
