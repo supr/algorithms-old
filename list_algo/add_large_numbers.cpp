@@ -6,7 +6,7 @@ Question:
 
 Add 2 large numbers represented as linked lists and return the resulting linked list
 
-For example,
+For example:
 Given 1->2->3 and 1->9->9->4, return 2->1->1->7
 */
 
