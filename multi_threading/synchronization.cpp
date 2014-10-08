@@ -8,7 +8,7 @@
 using namespace std; 
 
 /* Question:
-You system uses 3 threads and 2 shared resources:
+Your system uses 3 threads and 2 shared resources:
 Thread1 can access resource 1
 Thread2 can access resource 1 and resource 2
 Thread3 can access resource 1 and resource 2
