@@ -4,7 +4,7 @@
 using namespace std;
 
 /* Question:
-Implement a semaphore
+Implement a Semaphore
 */
 
 class Semaphore {
