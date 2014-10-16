@@ -7,20 +7,56 @@ using namespace std;
 /* Question:
 Given two sequences, find the longest common subsequence present in both of them.
 
-Example:
-input strings "AXYT" and "AYZX". In the above partial recursion tree, lcs(“AXY”, “AYZ”) is being solved twice:
+Algorithm:
+- create a table of size m x n
 
-Overlapping Subproblems:
-    				lcs("AXYT", "AYZX")
-					/                 \
-		lcs("AXY", "AYZX")            lcs("AXYT", "AYZ")
-		/            \                  /               \
-lcs("AX", "AYZX") lcs("AXY", "AYZ")   lcs("AXY", "AYZ") lcs("AXYT", "AY")
+  initialize the first row and first col to 0:
+
+      A  B  A  C  E  B
+     _________________
+  A |_0|_0|_0|_0|_0|_0|
+  D |_0|__|__|__|__|__|
+  B |_0|__|__|__|__|__|
+  A |_0|__|__|__|__|__|
+  V |_0|__|__|__|__|__|
+  C |_0|__|__|__|__|__|
+  E |_0|__|__|__|__|__|
+  B |_0|__|__|__|__|__|
+     
+- compare row letter with col letter
+  - if there is no match: 
+   
+   -------
+  |   | c |
+  --------
+  | b | r |
+  ---------      r = max(b,c)
+
+  - if there is a match:  
+
+   -------
+  | a |   |
+  --------
+  | a |a+1|
+  ---------    ... creates a bridge
+
+- backtrack
+
+  select one of the 2 options to move (left + up, up + left):
+  ^     <---
+  |        ^ 
+  |        |
+  <---     |
+
+  go to different area olny via bridge
+
+  the LCS are those letters who created the bridge
+
 
 Complexity:
 O(m * n)
 
-algorithm explanation https://www.youtube.com/watch?v=wJ-rP9hJXO0
+algorithm explanation: https://www.youtube.com/watch?v=wJ-rP9hJXO0
 */
 
 int lookup(const vector<vector<int>> &LCS, int i, int j) {
