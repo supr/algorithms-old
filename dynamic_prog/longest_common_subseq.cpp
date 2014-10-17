@@ -108,14 +108,14 @@ vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
     }
   }
 	
-    /*
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < n; j++) {
-			cout << LCS[i][j] << ' ';
-		}
-		cout << '\n';
-	}
-	*/
+  /*
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      cout << LCS[i][j] << ' ';
+    }
+    cout << '\n';
+  }
+  */
     
   std::reverse(result.begin(), result.end());
 	
