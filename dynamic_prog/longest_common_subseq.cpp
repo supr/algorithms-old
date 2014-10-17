@@ -60,10 +60,10 @@ algorithm explanation: https://www.youtube.com/watch?v=wJ-rP9hJXO0
 */
 
 int lookup(const vector<vector<int>> &LCS, int i, int j) {
-    if(i < 0 || j < 0) {
-        return 0;
-    }
-    return LCS[i][j];
+  if(i < 0 || j < 0) {
+      return 0;
+  }
+  return LCS[i][j];
 }
 
 vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
@@ -98,7 +98,8 @@ vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
 			index_j--;
 		}
 		else {
-      if(lookup(LCS, index_i - 1, index_j) > lookup(LCS, index_i, index_j - 1)) {
+      if(lookup(LCS, index_i - 1, index_j) > 
+         lookup(LCS, index_i, index_j - 1)) {
 				index_i--;
 			}
 			else {
