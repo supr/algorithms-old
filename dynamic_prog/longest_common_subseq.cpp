@@ -67,46 +67,46 @@ int lookup(const vector<vector<int>> &LCS, int i, int j) {
 }
 
 vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
-	vector<vector<int>> LCS(Y.size() + 1, vector<int>(X.size() + 1, 0));
-	int max_len = 0;
-	int index_i = 0;
-	int index_j = 0;
+  vector<vector<int>> LCS(Y.size() + 1, vector<int>(X.size() + 1, 0));
+  int max_len = 0;
+  int index_i = 0;
+  int index_j = 0;
 
-	for (int i = 1; i < X.size(); i++) {
-		for (int j = 1; j < Y.size(); j++) {
-			if (X[i-1] == Y[j-1]) {
-				LCS[i][j] = 1 + LCS[i - 1][j - 1];
-			}
-			else {
-				LCS[i][j] = max(LCS[i - 1][j], LCS[i][j - 1]);
-			}
+  for (int i = 1; i < X.size(); i++) {
+    for (int j = 1; j < Y.size(); j++) {
+      if (X[i-1] == Y[j-1]) {
+        LCS[i][j] = 1 + LCS[i - 1][j - 1];
+      }
+      else {
+        LCS[i][j] = max(LCS[i - 1][j], LCS[i][j - 1]);
+      }
 			
-			if(LCS[i][j] > max_len) {
-				max_len = LCS[i][j];
-				index_i = i;
-				index_j = j;
-			}
-		}
-	}
+      if(LCS[i][j] > max_len) {
+        max_len = LCS[i][j];
+        index_i = i;
+        index_j = j;
+      }
+    }
+  }
 
-	vector<int> result;
+  vector<int> result;
     
-	while(index_i >= 0 && index_j >= 0) {
-		if(X[index_i] == Y[index_j]) {
-			result.push_back(X[index_i]);
-			index_i--;
-			index_j--;
-		}
-		else {
+  while(index_i >= 0 && index_j >= 0) {
+    if(X[index_i] == Y[index_j]) {
+      result.push_back(X[index_i]);
+      index_i--;
+      index_j--;
+    }
+    else {
       if(lookup(LCS, index_i - 1, index_j) > 
-         lookup(LCS, index_i, index_j - 1)) {
-				index_i--;
-			}
-			else {
-				index_j--;
-			}
-		}
-	}
+        lookup(LCS, index_i, index_j - 1)) {
+        index_i--;
+      }
+      else {
+        index_j--;
+      }
+    }
+  }
 	
     /*
 	for (int i = 0; i < m; i++) {
@@ -117,19 +117,19 @@ vector<int> longest_common_subseq(const vector<int> &X, const vector<int> &Y) {
 	}
 	*/
     
-	std::reverse(result.begin(), result.end());
+  std::reverse(result.begin(), result.end());
 	
-	return result;
+  return result;
 }
 
 int main() {
-	// your code goes here
+  // your code goes here
 
-	vector<int> x = { 'A', 'B', 'A', 'C', 'E', 'B' };
-	vector<int> y = { 'A', 'D', 'B', 'A', 'V', 'C', 'E', 'B' };
+  vector<int> x = { 'A', 'B', 'A', 'C', 'E', 'B' };
+  vector<int> y = { 'A', 'D', 'B', 'A', 'V', 'C', 'E', 'B' };
 
-	vector<int> result = longest_common_subseq(x, y);
-	for_each(result.begin(), result.end(), [](char val) { cout << val << ' '; });
+  vector<int> result = longest_common_subseq(x, y);
+  for_each(result.begin(), result.end(), [](char val) { cout << val << ' '; });
 
-	return 0;
+  return 0;
 }
