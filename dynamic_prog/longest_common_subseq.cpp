@@ -48,9 +48,9 @@ Algorithm:
   |        |
   <---     |
 
-  go to different area olny via bridge
+  go to a different area only via a bridge
 
-  the LCS are those letters who created the bridge
+  the LCS are those letters which created the bridge
 
 
 Complexity:
