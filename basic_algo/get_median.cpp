@@ -19,7 +19,7 @@ Possible Improvement:
 
 // pick random element pivot from vec and split L (elements smaller pivot) and G (elements larger pivot)
 int partition(vector<int> &vec, int left, int right) {
-    int pivot_index = right + rand() % (right - left);
+    int pivot_index = left + rand() % (right - left);
     int pivot = vec[pivot_index];
 
     swap(vec[pivot_index], vec[right]);  // Move pivot to end
