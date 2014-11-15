@@ -17,7 +17,7 @@ Possible Improvement:
 - median of medians -> Worst Case: O(n)
 */
 
-// pick random element pivot from vec and split L (elements smaller pivot) and G (elements larger pivot)
+// pick random element (pivot) from vec and split into L (elements smaller pivot) and G (elements larger pivot)
 int partition(vector<int> &vec, int left, int right) {
     int pivot_index = left + rand() % (right - left);
     int pivot = vec[pivot_index];
