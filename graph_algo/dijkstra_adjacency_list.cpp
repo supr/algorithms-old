@@ -5,6 +5,8 @@
 #include <queue>
 using namespace std;
 
+// All edges must have nonnegative weights
+
 typedef int vertex_t;
 typedef double weight_t;
 const weight_t max_weight = std::numeric_limits<double>::infinity();
@@ -37,6 +39,10 @@ void print_prev(std::vector<vertex_t> &prev) {
 	cout << '\n';
 }
 
+// find the shortest path from a start to a destination node
+// keep a set of visited nodes
+// select the node with the min. distance from Q
+// if a new shortest path is found -> set new value of shortest path
 void dijkstra(adjacency_list_t &l, vertex_t src, std::vector<weight_t> &dist, std::vector<vertex_t> &prev) {
 	std::priority_queue<node, vector<node>, comparison> q;
 
@@ -122,13 +128,13 @@ int main() {
 	// graph from: https://class.coursera.org/algo-2012-002/lecture/57
 	// at 5:00min
 
-	-----1-----
+	    -----1-----
 	(1)/     |     \(6)
-	/      |      \
+	  /      |      \
 	0       |(2)    --3
-	\      |      /
+	  \      |      /
 	(4)\     |     /(3)
-	-----2-----
+	    -----2-----
 	*/
 
 	cout << "Test graph with positive weights..." << endl;
