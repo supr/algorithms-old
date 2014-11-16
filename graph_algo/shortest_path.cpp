@@ -42,10 +42,12 @@ vector<Node*> ShortestPath(Node *start, int size) {
 		int node_index = u->id - 1; // visited stores node ids from pos 0 to id.size()-1
 		if (!visited[node_index]) {
 			visited[node_index] = true;
+		} else {
+      continue;
+    }
 
-			shortest_path.push_back(u);
-		}
-
+    shortest_path.push_back(u);
+    
 		if (u->is_exit) {
 			break;
 		}
