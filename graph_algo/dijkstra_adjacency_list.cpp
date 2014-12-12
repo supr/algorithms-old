@@ -165,7 +165,7 @@ int main() {
       -----1-----
   (1)/     |     \(6)
     /      |      \
-  0        |(2)    --3
+   0       |(2)    3
     \      |      /
   (4)\     |     /(3)
       -----2-----
@@ -227,4 +227,4 @@ int main() {
   cout << bellman_ford(g4.getAdjacencyList(), 0) << endl;
   
   return 0;
-}
+} 
