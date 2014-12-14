@@ -82,7 +82,10 @@ public:
   }
   
   float get_median() {
-      if(min_heap.size() > max_heap.size()) {
+      if(min_heap.size() == 0 && max_heap.size() == 0) {
+        return -1;
+      }
+      else if(min_heap.size() > max_heap.size()) {
         return min_heap.top();
       }
       else if(max_heap.size() > min_heap.size()) {
