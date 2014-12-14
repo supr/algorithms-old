@@ -9,7 +9,6 @@ E.g (below there is U shaped island)
 {1, 0, 0, 1, 1},
 {0, 0, 0, 0, 0},
 {1, 0, 1, 0, 1}
-
 Find the number of connected islands
 Find the largest connected island
 */
@@ -81,19 +80,6 @@ private:
     return true;
   }
   
-  void init() {
-    matrix = {{1, 1, 0, 0, 0},
-              {0, 1, 0, 0, 1},
-              {1, 0, 0, 1, 1},
-              {0, 0, 0, 0, 0},
-              {1, 0, 1, 0, 1}};
-                             
-    numCols = matrix.size();
-    numRows = matrix[0].size();
-    
-    visited.resize(numRows, vector<int>(numCols, 0));
-  }
-  
   pos getNextStep(const Direction &dir) {
     if (dir == UP) { 
       return pos(-1,0); 
@@ -144,10 +130,16 @@ private:
   }
   
 public:
-  Islands() {
-    init();
-  }
+  Islands() = default;
 
+  void init(vector<vector<int>> &m) {
+    matrix = m;
+    numCols = matrix.size();
+    numRows = matrix[0].size();
+    
+    visited.resize(numRows, vector<int>(numCols, 0));
+  }
+  
   int countIslands() {
     int count = 0;
     
@@ -156,6 +148,7 @@ public:
         pos currPos = pos(row, col);
         
         if (isIsland(currPos) && !isVisited(currPos)) {
+          setVisited(currPos);
           count++;
           findCompleteIslandDFS(currPos);
         }
@@ -173,21 +166,66 @@ public:
     while (!q.empty()) {
       currPos = q.front();
       q.pop();
-      
-      if (!isVisited(currPos)) {
-        setVisited(currPos);
-      } else {
-        continue;
-      }
 
       vector<Direction> moveDirs = {LEFT, RIGHT, UP, DOWN};
       for (auto m : moveDirs) {
         if (canMove(currPos, m)) {
           pos newPos = move(currPos, m);
-          q.push(newPos);
+          
+          if (!isVisited(newPos)) {    
+            setVisited(newPos);
+            q.push(newPos);
+          }
         }
       }
     }
+  }
+  
+  void findCompleteIslandDFS(const pos &start, int &count) {
+    pos currPos = start;
+    queue<pos> q;
+    q.push(currPos);
+
+    while (!q.empty()) {
+      currPos = q.front();
+      q.pop();
+
+      count++;
+
+      vector<Direction> moveDirs = {LEFT, RIGHT, UP, DOWN};
+      for (auto m : moveDirs) {
+        if (canMove(currPos, m)) {
+          pos newPos = move(currPos, m);
+
+          if (!isVisited(newPos)) {    
+            setVisited(newPos);
+            q.push(newPos);
+          }
+        }
+      }
+    }
+  }
+  
+  int findLargestIsland() {
+    int maxCount = 0;
+
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        pos currPos = pos(row, col);
+        
+        if (isIsland(currPos) && !isVisited(currPos)) {
+          setVisited(currPos);
+          
+          int count = 0;
+          findCompleteIslandDFS(currPos, count);
+          if (count > maxCount) {
+            maxCount = count;
+          }
+        }
+      }
+    }
+    
+    return maxCount;
   }
   
   void print() {
@@ -199,6 +237,16 @@ public:
     }
   }
 
+  void printVisted() {
+    for (int i = 0; i < visited.size(); i++) {
+      for (int j = 0; j < visited[0].size(); j++) {
+        cout << visited[i][j] << ' ';
+      }
+      cout << '\n';
+    }
+    cout << '\n';
+  }
+  
   void resetVisted() {
     for (int i = 0; i < visited.size(); i++) {
       for (int j = 0; j < visited[0].size(); j++) {
@@ -212,10 +260,20 @@ public:
 int main() {
   Islands i;
   
+  vector<vector<int>> matrix = {{1, 1, 0, 0, 0},
+                                {0, 1, 0, 0, 1},
+                                {1, 0, 0, 1, 1},
+                                {0, 0, 0, 0, 0},
+                                {1, 0, 1, 0, 1}};
+  i.init(matrix);
+  
   int numIslands = i.countIslands();
   cout << "\nIslands found: " << numIslands << endl;
 
-  //m.resetVisted();
+  i.resetVisted();
+  
+  int count = i.findLargestIsland();
+  cout << "\nLargest Island: " << count << endl;
   
   return 0;
 }
