@@ -15,6 +15,8 @@
    Insert: O(1)
    Search: O(n) ... n is the size of the hashtable
    Remove: O(n)
+
+   Reference: http://www.algolist.net/Data_structures/Hash_table/Simple_example
 */
 
 #include <iostream>
