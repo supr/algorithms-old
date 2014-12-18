@@ -19,6 +19,8 @@ the concrete objects that are part of the theme. The client does not know (or ca
 objects it gets from each of these internal factories since it uses only the generic interfaces 
 of their products. This pattern separates the details of implementation of a set of objects from 
 their general usage.
+
+reference: http://simplestcodings.blogspot.co.at/2013/12/factory-method-design-pattern-in-cplusplus.html
 */
 
 // This is the AbstractProduct 
