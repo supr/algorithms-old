@@ -85,6 +85,10 @@ vector<vertex_t> dijkstra(const adjacency_list_t &l, vertex_t src, vertex_t dst)
     // loop for all edges connected to u
     for (auto v = l[u.target].begin(); v != l[u.target].end(); v++) {
 
+      // The variable alt is the length of the path from the root node to the neighbor node v 
+      // if it were to go through u. If this path is shorter than the current shortest path 
+      // recorded for v, that current path is replaced with this alt path.
+
       int alt = dist[u.target] + v->weight; // accumulate shortest dist from source
   
       if (alt < dist[v->target]) {
