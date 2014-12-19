@@ -12,13 +12,13 @@ int sql_query_avg_avg(const vector<int> &c1, const vector<string> &c2, const str
   for(int i = 0; i < c1.size(); i++) {
     if (c2[i] == queryStr) {
       // underflow detection
-      if (sum < 0 && sum < (std::numeric_limits<int>::min() + c1[i])) {
+      if (sum < 0 && sum < (numeric_limits<int>::min() + c1[i])) {
         return -1;
       }
       
       // overflow detection
       // requirement: (num + new_integer) <= max_integer
-      if (sum > 0 && sum > (std::numeric_limits<int>::max() - c1[i])) {
+      if (sum > 0 && sum > (numeric_limits<int>::max() - c1[i])) {
         return -1;
       }
       
