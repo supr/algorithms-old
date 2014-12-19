@@ -6,7 +6,7 @@
 using namespace std;
 
 // under/overflow detection:
-// - You can check if the addition is safe before you do it:
+// - You can check if the addition is safe before you do it -> this will certainly be very slow. 
 //   e.g. overflow: if (sum > 0 && sum > (numeric_limits<int>::max() - c1[i]))
 //
 // - an other option is checking the overflow flag with intrinsics -> they're compiler intrinsics
