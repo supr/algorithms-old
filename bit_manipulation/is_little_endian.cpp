@@ -24,7 +24,7 @@ Big Endian:     12   34   56   78
 bool is_little_endian() { 
     union { 
         uint32_t idata; 
-        char cdata[4]; 
+        uint8_t cdata[4]; 
     }endian_test; 
     
     endian_test.idata = 0x12345678; 
