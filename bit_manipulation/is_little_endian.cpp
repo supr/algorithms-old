@@ -36,25 +36,19 @@ bool is_little_endian() {
     return false; 
 } 
 
-/*
-other way:
-#include <stdio.h>
-int main() 
-{
-   unsigned int i = 1;
-   char *c = (char*)&i;
-   if (*c)    
-       printf("Little endian");
-   else
-       printf("Big endian");
-   getchar();
-   return 0;
+bool is_little_endian2() { 
+   uint32_t i = 1;
+   uint8_t *c = (uint8_t*)&i;
+   if (*c) {    
+       return true;
+   }
+   return false;
 }
-*/
 
 int main() {    
     // your code goes here
     cout << is_little_endian() << endl; 
-    
+    cout << is_little_endian2() << endl; 
+
     return 0; 
 }
