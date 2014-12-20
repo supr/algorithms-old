@@ -45,10 +45,29 @@ bool is_little_endian2() {
    return false;
 }
 
+template <typename T>
+T swap_endian(T u)
+{
+    union
+    {
+        T u;
+        unsigned char u8[sizeof(T)];
+    } source, dest;
+
+    source.u = u;
+
+    for (size_t k = 0; k < sizeof(T); k++)
+        dest.u8[k] = source.u8[sizeof(T) - k - 1];
+
+    return dest.u;
+}
+
 int main() {    
     // your code goes here
     cout << is_little_endian() << endl; 
     cout << is_little_endian2() << endl; 
 
+    cout << std::hex << swap_endian<uint32_t>(0x12345678) << endl;
+    
     return 0; 
 }
