@@ -15,6 +15,12 @@ unsigned int factorial(unsigned int n) {
     return ret;
 }
 
+// So, for one missing number calculate sum of elements S. Missing number will be n*(n+1)/2 - S.
+// For two missing elements it is possible to calculate product of all elements P. Product of 
+// all numbers from 1 to n is n!, so we will have:
+// a1 + a2 = n*(n+1)/2 - S
+// a1 * a2 = n!/P
+//
 // sum (arr) = N * (N+1) / 2
 // product (arr) = p * x * y = N!
 // product_x_y = N! / p
