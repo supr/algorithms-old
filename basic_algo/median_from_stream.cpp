@@ -10,6 +10,13 @@ Question: How to get the median from a stream of numbers at any time?
 The median is middle value of numbers. If the count of numbers is even, the
 median is defined as the average value of the two numbers in middle
 
+Example:
+max_heap:  min_heap:
+4          5
+3          6
+2          7
+1          8
+
 if the current element is less than maxheap.top, then insert it into maxheap.  
 if the current element is greater than minheap.top, then insert it into minheap.  
 If neither of those are true, insert it into whichever heap has smaller size.  
@@ -42,9 +49,9 @@ Space Complexity: O(n)
 
 class MedianStream {
 private:
-  // stores all numbers smaller than the median
+  // stores all numbers larger than the median
   priority_queue<int, vector<int>, std::greater<int>> min_heap;
-  // stores all number greater than the median
+  // stores all number smaller than the median
   priority_queue<int, vector<int>, std::less<int>> max_heap;
   
 public:
