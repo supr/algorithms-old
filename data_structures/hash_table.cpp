@@ -13,8 +13,8 @@
    Closed hashing ... use the next entry in the array if you more than one hash value
 
    Insert: O(1)
-   Search: O(n) ... n is the size of the hashtable
-   Remove: O(n)
+   Search: O(1) ... if elements have the same hash value: O(n) ... n is the size of the hashtable
+   Remove: O(1) ... if elements have the same hash value: O(n) ... n is the size of the hashtable
 
    Reference: http://www.algolist.net/Data_structures/Hash_table/Simple_example
               http://blog.aozturk.me/simple-hash-map-hash-table-implementation-in-c
