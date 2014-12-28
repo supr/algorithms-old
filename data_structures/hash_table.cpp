@@ -17,129 +17,134 @@
    Remove: O(n)
 
    Reference: http://www.algolist.net/Data_structures/Hash_table/Simple_example
+              http://blog.aozturk.me/simple-hash-map-hash-table-implementation-in-c
 */
 
 #include <iostream>
-#include <string>
 using namespace std;
 
-class Hashtable {
-private:
-  int size;
-  string *keyArr;
-  int *valueArr;
-  int *statusArr; // contains the status of the table at index pos: deleted (-1), empty (0) or used (1)
-  
-private:
-  int calculate_hash(string key) {
-    int sum = 0;
-    
-    for(int i = 0; i < key.size(); i++) {
-      sum = sum + static_cast<unsigned int>(key[i]);
-    }
-    
-    return sum % size;
-  }
-  
+const long TABLE_SIZE = 128;
+
+// Hash node class template
+template <typename K, typename V>
+class HashNode {
 public:
-  Hashtable(int size_): size(size_) {
-    keyArr = new string[size];
-    valueArr = new int[size];
-    statusArr = new int[size];
-    
-    for(int i = 0; i < size; i++) {
-      statusArr[i] = 0;
-    }
-  }
-  
-  bool insert(const string key, int value) {
-    int hash = calculate_hash(key);
-    int i = 0;
-    int index = 0;
-    
-    while(i < size) {
-      index = (hash + i) % size;
+    HashNode(const K &key, const V &value): key(key), value(value) {}
 
-      if(statusArr[index] != 1) {
-        keyArr[index] = key;
-        valueArr[index] = value;
-        statusArr[index] = 1;
-        return true;
-      }
-      else if(keyArr[index] == key) {
-        valueArr[index] = value;
-        return true;
-      }
-      
-      i++;
+    K getKey() const {
+        return key;
     }
-    
-    return false;
-  }
-  
-  int find(const string &key) {
-    int hash = calculate_hash(key); 
-    int i = 0;
-    int index = 0;
-    
-    while(i < size) {
-      index = (hash + i) % size;
-      
-      if(statusArr[index] == 1 && keyArr[index] == key) {
-        return valueArr[index];
-      }
-      else if(statusArr[index] == 0) {
-        return -1;
-      }
-      
-      i++;
-    }
-    
-    return -1;
-  }
-  
-  bool erase(const string &key) {
-    int hash = calculate_hash(key); 
-    int i = 0;
-    int index = 0;
-    
-    while(i < size) {
-      index = (hash + i) % size;
-      
-      if(statusArr[index] == 1 && keyArr[index] == key) {
-        valueArr[index] = 0;
-        statusArr[index] = -1;
-        return true;
-      }
-      else if(statusArr[index] == 0) {
-        return false;
-      }
-      
-      i++;
-    }
-    
-    return false;
-  }
 
-  ~Hashtable() {
-    delete[] value_arr;
-    delete[] key_arr;
-    delete[] status_arr;
-  }
+    V getValue() const {
+        return value;
+    }
+
+    void setValue(V value) {
+        value = value;
+    }
+
+private:
+    // key-value pair
+    K key;
+    V value;
 };
- 
+
+// Hash map class template
+template <typename K, typename V>
+class HashMap {
+public:
+    HashMap() {
+        // construct zero initialized hash table of size
+        table = new HashNode<K, V> *[TABLE_SIZE]();
+        for (int i = 0; i < TABLE_SIZE; i++) {
+          table[i] = NULL; 
+        }
+    }
+
+    ~HashMap() {
+        // destroy all buckets one by one
+        for (int i = 0; i < TABLE_SIZE; i++) {
+          delete table[i]; 
+        }
+        // destroy the hash table
+        delete[] table; 
+    }
+
+    bool get(const K &key, V &value) {
+        unsigned long hash = hashFunc(key);
+        
+        while (table[hash] != NULL && table[hash]->getKey() != key) {
+          hash = (hash + 1) % TABLE_SIZE; 
+        }
+        
+        if (table[hash] == NULL) {
+          return false;
+        }
+        
+        value = table[hash]->getValue();
+        return true;
+    }
+
+    void put(const K &key, const V &value) {
+        unsigned long hash = hashFunc(key);
+        
+        while (table[hash] != NULL && table[hash]->getKey() != key) {
+          hash = (hash + 1) % TABLE_SIZE;
+        }
+        
+        if (table[hash] != NULL) {
+          delete table[hash]; 
+        }
+        
+        table[hash] = new HashNode<K, V>(key, value);   
+    }
+
+    void remove(const K &key) {
+        unsigned long hash = hashFunc(key);
+
+        while (table[hash] != NULL && table[hash]->getKey() != key) {
+          hash = (hash + 1) % TABLE_SIZE; 
+        }
+        
+        // key not found
+        if (table[hash] == NULL) {
+          return;
+        }
+        
+        delete table[hash];
+        table[hash] = NULL;
+    }
+
+private:
+    // hash table
+    HashNode<K, V> **table;
+    
+private:
+    unsigned long hashFunc(const K &key) const {
+      return static_cast<unsigned long>(key) % TABLE_SIZE;
+    }
+};
+
 int main() {
-  Hashtable ht(10);
-  ht.insert("k1", 1);
-  ht.insert("k2", 2);
-  ht.insert("k1", 5);
- 
-  cout << "k1: " << ht.find("k1") << endl;
-  cout << "k2: " << ht.find("k2") << endl;
-  cout << "k3: " << ht.find("k3") << endl;
- 
-  ht.erase("k2");
-  cout << "k2: " << ht.find("k2") << endl;
- 
+  // your code goes here
+  
+  HashMap<int, string> hmap;
+  hmap.put(1, "val1");
+  hmap.put(2, "val2");
+  hmap.put(3, "val3");
+  
+  string value;
+  hmap.get(2, value);
+  cout << value << endl;
+  bool res = hmap.get(3, value);
+  if (res) {
+      cout << value << endl;
+  }
+  hmap.remove(3);
+  res = hmap.get(3, value);
+  if (res) {
+      cout << value << endl;
+  }
+  
   return 0;
 }
