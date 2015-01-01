@@ -15,9 +15,8 @@ using namespace std;
 int find_max_profit(vector<int> &vec) {
   int profit = 0;
   bool bought = false;
-  int i = 0;
   
-  for(i = 1; i < vec.size(); i++) {
+  for(int i = 1; i < vec.size(); i++) {
     int delta = vec[i] - vec[i-1];
     
     if (delta > 0) {
