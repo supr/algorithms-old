@@ -25,8 +25,8 @@ protected:
   // move constructure: dont allow to use it (because its declared as protected)
   Singleton(Singleton&& other);
 
-    // move assignment operator: dont allow copies of the object (because its declared as protected)
-    Singleton& operator= (Singleton&& other);
+  // move assignment operator: dont allow copies of the object (because its declared as protected)
+  Singleton& operator= (Singleton&& other);
     
   // copy-constructor: dont allow copies of the object (because its declared as protected) 
   Singleton(const Singleton& other);
@@ -73,8 +73,8 @@ protected:
   // move constructure: dont allow to use it (because its declared as protected)
   Singleton2(Singleton2&& other);
 
-    // move assignment operator: dont allow copies of the object (because its declared as protected)
-    Singleton2& operator= (Singleton2&& other);
+  // move assignment operator: dont allow copies of the object (because its declared as protected)
+  Singleton2& operator= (Singleton2&& other);
   
   // copy-constructor: dont allow copies of the object (because its declared as protected) 
   Singleton2(const Singleton2& other);
