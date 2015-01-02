@@ -67,7 +67,7 @@ public:
 
 
 protected:
-    // default constructor: dont allow copies of the object (because its declared as protected)
+  // default constructor: dont allow copies of the object (because its declared as protected)
   Singleton2() {}
 
   // move constructure: dont allow to use it (because its declared as protected)
