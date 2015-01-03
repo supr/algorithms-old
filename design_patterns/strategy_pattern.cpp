@@ -70,8 +70,8 @@ class QuickSort : public SortStrategy
 public:
 	QuickSort()  {}
 
+  // Hier steht dann die Implementierung des Quicksort-Algorithmus 
 	void sort(int* data, int len) {
-		// Hier steht dann die Implementierung des Quicksort-Algorithmus 
 	}
 };
 
@@ -80,8 +80,8 @@ class ShellSort : public SortStrategy
 public:
 	ShellSort() {}
 
+  // Hier steht dann die Implementierung des Shellsort-Algorithmus 
 	void sort(int* data, int len) {
-		// Hier steht dann die Implementierung des Shellsort-Algorithmus 
 	}
 };
 
