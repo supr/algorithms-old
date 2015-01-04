@@ -22,6 +22,10 @@ int rotated_bin_search(vector<int> &vec, int left, int right, int value) {
 		return mid;
 	}
 	else if (vec[mid] < vec[right]) {
+    // left      mid              r     
+    //  |         |               |
+    // 12, 14, 1, 3, 5,  8,  9,  10
+    // 1,  3,  5, 8, 9,  10, 12, 14
 		if (value > vec[mid] && value <= vec[right]) {
 			return rotated_bin_search(vec, mid + 1, right, value);
 		}
@@ -29,7 +33,11 @@ int rotated_bin_search(vector<int> &vec, int left, int right, int value) {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
 	}
-	else if (vec[mid] > vec[right]) {
+	else if (vec[mid] > vec[right]) {  
+    // left      mid            r     
+    // |          |             |
+    // 8, 9,  10, 12, 14, 1, 3, 5
+    // 9, 10, 12, 14, 1,  3, 5, 8
 		if (value >= vec[left] && value < vec[mid]) {
 			return rotated_bin_search(vec, left, mid - 1, value);
 		}
