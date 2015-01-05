@@ -21,16 +21,16 @@ void rotate_image(vector<vector<int>> &img) {
 		int last = n - layer;
 
 		for (int i = first; i < last; i++) {
-			// save 1st colum
-			int tmp = img[i][first];
-			// replace 1st colum with last row
-			img[i][first] = img[last][i];
-			// replace last row with last colum
-			img[last][i] = img[last - i + offset][last];
-			// replace last colum with first row
-			img[last - i + offset][last] = img[first][last - i + offset];
-			// replace first row with 1st colum
-			img[first][last - i + offset] = tmp;
+      // save 1st row
+      int top = img[first][last-i];
+      // replace 1st row with first colum
+      img[first][last-i] = img[i][first];
+      // replace first colum with last row
+      img[i][first] = img[last][i];
+      // replace last row with last colum
+      img[last][i] = img[last-i+offset][last];
+      // replace last colum with 1st row
+      img[last-i+offset][last] = top;
 		}
 
 		offset += 1;
