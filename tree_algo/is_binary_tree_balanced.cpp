@@ -468,37 +468,47 @@ public:
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-  void get_depth_min_max(Node *root, int &min_depth, int &max_depth) {
-    static int depth = 0;
-
-    if (!root) {
-      return;
-    }
-
-    if (!root->left || !root->right) {
-      if (depth > max_depth) {
-        max_depth = depth;
-      }
-      if (depth < min_depth) {
-        min_depth = depth;
-      }
-    }
-
-    depth++;
-
-    get_depth_min_max(root->left, min_depth, max_depth);
-    get_depth_min_max(root->right, min_depth, max_depth);
-
-    depth--;
-  }
-
   bool is_tree_balanced1(Node *root) {
+    int curr_depth = 0;
     int min_depth = numeric_limits<int>::max();
     int max_depth = numeric_limits<int>::min();
-
-    get_depth_min_max(root, min_depth, max_depth);
-
-    return abs(min_depth - max_depth) <= 1;
+    
+    return dfs(root, curr_depth, min_depth, max_depth);
+  }
+  
+  bool dfs(Node *root, int &curr_depth, int &min_depth, int &max_depth) {
+    if (!root) {
+      return true;
+    }
+    
+    curr_depth++;
+    
+    bool val = dfs(root->left, curr_depth, min_depth, max_depth);
+    if (!val) {
+      return val;
+    }
+    
+    if (!root->left && !root->right) {
+      if (curr_depth < min_depth) {
+        min_depth = curr_depth;
+      }
+      if (curr_depth > max_depth) {
+        max_depth = curr_depth;
+      }
+      
+      if ((max_depth - min_depth) > 1) {
+        return false;
+      }
+    }
+    
+    val = dfs(root->right, curr_depth, min_depth, max_depth);
+    if (!val) {
+      return val;
+    }
+    
+    curr_depth--;
+    
+    return true;
   }
 
   int get_max_depth(Node *root) {
