@@ -13,6 +13,10 @@ bool isValidSudoku(vector<vector<int>> &arr) {
   int cols = arr[0].size();
   int smallGridSize = 3;
   
+  if (rows != 9 || cols != 9) {
+    return false;
+  }
+  
   // check if numbers are in range [1, 9]
   for (int row = 0; row < rows; row++) {
     for (int col = 0; col < cols; col++) {
