@@ -36,7 +36,7 @@ void findPalindrom(const string &str, int start, int i, int j, vector<string> &p
 vector<string> getAllPalindroms(string str) {
   vector<string> palindroms;
   
-  for(int i = 0; i < str.size(); i++) {
+  for(int i = 0; i < str.size() - 2; i++) {
     findPalindrom(str, -1, i, i+1, palindroms);
     findPalindrom(str, i+1, i, i+2, palindroms);
   }
