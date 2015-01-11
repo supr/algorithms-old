@@ -12,7 +12,7 @@ Given set of n points (Xi, Yi), write a function to find k nearest points from a
 Solution:
 based on sorting:       O(n log n) ... n = number of elements in vector
 based on heap:          O(n long k) ... k = k clostest points, n = number of elements in vector
-based on quick_select:  O(k * n)
+based on quick_select:  O(k * n^2)
 */
 
 typedef struct coord {
