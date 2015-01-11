@@ -8,6 +8,8 @@ using namespace std;
 /*
 Question: Given an undirected graph with the following Node class. Find the shortest path to the destination node. There is
 only a unique path to the destination, which is indicated with is_exit.
+
+Observation: In an unweighted graph, breadth-first search guarantees shortest path
 */
 
 class Node {
