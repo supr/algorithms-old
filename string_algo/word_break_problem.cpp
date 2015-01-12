@@ -9,9 +9,12 @@ Consider the following dictionary
 
 input: thisisatestofmyalgorithm
 output: this is a test of my algorithm
+
+reference: http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
 */
 
 #include <iostream>
+#include <locale>
 using namespace std;
 
 const int ALPHABET_SIZE = 26;
@@ -48,7 +51,7 @@ public:
     Node *curr = root;
     
     for (int i = 0; i < s.size(); i++) {
-      char index = s[i] - 'a';
+      char index = tolower(s[i]) - 'a';
       
       if (!curr->next[index]) {
         curr->next[index] = allocateNodes();
