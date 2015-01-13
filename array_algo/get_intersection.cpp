@@ -35,12 +35,12 @@ vector<int> get_intersection1(vector<int> &arr1, vector<int> &arr2) {
 		else if(*it1 > *it2) {
 			it2++;
 		}
-		
+
 		if(it1 == arr1.end() && *it1 < *it2) {
 		   	break;
 		}
 		
-		if(it2 == arr2.end() && *it2 < *it1) {
+		if(it2 == arr2.end() && *it1 > *it2) {
 		   	break;
 		}
 	}
@@ -77,8 +77,8 @@ vector<int> get_intersection2(vector<int> &arr1, vector<int> &arr2) {
 
 int main() {
 	// your code goes here
-	
-	vector<int> vec1 = {1, 4, 7, 10, 13};
+
+	vector<int> vec1 = {1, 4, 7, 10, 13, 122};
 	vector<int> vec2 = {1, 3, 5, 7, 9, 11, 12, 13};
 	
 	vector<int> intersec1 = get_intersection1(vec1, vec2);
