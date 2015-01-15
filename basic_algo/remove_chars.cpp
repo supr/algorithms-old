@@ -1,5 +1,5 @@
 #include <iostream>
-#include <unordered_map>
+#include <unordered_set>
 #include <cassert>
 using namespace std;
 
@@ -13,32 +13,24 @@ Justify any design decisions you make, and discuss the efficiency of your soluti
 */
 
 string remove_chars(string str, string remove) {
-	int total = 0;
-	unordered_map<char, int> ht;
-
-	for (int i = 0; i < remove.size(); i++) {
-		auto it = ht.find(remove[i]);
-
-		if (it == ht.end()) {
-			ht.insert(make_pair(remove[i], 1));
-		}
-		else {
-			it->second++;
-		}
-	}
-
-	for (int i = 0; i < str.size(); i++) {
-		auto it = ht.find(str[i]);
-
-		if (it == ht.end() || it->second == 0) {
-			str[total] = str[i];
-			total++;
-		}
-	}
-
-	str.resize(total);
-
-	return str;
+  unordered_set<char> hs;
+  int index = 0;
+  
+  for (int i = 0; i < remove.size(); i++) {
+    hs.insert(remove[i]);
+  }
+  
+  for (int i = 0; i < str.size(); i++) {
+    auto it = hs.find(str[i]);
+    if (it == hs.end()) {
+      str[index] = str[i];
+      index++;
+    }
+  }
+  
+  str.resize(index);
+  
+  return str;
 }
 
 int main() {
