@@ -24,16 +24,16 @@ Sliding Windows in an Array		Maximums in Sliding Windows
 
 // time complexity: O(n * k)
 vector<int> maxInWindow(vector<int> maxi, unsigned int windowSize) {
-	for(auto it = maxi.begin(); it != maxi.end(); it++) {
-		*it = *max_element(it, it + windowSize);
-		
-		if(it + windowSize == maxi.end()) {
-			break;
-		}
-	}
+  for(auto it = maxi.begin(); it != maxi.end(); it++) {
+    *it = *max_element(it, it + windowSize);
+
+    if(it + windowSize == maxi.end()) {
+      break;
+    }
+  }
 	
-	maxi.resize(maxi.size() - windowSize + 1);
-	return maxi;
+  maxi.resize(maxi.size() - windowSize + 1);
+  return maxi;
 }
 
 class node {
