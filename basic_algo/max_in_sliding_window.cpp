@@ -71,7 +71,6 @@ void removeIndex(pq &maxHeap, int index) {
      maxHeap.push(copy.top());  
      copy.pop();
   }
-  
 }
 
 vector<int> maxInWindow2(vector<int> &vec, int k) {
