@@ -63,6 +63,7 @@ void removeIndex(pq &maxHeap, int index) {
   }
 }
 
+// time complexity: O(n * log k)
 vector<int> maxInWindow2(vector<int> &vec, int k) {
   vector<int> out;
   pq maxHeap;
