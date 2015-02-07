@@ -87,7 +87,7 @@ vector<int> maxInWindow2(vector<int> &vec, int k) {
 }
 
 int main() {
-	// your code goes here
+  // your code goes here
 
   vector<int> numbers = {2, 3, 4, 2, 6, 2, 5, 1};
   vector<int> maxi = maxInWindow(numbers, 3);
@@ -103,5 +103,5 @@ int main() {
     cout << e << ' ';
   }
 
-	return 0;
+  return 0;
 }
