@@ -86,10 +86,56 @@ vector<int> maxInWindow2(vector<int> &vec, int k) {
   return out;
 }
 
+/*
+Step  Number to be  Number in       Indices in deque      Max. in Window 
+      pushed        Sliding Window            
+0     2             2               2 (idx:0)
+1     3             2, 3            3 (idx:1)
+2     4             2, 3, 4         4 (idx:2)             4
+3     2             3, 4, 2         4 (idx:2), 2 (idx:3)  4
+4     6             4, 2, 6         6 (idx:4)             6
+5     2             2, 6, 2         6 (idx:4), 2 (idx:5)  6
+6     5             6, 2, 5         6 (idx:4), 5 (idx:6)  6
+7     1             2, 5, 1         5 (idx:6), 1 (idx:7)  5
+*/
+
+// time complexity: O (n)
+vector<int> maxInWindow3(vector<int> &vec, int k) {
+  vector<int> out;
+  deque<int> d; // stores the indices, sorted from max value to min value within the window k
+  
+  for (int i = 0; i < vec.size(); i++) {
+    if (i < k) {
+      while (!d.empty() && vec[i] >= vec[d.back()]) {
+        d.pop_back();
+      }
+      
+      d.push_back(i);
+    } 
+    else {
+      out.push_back(vec[d.front()]);
+      
+      while (!d.empty() && vec[i] >= vec[d.back()]) {
+        d.pop_back();
+      }
+      
+      while (!d.empty() && d.front() <= (i - k)) {
+        d.pop_front();
+      }
+      
+      d.push_back(i);
+    }
+  }
+  
+  out.push_back(vec[d.front()]);
+
+  return out;
+}
+
 int main() {
   // your code goes here
 
-  vector<int> numbers = {2, 3, 4, 2, 6, 2, 5, 1};
+  vector<int> numbers = {2,3,4,2,6,2,5,1};
   vector<int> maxi = maxInWindow(numbers, 3);
 	
   for(auto value : maxi) {
@@ -98,6 +144,13 @@ int main() {
 
   vector<int> vec = {1,2,5,7,3,1,7,9,0};
   vector<int> out = maxInWindow2(vec, 2);
+    
+  for (auto e : out) {
+    cout << e << ' ';
+  }
+
+  vector<int> vec2 = {2,3,4,2,6,2,5,1};
+  vector<int> out = maxInWindow3(vec2, 3);
     
   for (auto e : out) {
     cout << e << ' ';
