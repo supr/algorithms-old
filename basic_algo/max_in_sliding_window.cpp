@@ -6,7 +6,6 @@
 #include <queue>
 #include <stack>
 using namespace std;
-using namespace std;
 
 /*
 Given an array of numbers and a sliding window size, how do you get the maximum numbers in all sliding windows?
