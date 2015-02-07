@@ -53,23 +53,14 @@ struct Comparator {
 typedef priority_queue<node, vector<node>, Comparator> pq;
 
 void removeIndex(pq &maxHeap, int index) {
-  stack<node> copy;
-  
   while (!maxHeap.empty()) {
     node n = maxHeap.top();
     maxHeap.pop();
     
-    if (n.index == index) {
+    if (n.index > index) {
+      maxHeap.push(n);
       break;
     }
-    else {
-      copy.push(n);
-    }
-  }
-
-  while (!copy.empty()) {
-     maxHeap.push(copy.top());  
-     copy.pop();
   }
 }
 
