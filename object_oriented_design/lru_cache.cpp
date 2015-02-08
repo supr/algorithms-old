@@ -31,9 +31,9 @@ public:
 	LRU_Cache(int cache_size_) : cache_size(cache_size_) {}
 
 	void insert(int key, int value) {
-		// if current size is larger than cache_size -> delete last recently used element
-		int current_size = ht.size() + 1;
-		if (current_size > cache_size) {
+		// if current size equals the cache_size -> delete last recently used element
+		int current_size = ht.size();
+		if (current_size == cache_size) {
 			erase();
 		}
 
