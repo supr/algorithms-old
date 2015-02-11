@@ -57,18 +57,22 @@ minHeap getkMostVisited(vector<string> &vec, int k) {
     }
   
     // O(n log k)
-    for (auto &kv: ht) {
+    while (!ht.empty()) {
+      auto kv = ht.begin();
+      
       if (pq.size() < k) {
-        pq.push(entry(kv.second, kv.first));
+        pq.push(entry(kv->second, kv->first));
       }
       else {
         entry min = pq.top();
         
-        if (kv.second > min.count) {
+        if (kv->second > min.count) {
           pq.pop();
-          pq.push(entry(kv.second, kv.first));
+          pq.push(entry(kv->second, kv->first));
         }
       }
+      
+      ht.erase(kv->first);
     }
   
    return pq;
@@ -89,7 +93,7 @@ int main() {
   
     minHeap topVisited = getkMostVisited(lines, 3);
     while (!topVisited.empty()) {
-      cout << topVisited.top().page << endl;
+      cout << topVisited.top().page << "..." << topVisited.top().count << endl;
       topVisited.pop();
     }
  
