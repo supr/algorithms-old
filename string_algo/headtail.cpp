@@ -28,7 +28,6 @@ vector<string> generateCandidate(const string &current, const unordered_set<stri
       auto it = dict.find(candidate);
       if (it != dict.end()) {
         candidates.push_back(candidate);
-        break;
       }
     }
   }
