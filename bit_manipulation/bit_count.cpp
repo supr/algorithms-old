@@ -21,6 +21,26 @@ unsigned int bit_count1(unsigned int num) {
 // bit(including the righmost set bit). So if we subtract a number by 1 and do bitwise & with itself 
 // (n & (n-1)), we unset the righmost set bit. If we do n & (n-1) in a loop and count the no of times loop 
 // executes we get the set bit count.
+/*
+example:
+number = 12; // 1100
+
+iteration1:
+  number = 12 & 11; //   1100
+                    //   1011
+                    // = 1000
+  count++;
+  
+iteration2:
+  number = 8 & 7; //   1000
+                  //   0111
+                  // = 0000
+  count++;
+  
+exit loop
+
+return 2;
+*/
 unsigned int bit_count2(unsigned int num) {
   unsigned int count = 0;
   
