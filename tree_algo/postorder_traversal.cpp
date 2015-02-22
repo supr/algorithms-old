@@ -13,12 +13,10 @@ using namespace std;
 /*
 Question:
 Given a binary search tree, print the elements post-order iterative and recursive.
-
 Post-order
 1. Traverse the left subtree.
 2. Traverse the right subtree.
 3. Visit the root.
-
 The algorithm is implemented in:
 - void postorder_traversal_recursive(Node *root);
 - void postorder_traversal_iterative(Node *root);
@@ -539,7 +537,7 @@ public:
       } 
       // we are traversing up the tree from the right
       else {
-        cout << curr->data << " ";
+        cout << curr->value << " ";
         s.pop();
       }
       
@@ -561,10 +559,11 @@ int main() {
 
   t4.print_head(t4, cout);
 
+  cout << "revursive: " << endl;
   t4.postorder_traversal_recursive(t4.get_root());
-  cout << '\n';
+  cout << "\niterative: " << endl;
   t4.postorder_traversal_iterative(t4.get_root());
-  cout << '\n';
+  cout << "\niterative2: " << endl;
   t4.postorder_traversal_iterative2(t4.get_root());
 
   return 0;
