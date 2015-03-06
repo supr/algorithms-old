@@ -68,7 +68,7 @@ public:
   void DFS(vertex_t start) {
     stack<edge> q;
     q.push(edge(start, 1));
-    vector<bool> visited(3, false);
+    vector<bool> visited(l.size(), false);
     
     while (!q.empty()) {
       edge curr = q.top();
@@ -92,7 +92,7 @@ public:
   bool isReachable(vertex_t u, vertex_t v) {
     stack<edge> q;
     q.push(edge(u, 1));
-    vector<bool> visited(3, false);
+    vector<bool> visited(l.size(), false);
     
     if (u == v) {
       return true;
@@ -135,4 +135,4 @@ int main() {
   cout << g1.isReachable(1, 3) << endl;
   
   return 0;
-} 
+}
