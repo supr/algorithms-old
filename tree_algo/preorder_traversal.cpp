@@ -15,8 +15,8 @@ Question:
 Given a binary search tree, print the elements pre-order iterative and recursive.
 
 Preorder:
-1. Traverse the left subtree.
-2. Visit the root.
+1. Visit the root.
+2. Traverse the left subtree.
 3. Traverse the right subtree.
 
 The algorithm is implemented in:
