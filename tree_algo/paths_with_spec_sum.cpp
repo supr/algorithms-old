@@ -11,22 +11,16 @@
 using namespace std;
 
 /*
-Question: All nodes along children pointers from root to leaf nodes form a path in a binary tree. Given a binary tree and a number, please print out all of paths where the 
-sum of all nodes value is same as the given number. The node of binary tree is defined as:
+Question: 
+All nodes along children pointers from root to leaf nodes form a path in a binary tree. Given a binary tree and a number, please print 
+out all of paths where the sum of all nodes value is same as the given number.
 
-struct BinaryTreeNode
-{
-int                    m_nValue;
-BinaryTreeNode*        m_pLeft;
-BinaryTreeNode*        m_pRight;
-};
-
-For instance, if inputs are the binary tree in Figure 1 and a number 22, two paths with be printed: One is the path contains node 10 and 12, and the other contains 10, 5 and 7.
+For instance, if inputs are the binary tree below and a number 22, two paths with be printed: One is the path contains 
+node 10 and 12, and the other contains 10, 5 and 7.
 
        10
      5    12
    4   7
-   Figure 1
 
 The algorithm is implemented in two different ways:
 - get_paths_with_sum_iterative
@@ -483,87 +477,89 @@ public:
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------/
 
-  vector<vector<int>> get_paths_with_sum_iterative(Node *root, int sum) {
-    vector<vector<int>> paths_with_sum;
-    vector<Node*> current_path;
-    stack<Node*> s;
+  void print_all_paths_with_sum_iterative(Node *root, const int sum) {
+    vector<int> current_path;
     int current_total_sum = 0;
-
+    stack<Node*> s;
     s.push(root);
 
     while (!s.empty()) {
-      Node *current_node = s.top();
+      Node *curr = s.top();
       s.pop();
 
-      current_total_sum += current_node->value;
-      current_path.push_back(current_node);
-
+    current_path.push_back(curr->value);
+      current_total_sum += curr->value;
+    
       // if the sum of the current value equals the sum we are looking for
       // we store the current path
-      if (current_total_sum == sum && !current_node->left && !current_node->right) {
-        vector<int> curr_path;
-
-        for (auto it = current_path.begin(); it != current_path.end(); it++) {
-          Node *tmp = *it;
-          curr_path.push_back(tmp->value);
-        }
-
-        paths_with_sum.push_back(curr_path);
+      if (current_total_sum == sum && 
+          !curr->left && 
+          !curr->right) {
+        print_current_path(current_path);
       }
 
       bool has_child = false;
-      if (current_node->right) {
-        s.push(current_node->right);
+      if (curr->right) {
+        s.push(curr->right);
         has_child = true;
       }
-      if (current_node->left) {
-        s.push(current_node->left);
+      if (curr->left) {
+        s.push(curr->left);
         has_child = true;
       }
 
-      if (!has_child) {
-        Node *curr = current_path.back();
+    if (!has_child) {
+        Node *c = curr;
         Node *prev = NULL;
 
-        while (curr && !current_path.empty()) {
-          if (prev == curr->left && curr->right) {
+        while (c && !current_path.empty()) {
+          if (prev == c->left && c->right) {
             break;
           }
 
-          current_total_sum -= current_path.back()->value;
+          current_total_sum -= current_path.back();
 
-          prev = curr;
-
+          prev = c;
           current_path.pop_back();
-          curr = current_path.back();
+          c = c->parent;
         }
       }
     }
-
-    return paths_with_sum;
   }
 
-  void get_paths_with_sum_recursive(Node *root, int sum, vector<vector<int>> &paths) {
-    static int total_sum = 0;
-    static vector<int> current_path;
-
-    if (!root) {
+  void print_current_path(vector<int> &vec) {
+    for(int i = 0; i < vec.size(); i++) {
+      cout << vec[i] << ' ';
+    } 
+    cout << '\n';
+  }
+  
+  void print_all_paths_with_sum_recursive(Node *root, const int sum) {
+    int curr_sum = 0;
+    vector<int> curr_path;
+    
+    return print_all_paths_with_sum_util(root, curr_path, curr_sum, sum);
+  }
+  
+  void print_all_paths_with_sum_util(Node *root, vector<int> &curr_path, int &curr_sum, const int sum) {
+    if(!root) {
       return;
     }
-
-    total_sum += root->value;
-    current_path.push_back(root->value);
-
-    if (total_sum == sum && !root->left && !root->right) {
-      paths.push_back(current_path);
+    
+    curr_path.push_back(root->value);
+    curr_sum += root->value;
+    
+    if (!root->left && 
+        !root->right && 
+        curr_sum == sum) {
+      print_current_path(curr_path);
     }
+    
+    print_all_paths_with_sum_util(root->left, curr_path, curr_sum, sum);
+    print_all_paths_with_sum_util(root->right, curr_path, curr_sum, sum);
 
-    get_paths_with_sum_recursive(root->left, sum, paths);
-    get_paths_with_sum_recursive(root->right, sum, paths);
-
-    total_sum -= root->value;
-
-    current_path.pop_back();
+    curr_path.pop_back();
+    curr_sum -= root->value;
   }
 };
 
@@ -573,33 +569,12 @@ int main() {
   t4.insert(5);
   t4.insert(12);
   t4.insert(4);
-  t4.insert(3);
-  t4.insert(2);
   t4.insert(7);
-  t4.insert(14);
 
   t4.print_head(t4, cout);
 
-  vector<vector<int>> paths = t4.get_paths_with_sum_iterative(t4.get_root(), 22);
-
-  cout << "Paths which sum up to 22:" << endl;
-  for (auto it = paths.begin(); it != paths.end(); it++) {
-    for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-      cout << *it2 << ' ';
-    }
-    cout << endl;
-  }
-
-  vector<vector<int>> paths2;
-  t4.get_paths_with_sum_recursive(t4.get_root(), 22, paths2);
-
-  cout << "Paths which sum up to 22:" << endl;
-  for (auto it = paths2.begin(); it != paths2.end(); it++) {
-    for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-      cout << *it2 << ' ';
-    }
-    cout << endl;
-  }
+  t4.print_all_paths_with_sum_iterative(t4.get_root(), 22);
+  t4.print_all_paths_with_sum_recursive(t4.get_root(), 22);
 
   return 0;
 }
