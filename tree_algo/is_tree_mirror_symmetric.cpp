@@ -550,7 +550,6 @@ public:
 };
 
 bool is_mirror_tree_recursive(Tree<int>::Node *LP, Tree<int>::Node *RP) {
-    // if either is null check that both are NULL
     bool result = false;
     
     // If both null then true
