@@ -11,9 +11,8 @@
 using namespace std;
 
 /*
-Question: Implement a function to verify whether a binary tree is symmetrical. A tree is symmetrical if its mirror image looks the same
-as the tree itself.
-
+Question: Implement a function to verify whether a binary tree is symmetrical. A tree 
+is symmetrical if its mirror image looks the same as the tree itself.
 The algorithm is implemented in:
 - bool is_tree_symmetrical(Node *root)
 */
@@ -532,6 +531,7 @@ public:
     return n;
   }
 
+  // do a inorder and a mirrored inorder traversal
   bool is_tree_symmetrical(Node *root) {
     Node *inorder_node = get_most_left_node(root);
     Node *inorder_node_mirrored = get_most_right_node(root);
@@ -549,6 +549,50 @@ public:
   }
 };
 
+bool is_mirror_tree_recursive(Tree<int>::Node *LP, Tree<int>::Node *RP) {
+    // if either is null check that both are NULL
+    bool result = false;
+    
+    // If both null then true
+    if (LP == NULL && RP == NULL) { 
+        result = true;
+    } 
+    
+    // check that data is equal and then recurse
+    if (LP != NULL && RP != NULL) {
+      result = LP->value == RP->value && 
+                 is_mirror_tree_recursive( LP->left, RP->right ) && 
+                 is_mirror_tree_recursive( LP->right, RP->left );
+    }
+    
+    return result;
+}
+
+bool is_mirror_tree_iterative(Tree<int>::Node *root)  {
+    /// use single queue
+    if(!root) return true;
+    queue<Tree<int>::Node*> q;
+    
+    q.push(root->left);
+    q.push(root->right);
+    
+    Tree<int>::Node *l, *r;
+    while(!q.empty()) {
+        l = q.front();
+        q.pop();
+        r = q.front();
+        q.pop();
+        if(l==NULL && r==NULL) continue;
+        if(l==NULL || r==NULL || l->value != r->value) return false;
+        q.push(l->left);
+        q.push(r->right);
+        q.push(l->right);
+        q.push(r->left);
+    }
+
+    return true;
+}
+
 int main() {
   Tree<int> t4;
   t4.insert(8);
@@ -561,14 +605,8 @@ int main() {
 
   t4.print_head(t4, cout);
 
-  bool is_tree_symmetrical = t4.is_tree_symmetrical(t4.get_root());
-
-  if (is_tree_symmetrical) {
-    cout << "Tree is symmetrical" << endl;
-  }
-  else {
-    cout << "Tree is not symmetrical" << endl;
-  }
+  cout << ((is_mirror_tree_iterative(t4.get_root())) ? ("Tree is symmetrical") : ("Tree is not symmetrical")) << endl;
+  cout << ((is_mirror_tree_recursive(t4.get_root(), t4.get_root())) ? ("Tree is symmetrical") : ("Tree is not symmetrical")) << endl;
 
   cout << '\n';
 
@@ -579,14 +617,8 @@ int main() {
 
   t4.print_head(t4, cout);
 
-  bool is_tree_symmetrical2 = t4.is_tree_symmetrical(t4.get_root());
-
-  if (is_tree_symmetrical2) {
-    cout << "Tree is symmetrical" << endl;
-  }
-  else {
-    cout << "Tree is not symmetrical" << endl;
-  }
+  cout << ((is_mirror_tree_iterative(t4.get_root())) ? ("Tree is symmetrical") : ("Tree is not symmetrical")) << endl;
+  cout << ((is_mirror_tree_recursive(t4.get_root(), t4.get_root())) ? ("Tree is symmetrical") : ("Tree is not symmetrical")) << endl;
 
   return 0;
 }
