@@ -62,7 +62,7 @@ Node *clone_graph_recursive(Node *node, unordered_map<Node*, Node*> &copied) {
 
   //First check if this node has already been copied
   unordered_map<Node*, Node*>::iterator it = copied.find(node);
-  if(it!=copied.end()) {
+  if(it != copied.end()) {
     return it->second;
   }
 
