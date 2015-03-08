@@ -6,12 +6,13 @@
 using namespace std;
 
 /*
-Find if there is a path between two vertices in a directed graph
-Given a Directed Graph and two vertices in it, check whether there 
-is a path from the first given vertex to second. For example, in 
-the following graph, there is a path from vertex 1 to 3. 
-As another example, there is no path from 3 to 0.
-Reference: http://www.geeksforgeeks.org/find-if-there-is-a-path-between-two-vertices-in-a-given-graph/
+Detect cycle in an undirected and directed graph
+Given an undirected graph, how to check if there is a cycle in the graph?
+Given an undirected graph, how to check if there is a cycle in the graph?
+
+References: 
+http://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+http://www.geeksforgeeks.org/detect-cycle-undirected-graph/
 */
 
 //#define undirected_graph
