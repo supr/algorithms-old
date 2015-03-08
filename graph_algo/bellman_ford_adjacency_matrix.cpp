@@ -5,6 +5,13 @@
 #include <cmath>
 using namespace std;
 
+/*
+computes the shorted paths in a graph with negative edges. 
+if the graph has a negative cycle it will detect it and aboard the computation. 
+
+Time Complexity: polynomial time
+*/
+
 typedef int weight_t;
 typedef int vertex_t;
 const weight_t inf = numeric_limits<int>::max();
