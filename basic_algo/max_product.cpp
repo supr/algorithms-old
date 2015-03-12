@@ -6,7 +6,7 @@ using namespace std;
 
 auto find_max_product_subarray(std::vector<int> &vec) { 
     int start = 0; 
-    int start_tmp = 0; 
+    int tmp = 0; 
     int end = 0; 
     int currProd = 0; 
     int maxProd = std::numeric_limits<int>::min(); 
@@ -16,29 +16,29 @@ auto find_max_product_subarray(std::vector<int> &vec) {
         
         if (currProd == 0) { 
             currProd = 1; 
-            start_tmp = i+1; 
+            tmp = i+1; 
         } 
         else if (currProd > maxProd) { 
             maxProd = currProd; 
-            start = start_tmp; 
+            start = tmp; 
             end = i; 
         } 
     } 
     
     currProd = 1; 
-    start_tmp = vec.size() - 1; 
+    tmp = vec.size() - 1; 
     
     for (int i = vec.size() - 1; i >= 0; i--) { 
         currProd *= vec[i]; 
         
         if (currProd == 0) { 
             currProd = 1; 
-            start_tmp = i-1; 
+            tmp = i-1; 
         } 
         else if (currProd > maxProd) { 
             maxProd = currProd; 
-            start = start_tmp; 
-            end = i; 
+            start = i; 
+            end = tmp; 
         } 
     } 
     
