@@ -6,6 +6,9 @@ Question: Delete all the nodes of a Binary Search Treee
 
 The algorithm is implemented in two different ways:
 - void delete_all_nodes()
+
+run the code:
+g++ -o delete_all_nodes delete_all_nodes.cpp; ./delete_all_nodes
 */
 
 template <class T>
