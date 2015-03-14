@@ -148,7 +148,7 @@ private:
 
 public:
   ~Tree(){
-    Node*now = root;
+    /*Node*now = root;
     while (now){
       if (now->left)
         now = now->left;
@@ -160,7 +160,7 @@ public:
         delete now;
         now = next;
       }
-    }
+    }*/
   }
 
   Tree(const Tree&other){
@@ -468,4 +468,6 @@ public:
 
   void delete_all_nodes();
   void delete_all_nodes_internal(Node *root);
+  auto BST_to_doubly_linked_list();
+  void BST_to_doubly_linked_list_internal(Node *curr, Node **prev);
 };
