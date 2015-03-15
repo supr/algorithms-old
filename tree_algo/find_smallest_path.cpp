@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Problem: Given a Binary tree and two nodes. Need to find smallest path between them.

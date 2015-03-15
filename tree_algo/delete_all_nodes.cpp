@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: Delete all the nodes of a Binary Search Treee

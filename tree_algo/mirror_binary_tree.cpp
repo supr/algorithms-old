@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Problem: Please implement a function which returns mirror of a binary tree.

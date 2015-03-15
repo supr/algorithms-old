@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: Binary Tree Level Order Traversal

@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Problem: Given a binary tree node, return the next node postorder.

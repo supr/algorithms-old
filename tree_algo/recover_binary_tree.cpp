@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: Two elements of a binary search tree (BST) are swapped by mistake.

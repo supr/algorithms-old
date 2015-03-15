@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
  Problem: Trim Binary Search Tree

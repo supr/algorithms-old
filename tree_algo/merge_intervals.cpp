@@ -17,20 +17,21 @@ Implementation:
 - Merging: O(n)
 */
 
-typedef struct node {
+class node {
+public:
   int low;
   int high;
   node *left;
   node *right;
   node(int low_, int high_) : low(low_), high(high_), left(NULL), right(NULL) {}
-}node;
+};
 
-class Range_tree {
+class Interval_tree {
 private:
   node *root;
 
 public:
-  Range_tree() : root(NULL) {}
+  Interval_tree() : root(NULL) {}
 
   void insert(int low, int high) {
     if (root == NULL) {
@@ -120,7 +121,7 @@ public:
 int main() {
   // your code goes here
 
-  Range_tree rt1;
+  Interval_tree rt1;
   vector<pair<int, int>> vec1 = { { 1, 2 }, { 3, 4 }, { 3, 6 }, { 8, 10 } };
   rt1.insert_intervals(vec1);
   vector<pair<int,int>> intervals1 = rt1.merge_intervals();
@@ -128,7 +129,7 @@ int main() {
 
   cout << '\n';
 
-  Range_tree rt2;
+  Interval_tree rt2;
   vector<pair<int, int>> vec2 = { { 1, 6 }, { 3, 4 }, { 3, 6 }, { 8, 10 } };
   rt2.insert_intervals(vec2);
   vector<pair<int, int>> intervals2 = rt2.merge_intervals();
@@ -136,7 +137,7 @@ int main() {
 
   cout << '\n';
 
-  Range_tree rt3;
+  Interval_tree rt3;
   vector<pair<int, int>> vec3 = { { 1, 10 }, { 3, 4 }, { 3, 6 }, { 8, 10 } };
   rt3.insert_intervals(vec3);
   vector<pair<int, int>> intervals3 = rt3.merge_intervals();
@@ -144,7 +145,7 @@ int main() {
 
   cout << '\n';
 
-  Range_tree rt4;
+  Interval_tree rt4;
   vector<pair<int, int>> vec4 = { { 0, 2 }, { 3, 4 }, { 1, 5 }, { 6, 8 } };
   rt4.insert_intervals(vec4);
   vector<pair<int, int>> intervals4 = rt4.merge_intervals();
@@ -152,7 +153,7 @@ int main() {
 
   cout << '\n';
 
-  Range_tree rt5;
+  Interval_tree rt5;
   vector<pair<int, int>> vec5 = { { 0, 1 }, { 5, 6 } };
   rt5.insert_intervals(vec5);
   vector<pair<int, int>> intervals5 = rt5.merge_intervals();
@@ -160,7 +161,7 @@ int main() {
 
   cout << '\n';
 
-  Range_tree rt6;
+  Interval_tree rt6;
   vector<pair<int, int>> vec6 = { { 1, 10 }, { 15, 20 }, { 12, 13 }, { 10, 12 }, { 19, 20 } };
   rt6.insert_intervals(vec6);
   vector<pair<int, int>> intervals6 = rt6.merge_intervals();

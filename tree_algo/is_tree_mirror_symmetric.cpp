@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: Implement a function to verify whether a binary tree is symmetrical. A tree 

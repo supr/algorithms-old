@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: How would you check if a binary tree is balanced?

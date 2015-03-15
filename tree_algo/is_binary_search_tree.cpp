@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: How to verify whether a binary tree is a binary search tree?

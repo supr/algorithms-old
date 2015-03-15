@@ -1,5 +1,4 @@
 #include "bst.h"
-using namespace std;
 
 /*
 Question: Convert a BST to a sorted circular doubly-linked list in-place. 
