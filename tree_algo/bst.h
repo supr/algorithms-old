@@ -8,13 +8,8 @@
 #include <vector>
 #include <limits>
 #include <cassert>
+#include <deque>
 using namespace std;
-
-/*
-Question: Delete all the nodes of a Binary Search Treee
-The algorithm is implemented in two different ways:
-- void delete_all_nodes()
-*/
 
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
 template<class T>
@@ -468,6 +463,70 @@ public:
 
   void delete_all_nodes();
   void delete_all_nodes_internal(Node *root);
-  auto BST_to_doubly_linked_list();
-  void BST_to_doubly_linked_list_internal(Node *curr, Node **prev);
+  Node* BST_to_doubly_linked_list();
+  Node* BST_to_doubly_linked_list_internal(Node *curr, Node **prev);
+  Node* get_parent(Node *curr, Node *to_find);
+  Node* get_most_left_node(Node *curr);
+  void delete_node(Node *curr);
+  Node* find_k_max_node(Node *root, int k);
+  void find_k_max_node_internal(Node *root, int &counter, int &k, Node **n); 
+  Node* lca(Node *root, Node *p, Node *q, deque<Node*> &path, bool &both_found);
+  void dfs(Node *root, bool &found, Node *find, deque<Node*> &path);
+  deque<Node*> path_between_p_q(Node *root, Node *p, Node *q);
+  Node* get_next_node_depthfirst(Node *curr);
+  Node* get_next_node_inorder(Node *current);
+  Node* get_next_node_inorder2(Node *curr);
+  Node* get_next_node_inorder2_internal(Node *root, Node *curr);
+  Node* get_next_node_postorder(Node *root, Node *curr);
+  Node* find_next_node(Node *root);
+  bool is_leaf(Node *root);
+  Node* get_next_node_postorder2(Node *root, Node *curr);
+  Node* postorder_successor(Node *curr);
+  Node* postorderSuccessor_internal2(Node *root, Node *curr, Node *direct_parent, Node *parent, Node *treeroot);
+  Node* get_next_node_preorder(Node *current);
+  Node* get_next_node_preorder2(Node *curr);
+  Node* get_next_node_preorder2_internal(Node *root, Node *curr);
+  void inorder_traversal_recursive(Node *root);
+  void inorder_traversal_iterative(Node *root);
+  bool is_tree_balanced1(Node *root);
+  bool dfs(Node *root, int &curr_depth, int &min_depth, int &max_depth);
+  int get_max_depth(Node *root);
+  int get_min_depth(Node *root);
+  bool is_tree_balanced2(Node *root);
+  Node* in_order_iterator(Node *root);
+  Node* get_most_right_node(Node *root);
+  Node* in_order_iterator_mirrored(Node *root);
+  bool is_tree_symmetrical(Node *root);
+  bool is_mirror_tree_recursive(Node *LP, Node *RP);
+  bool is_mirror_tree_iterative(Node *root);
+  vector<vector<int>> level_order_traversal(Node *root);
+  Node* lowest_common_ancestor(Node *root, Node *n1, Node *n2);
+  int max_depth(Node *root);
+  int max_depth2(Node *root);
+  int min_depth1(Node *root);
+  int min_depth2(Node *root);
+  void mirror_tree_topdown(Node *root);
+  void mirror_tree_bottomup(Node *root);
+  void print_all_paths_with_sum_iterative(Node *root, const int sum);
+  void print_current_path(vector<int> &vec);
+  void print_all_paths_with_sum_recursive(Node *root, const int sum);
+  void print_all_paths_with_sum_util(Node *root, vector<int> &curr_path, int &curr_sum, const int sum);
+  void postorder_traversal_recursive(Node *root);
+  void postorder_traversal_iterative(Node *root);
+  void postorder_traversal_iterative2(Node *root);
+  void preorder_traversal_recursive(Node *root);
+  void preorder_traversal_iterative(Node *root);
+  void print_all_paths(Node *root, vector<int> &vec);
+  void print_paths_from_root(Node *root);
+  void print_paths_from_root_util(Node *root, vector<Node*> &s);
+  void recover_binary_tree_internal(Node *root, Node **prev, Node **first_node_not_inorder);
+  void recover_binary_tree(Node *root);
+  void trim_BST(Node *curr, int min, int max);
+  Node* trim_BST_internal(Node *root, int min, int max);
+  bool is_BST_internal1(Tree<T>::Node *root, int min, int max);
+  bool is_BST1();
+  bool is_BST_internal2(Tree<T>::Node *root, int &prev_value);
+  bool is_BST2();
+
+
 };
