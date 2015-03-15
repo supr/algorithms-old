@@ -11,6 +11,9 @@
 #include <deque>
 using namespace std;
 
+// compile code
+// g++-4.9 -std=c++14 -o merge_intervals merge_intervals.cpp; ./merge_intervals
+
 // Basic Tree implementation --------------------------------------------------------------------------------------------------------------------------------------------------------- //
 template<class T>
 class Tree{
