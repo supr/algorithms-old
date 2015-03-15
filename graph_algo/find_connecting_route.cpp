@@ -1,15 +1,21 @@
 /* 
 Question:
-given pairs of flight connections, where the first element of the pair is the start
-and the second element of the pair is the destination:
+given pairs of flight trips.
+the first element of the pair is the departure city
+the second element of the pair represents the destination city
+
+Example input: (jfk,lhr),(ord,jfk),(sfo, ord),(lhr,cdg)
+
+overview:
 sfo -> ord 
 ord -> jfk 
 jfk -> lhr 
 lhr -> cdg
 
-Example input: (jfk,lhr),(ord,jfk),(sfo, ord),(lhr,cdg)
+Find the path from departure to destination. note: departure and destination are not known.
+The airports (nodes) cannot be duplicated and the path should print all the airports (nodes)
 
-Find the start and destination which includes all cities
+The final destination should be: sfo -> ord -> jfk -> lhr -> cdg
 */
 
 #include <queue>
