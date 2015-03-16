@@ -14,30 +14,30 @@ template<class T>
 class TreeContainer : public Tree<T> {
 public:
   class tree_iterator {
-    private:
-      Tree<T> *ptree;
-      typename Tree<T>::Node *curr;
-      typename Tree<T>::Node *prev;
+  private:
+    Tree<T> *ptree;
+    typename Tree<T>::Node *curr;
+    typename Tree<T>::Node *prev;
 
-    public:
-      tree_iterator(Tree<T> *ptree_): ptree(ptree_), curr(NULL), prev(NULL) {}
+  public:
+    tree_iterator(Tree<T> *ptree_): ptree(ptree_), curr(NULL), prev(NULL) {}
 
-      typename Tree<T>::Node *get_curr() const {
-        return curr;
-      }
+    typename Tree<T>::Node *get_curr() const {
+      return curr;
+    }
   
-      typename Tree<T>::Node *get_root() {
-          return ptree->get_root();
-      }
+    typename Tree<T>::Node *get_root() {
+      return ptree->get_root();
+    }
   
-      void tree_iterator_begin(typename Tree<T>::Node *start) {
-        prev = NULL;
-        curr = start;
-      }
+    void tree_iterator_begin(typename Tree<T>::Node *start) {
+      prev = NULL;
+      curr = start;
+    }
   
-      void tree_iterator_end() {
-        curr = NULL;
-      }
+    void tree_iterator_end() {
+      curr = NULL;
+    }
   
     bool operator== (const tree_iterator &it) {
       return this->get_curr() == it.get_curr();
@@ -55,7 +55,7 @@ public:
     void operator++(int) {
       if(curr) {
         typename Tree<T>::Node *tmp;
-    
+      
         // Found right children -> return 1st inorder node on right
         if (curr->parent == NULL || curr->right != NULL) {
           tmp = leftMostChild(curr->right);
@@ -75,11 +75,11 @@ public:
     
     typename Tree<T>::Node *leftMostChild(typename Tree<T>::Node *e) {
       if (e == NULL) return NULL;
-    
+      
       while (e->left != NULL) {
         e = e->left;
       }
-      
+        
       return e;
     }
   };
