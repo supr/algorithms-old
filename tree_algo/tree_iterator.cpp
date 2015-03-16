@@ -40,12 +40,12 @@ public:
         typename Tree<T>::Node *tmp;
       
         // Found right children -> return 1st inorder node on right
-        if (curr->parent == nullptr || curr->right != nullptr) {
+        if (!curr->parent || curr->right) {
           tmp = leftMostChild(curr->right);
         } 
         else {
           // Go up until we are on left instead of right (case 2b)
-          while ((tmp = curr->parent) != nullptr) {
+          while ((tmp = curr->parent)) {
             if (tmp->left == curr) {
               break;
             }
