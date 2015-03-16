@@ -33,6 +33,10 @@ public:
     typename Tree<T>::Node operator* () {
       return *this->get_curr();
     }
+
+    typename Tree<T>::Node *operator-> () {
+      return this->get_curr();
+    }
     
     // inorder_traversal
     void operator++(int) {
@@ -115,7 +119,7 @@ int main() {
   t.print_head(t, cout);
   
   for(TreeContainer<int>::tree_iterator itr = t.begin(); itr != t.end(); itr++) {
-    cout << (*itr).value << ' ';
+    cout << itr->value << ' ';
   }
   
   return 0;
