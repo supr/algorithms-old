@@ -20,25 +20,8 @@ public:
     typename Tree<T>::Node *prev;
 
   public:
-    tree_iterator(Tree<T> *ptree_): ptree(ptree_), curr(NULL), prev(NULL) {}
+    tree_iterator(Tree<T> *ptree_): ptree(ptree_), curr(nullptr), prev(nullptr) {}
 
-    typename Tree<T>::Node *get_curr() const {
-      return curr;
-    }
-  
-    typename Tree<T>::Node *get_root() {
-      return ptree->get_root();
-    }
-  
-    void tree_iterator_begin(typename Tree<T>::Node *start) {
-      prev = NULL;
-      curr = start;
-    }
-  
-    void tree_iterator_end() {
-      curr = NULL;
-    }
-  
     bool operator== (const tree_iterator &it) {
       return this->get_curr() == it.get_curr();
     }
@@ -57,12 +40,12 @@ public:
         typename Tree<T>::Node *tmp;
       
         // Found right children -> return 1st inorder node on right
-        if (curr->parent == NULL || curr->right != NULL) {
+        if (curr->parent == nullptr || curr->right != nullptr) {
           tmp = leftMostChild(curr->right);
         } 
         else {
           // Go up until we are on left instead of right (case 2b)
-          while ((tmp = curr->parent) != NULL) {
+          while ((tmp = curr->parent) != nullptr) {
             if (tmp->left == curr) {
               break;
             }
@@ -72,11 +55,28 @@ public:
         curr = tmp;
       }
     }
-    
+
+    typename Tree<T>::Node *get_curr() const {
+      return curr;
+    }
+  
+    typename Tree<T>::Node *get_root() {
+      return ptree->get_root();
+    }
+  
+    void tree_iterator_begin(typename Tree<T>::Node *start) {
+      prev = nullptr;
+      curr = start;
+    }
+  
+    void tree_iterator_end() {
+      curr = nullptr;
+    }
+
     typename Tree<T>::Node *leftMostChild(typename Tree<T>::Node *e) {
-      if (e == NULL) return NULL;
+      if (!e) return nullptr;
       
-      while (e->left != NULL) {
+      while (e->left) {
         e = e->left;
       }
         
