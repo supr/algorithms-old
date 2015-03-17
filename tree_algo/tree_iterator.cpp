@@ -64,7 +64,7 @@ public:
       return curr;
     }
   
-    typename Tree<T>::Node *get_root() {
+    typename Tree<T>::Node *get_root() const {
       return ptree->get_root();
     }
   
