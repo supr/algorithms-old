@@ -44,7 +44,7 @@ public:
         typename Tree<T>::Node *tmp;
       
         // Found right children -> return 1st inorder node on right
-        if (!curr->parent || curr->right) {
+        if (curr->right) {
           tmp = leftMostChild(curr->right);
         } 
         else {
