@@ -30,6 +30,7 @@ int main() {
   // your code goes here
   
   cout << strcmp("helloworld", "hello") << endl;
+  cout << strcmp("abcdef", "ABCDEF") << endl;
   
   return 0;
 }
