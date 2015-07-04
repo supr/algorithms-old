@@ -24,4 +24,14 @@ This repo shows some very important data strubures and algorithms, implemented i
 
 **https://code.google.com/p/elements-of-programming-interviewss**
 
+**http://courses.csail.mit.edu/iap/interview/materials.php**
+
 **https://github.com/andreis/interview#algorithms**
+
+**https://github.com/brianquinlan/learn-rust**
+
+**http://www.tldp.org/LDP/abs/html**
+
+**https://www.linuxcounter.net/toolbox**
+
+**https://github.com/jlevy/the-art-of-command-line**
