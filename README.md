@@ -11,3 +11,5 @@ This repo shows some very important data strubures and algorithms, implemented i
 **http://www.careercup.com/page**
 **http://codercareer.blogspot.co.uk**
 **https://www.youtube.com/channel/UCZSfwNcYIpqO8B9wnBg4HWA**
+**http://maniali.wikispaces.com/file/view/Programming+Interviews+Exposed.PDF**
+**https://code.google.com/p/elements-of-programming-interviews**
